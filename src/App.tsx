@@ -2,6 +2,8 @@ import type { ReactNode } from 'react';
 import { Router, useRuta, coincide } from './ui/router';
 import { IconoEntrenar, IconoInicio, IconoMas, IconoNutricion, IconoProgreso } from './ui/componentes/Iconos';
 import { Nutricion } from './ui/pantallas/Marcadores';
+import { Mas } from './ui/pantallas/Mas';
+import { Backup } from './ui/pantallas/Backup';
 
 type Ruta = { patron: string; render: (p: Record<string, string>) => ReactNode };
 
@@ -18,7 +20,8 @@ const RUTAS: Ruta[] = [
   { patron: '/entrenar', render: () => <h1 className="titulo">Entrenar</h1> },
   { patron: '/nutricion', render: () => <Nutricion /> },
   { patron: '/progreso', render: () => <h1 className="titulo">Progreso</h1> },
-  { patron: '/mas', render: () => <h1 className="titulo">Más</h1> },
+  { patron: '/mas', render: () => <Mas /> },
+  { patron: '/mas/backup', render: () => <Backup /> },
 ];
 
 const PESTANAS = [

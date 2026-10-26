@@ -5,12 +5,9 @@ import { ejerciciosRepo } from '../../../src/data/repos/ejercicios';
 import { rutinasRepo } from '../../../src/data/repos/rutinas';
 import { sesionesRepo } from '../../../src/data/repos/sesiones';
 import { ajustesRepo } from '../../../src/data/repos/ajustes';
-import type { Ejercicio, Rutina, Sesion } from '../../../src/data/tipos';
+import type { Rutina, Sesion } from '../../../src/data/tipos';
+import { ejercicio } from '../fabricas';
 
-export const ejercicio = (id: string, extra: Partial<Ejercicio> = {}): Ejercicio => ({
-  id, nombre: `Ejercicio ${id}`, nombreOriginal: id, musculos: ['chest'], equipo: 'barbell', tipo: 'superior',
-  imagenes: [], instrucciones: [], favorito: false, propio: false, archivado: false, ...extra,
-});
 const rutina = (id: string): Rutina => ({
   id, nombre: `Rutina ${id}`, origen: 'manual', archivado: false, creada: 1,
   dias: [{ id: 'd1', nombre: 'Día A', ejercicios: [{ ejercicioId: 'press', series: 3, repsMin: 8, repsMax: 12, descansoSeg: 90 }] }],
