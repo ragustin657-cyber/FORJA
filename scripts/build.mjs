@@ -36,7 +36,7 @@ async function listar(dir) {
   return salida;
 }
 
-const archivos = (await listar(DIST)).map((r) => relative(DIST, r)).filter((r) => r !== 'sw.js').sort();
+const archivos = (await listar(DIST)).map((r) => relative(DIST, r)).filter((r) => r !== 'sw.js' && !r.startsWith('ejercicios-extra/')).sort();
 const hash = createHash('sha256');
 for (const a of archivos) hash.update(a).update(await readFile(join(DIST, a)));
 const version = hash.digest('hex').slice(0, 12);

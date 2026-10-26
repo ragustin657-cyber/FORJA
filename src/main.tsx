@@ -3,14 +3,16 @@ import App from './App';
 import { usarAlmacen } from './data/db';
 import { crearAlmacenIDB } from './data/idb';
 import { estaInstalada, pedirPersistencia } from './data/persistencia';
+import { prepararBiblioteca } from './ui/datos';
 
 if (estaInstalada()) void pedirPersistencia();
 
 const raiz = createRoot(document.getElementById('raiz')!);
 
 crearAlmacenIDB()
-  .then((almacen) => {
+  .then(async (almacen) => {
     usarAlmacen(almacen);
+    await prepararBiblioteca();
     raiz.render(<App />);
   })
   .catch(() => {

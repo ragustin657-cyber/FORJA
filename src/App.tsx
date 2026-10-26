@@ -5,6 +5,8 @@ import { Nutricion } from './ui/pantallas/Marcadores';
 import { Mas } from './ui/pantallas/Mas';
 import { Backup } from './ui/pantallas/Backup';
 import { AvisoInstalar } from './ui/componentes/AvisoInstalar';
+import { Biblioteca } from './ui/pantallas/Biblioteca';
+import { DetalleEjercicio } from './ui/pantallas/DetalleEjercicio';
 
 type Ruta = { patron: string; render: (p: Record<string, string>) => ReactNode };
 
@@ -26,6 +28,8 @@ const RUTAS: Ruta[] = [
   { patron: '/progreso', render: () => <h1 className="titulo">Progreso</h1> },
   { patron: '/mas', render: () => <Mas /> },
   { patron: '/mas/backup', render: () => <Backup /> },
+  { patron: '/mas/biblioteca', render: () => <Biblioteca /> },
+  { patron: '/mas/biblioteca/:id', render: (p) => <DetalleEjercicio key={p.id} id={p.id} /> },
 ];
 
 const PESTANAS = [
