@@ -7,6 +7,7 @@ type Props = {
   min?: number;
   etiqueta: string;
   onCambio: (v: number | null) => void;
+  compacto?: boolean;
 };
 
 function mostrar(v: number | null): string {
@@ -16,7 +17,7 @@ function mostrar(v: number | null): string {
 const leer = parsearNumero;
 
 /** Control con − y + y un campo numérico que acepta coma decimal. */
-export function Stepper({ valor, paso, min = 0, etiqueta, onCambio }: Props) {
+export function Stepper({ valor, paso, min = 0, etiqueta, onCambio, compacto }: Props) {
   const [texto, setTexto] = useState(mostrar(valor));
   useEffect(() => {
     if (leer(texto) !== valor) setTexto(mostrar(valor));
@@ -24,7 +25,7 @@ export function Stepper({ valor, paso, min = 0, etiqueta, onCambio }: Props) {
   }, [valor]);
 
   return (
-    <div className="stepper" role="group" aria-label={etiqueta}>
+    <div className={`stepper ${compacto ? 'stepper-compacto' : ''}`} role="group" aria-label={etiqueta}>
       <button type="button" className="boton-icono" aria-label={`Restar ${etiqueta}`} onClick={() => onCambio(sumarPaso(valor, paso, -1, min))}>
         −
       </button>

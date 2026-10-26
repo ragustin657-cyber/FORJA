@@ -129,6 +129,10 @@ img { max-width: 100%; display: block; }
   font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums;
 }
 
+.stepper-compacto { gap: 4px; }
+.stepper-compacto .boton-icono { width: 34px; font-size: 20px; }
+.stepper-compacto input { width: 52px; font-size: 18px; }
+
 .chip {
   display: inline-flex; align-items: center; min-height: 34px; padding: 0 14px;
   border-radius: 999px; background: var(--color-tarjeta-alta); color: var(--color-texto-2);

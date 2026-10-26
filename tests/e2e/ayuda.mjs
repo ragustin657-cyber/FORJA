@@ -49,3 +49,15 @@ export async function abrirApp({ ruta = '' } = {}) {
     async cerrar() { await navegador.close(); await servidor.cerrar(); },
   };
 }
+
+/** Espera hasta que un campo tenga el valor esperado (la pantalla se actualiza un instante después del toque). */
+export async function esperarValor(locator, esperado, timeout = 5000) {
+  const limite = Date.now() + timeout;
+  let actual;
+  while (Date.now() < limite) {
+    actual = await locator.inputValue();
+    if (actual === esperado) return;
+    await new Promise((r) => setTimeout(r, 50));
+  }
+  throw new Error(`Se esperaba "${esperado}" y quedó "${actual}"`);
+}
