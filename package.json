@@ -1,0 +1,25 @@
+{
+  "name": "forja",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "iconos": "node scripts/iconos.mjs",
+    "test": "bun test tests/unit",
+    "coverage": "bun test --coverage tests/unit",
+    "e2e": "node scripts/build.mjs && node --test \"tests/e2e/*.test.mjs\"",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "verificar": "npm run typecheck && npm run coverage && npm run e2e",
+    "importar-ejercicios": "node scripts/importar-ejercicios.mjs"
+  },
+  "dependencies": {
+    "jszip": "3.10.1",
+    "react": "19.2.8",
+    "react-dom": "19.2.8"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "playwright": "1.63.0"
+  }
+}
