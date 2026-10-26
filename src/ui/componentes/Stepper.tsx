@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { sumarPaso } from '../../core/unidades';
+import { parsearNumero, sumarPaso } from '../../core/unidades';
 
 type Props = {
   valor: number | null;
@@ -13,12 +13,7 @@ function mostrar(v: number | null): string {
   return v === null ? '' : String(v).replace('.', ',');
 }
 
-function leer(texto: string): number | null {
-  const limpio = texto.trim().replace(',', '.');
-  if (limpio === '') return null;
-  const n = Number(limpio);
-  return Number.isFinite(n) ? n : null;
-}
+const leer = parsearNumero;
 
 /** Control con − y + y un campo numérico que acepta coma decimal. */
 export function Stepper({ valor, paso, min = 0, etiqueta, onCambio }: Props) {
