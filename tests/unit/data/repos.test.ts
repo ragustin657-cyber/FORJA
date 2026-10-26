@@ -126,3 +126,17 @@ test('activas ordena de la rutina más vieja a la más nueva', async () => {
   await rutinasRepo.guardar({ ...rutina('vieja'), creada: 10 });
   expect((await rutinasRepo.activas()).map((r) => r.id)).toEqual(['vieja', 'nueva']);
 });
+
+test('historialConFechas devuelve fecha y series de cada sesión terminada', async () => {
+  await sesionesRepo.guardar(sesion('s2', 300, 400, 65));
+  await sesionesRepo.guardar(sesion('s1', 100, 200, 60));
+  await sesionesRepo.guardar(sesion('s3', 500, null, 70));
+  const h = await sesionesRepo.historialConFechas('press');
+  expect(h.map((x) => [x.fecha, x.series[0].peso])).toEqual([[100, 60], [300, 65]]);
+});
+
+test('ejerciciosConHistorial lista los ids usados en sesiones terminadas', async () => {
+  await sesionesRepo.guardar(sesion('s1', 100, 200, 60));
+  await sesionesRepo.guardar({ ...sesion('s2', 300, null, 60), series: [{ ejercicioId: 'otro', numero: 1, peso: 1, reps: 1, completada: true }] });
+  expect(await sesionesRepo.ejerciciosConHistorial()).toEqual(['press']);
+});

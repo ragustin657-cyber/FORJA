@@ -28,6 +28,16 @@ export const sesionesRepo = {
       .map((s) => s.series.filter((x) => x.ejercicioId === ejercicioId))
       .filter((series) => series.length > 0);
   },
+  /** Igual que historialDeEjercicio, con la fecha de cada sesión. */
+  async historialConFechas(ejercicioId: string): Promise<{ fecha: number; series: SerieRegistrada[] }[]> {
+    return (await terminadas())
+      .map((s) => ({ fecha: s.inicio, series: s.series.filter((x) => x.ejercicioId === ejercicioId) }))
+      .filter((x) => x.series.length > 0);
+  },
+  /** Ids de ejercicios que aparecen en sesiones terminadas. */
+  async ejerciciosConHistorial(): Promise<string[]> {
+    return [...new Set((await terminadas()).flatMap((s) => s.series.map((x) => x.ejercicioId)))];
+  },
   async ultimaDeDia(diaId: string): Promise<Sesion | undefined> {
     return (await terminadas()).filter((s) => s.diaId === diaId).pop();
   },

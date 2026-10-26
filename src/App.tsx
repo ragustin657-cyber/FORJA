@@ -4,35 +4,27 @@ import { IconoEntrenar, IconoInicio, IconoMas, IconoNutricion, IconoProgreso } f
 import { Nutricion } from './ui/pantallas/Marcadores';
 import { Mas } from './ui/pantallas/Mas';
 import { Backup } from './ui/pantallas/Backup';
-import { AvisoInstalar } from './ui/componentes/AvisoInstalar';
 import { Biblioteca } from './ui/pantallas/Biblioteca';
 import { DetalleEjercicio } from './ui/pantallas/DetalleEjercicio';
 import { Entrenar } from './ui/pantallas/Entrenar';
 import { EditorRutina } from './ui/pantallas/EditorRutina';
 import { Sesion } from './ui/pantallas/Sesion';
 import { ResumenSesion } from './ui/pantallas/ResumenSesion';
+import { Inicio } from './ui/pantallas/Inicio';
+import { Progreso } from './ui/pantallas/Progreso';
+import { ProgresoEjercicio } from './ui/pantallas/ProgresoEjercicio';
 
 type Ruta = { patron: string; render: (p: Record<string, string>) => ReactNode };
 
-function Logo() {
-  return (
-    <>
-      <header className="encabezado">
-        <h1 className="logo">FORJA</h1>
-      </header>
-      <AvisoInstalar />
-    </>
-  );
-}
-
 const RUTAS: Ruta[] = [
-  { patron: '/', render: () => <Logo /> },
+  { patron: '/', render: () => <Inicio /> },
   { patron: '/entrenar', render: () => <Entrenar /> },
   { patron: '/entrenar/rutina/:id', render: (p) => <EditorRutina key={p.id} id={p.id} /> },
   { patron: '/entrenar/sesion', render: () => <Sesion /> },
   { patron: '/entrenar/resumen/:id', render: (p) => <ResumenSesion key={p.id} id={p.id} /> },
   { patron: '/nutricion', render: () => <Nutricion /> },
-  { patron: '/progreso', render: () => <h1 className="titulo">Progreso</h1> },
+  { patron: '/progreso', render: () => <Progreso /> },
+  { patron: '/progreso/ejercicio/:id', render: (p) => <ProgresoEjercicio key={p.id} id={p.id} /> },
   { patron: '/mas', render: () => <Mas /> },
   { patron: '/mas/backup', render: () => <Backup /> },
   { patron: '/mas/biblioteca', render: () => <Biblioteca /> },
@@ -58,7 +50,7 @@ function Pantalla() {
     const params = coincide(r.patron, ruta);
     if (params) return <>{r.render(params)}</>;
   }
-  return <Logo />;
+  return <Inicio />;
 }
 
 function Barra() {
