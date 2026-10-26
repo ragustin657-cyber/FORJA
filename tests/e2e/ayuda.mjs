@@ -36,10 +36,12 @@ export async function iniciarServidor() {
 }
 
 /** Abre la app en un iPhone simulado. Devuelve { navegador, contexto, pagina, url, cerrar }. */
-export async function abrirApp({ ruta = '' } = {}) {
+export async function abrirApp({ ruta = '', conServiceWorker = false } = {}) {
   const servidor = await iniciarServidor();
   const navegador = await chromium.launch();
-  const contexto = await navegador.newContext({ ...devices['iPhone 13'], serviceWorkers: 'block' });
+  const contexto = await navegador.newContext({ ...devices['iPhone 13'], serviceWorkers: conServiceWorker ? 'allow' : 'block' });
+  // En 127.0.0.1 la app no registra el service worker; con localhost sí.
+  if (conServiceWorker) servidor.url = servidor.url.replace('127.0.0.1', 'localhost');
   const pagina = await contexto.newPage();
   const errores = [];
   pagina.on('pageerror', (e) => errores.push(e));

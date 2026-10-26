@@ -11,6 +11,7 @@ import { EditorRutina } from './ui/pantallas/EditorRutina';
 import { Sesion } from './ui/pantallas/Sesion';
 import { ResumenSesion } from './ui/pantallas/ResumenSesion';
 import { Inicio } from './ui/pantallas/Inicio';
+import { Ajustes } from './ui/pantallas/Ajustes';
 import { Progreso } from './ui/pantallas/Progreso';
 import { ProgresoEjercicio } from './ui/pantallas/ProgresoEjercicio';
 
@@ -27,6 +28,7 @@ const RUTAS: Ruta[] = [
   { patron: '/progreso/ejercicio/:id', render: (p) => <ProgresoEjercicio key={p.id} id={p.id} /> },
   { patron: '/mas', render: () => <Mas /> },
   { patron: '/mas/backup', render: () => <Backup /> },
+  { patron: '/mas/ajustes', render: () => <Ajustes /> },
   { patron: '/mas/biblioteca', render: () => <Biblioteca /> },
   { patron: '/mas/biblioteca/:id', render: (p) => <DetalleEjercicio key={p.id} id={p.id} /> },
 ];

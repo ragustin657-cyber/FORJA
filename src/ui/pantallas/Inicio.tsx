@@ -1,6 +1,8 @@
 import { fechaRelativa } from '../../core/formato';
 import { descripcionRecord, recordsRecientes } from '../../core/records';
 import { proximoDia } from '../../core/rutina';
+import { necesitaCopia } from '../../core/recordatorios';
+import { ajustesRepo } from '../../data/repos/ajustes';
 import { ejerciciosRepo } from '../../data/repos/ejercicios';
 import { rutinasRepo } from '../../data/repos/rutinas';
 import { sesionesRepo } from '../../data/repos/sesiones';
@@ -9,7 +11,7 @@ import { AvisoInstalar } from '../componentes/AvisoInstalar';
 import { Boton } from '../componentes/Boton';
 import { Tarjeta } from '../componentes/Tarjeta';
 import { useCarga } from '../datos';
-import { navegar } from '../router';
+import { Enlace, navegar } from '../router';
 
 async function cargar() {
   const [rutinas, finalizadas, enCurso] = await Promise.all([rutinasRepo.activas(), sesionesRepo.finalizadas(), sesionesRepo.enCurso()]);
@@ -20,7 +22,8 @@ async function cargar() {
   const nombres = Object.fromEntries(
     await Promise.all(recientes.map(async (r) => [r.ejercicioId, (await ejerciciosRepo.porId(r.ejercicioId))?.nombre ?? 'Ejercicio'] as const)),
   );
-  return { rutina, dia, enCurso, recientes, nombres, ultima };
+  const copia = necesitaCopia((await ajustesRepo.obtener()).ultimaCopia, finalizadas.length > 0, Date.now());
+  return { rutina, dia, enCurso, recientes, nombres, ultima, copia };
 }
 
 export function Inicio() {
@@ -66,6 +69,17 @@ export function Inicio() {
               <p className="texto-2" style={{ margin: 0 }}>Empezá armando tu rutina con los ejercicios que hacés en el gimnasio.</p>
               <Boton ancho onClick={() => navegar('/entrenar/rutina/nueva')}>Armar mi rutina</Boton>
             </Tarjeta>
+          )}
+
+          {datos.copia && (
+            <div className="aviso fila-entre">
+              <span>
+                <strong>Hacé tu copia de seguridad</strong>
+                <br />
+                <span className="texto-2" style={{ fontSize: 14 }}>Tus datos viven solo en este iPhone.</span>
+              </span>
+              <Enlace a="/mas/backup" className="boton boton-secundario">Hacer copia</Enlace>
+            </div>
           )}
 
           {datos.recientes.length > 0 && (
