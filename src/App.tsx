@@ -4,14 +4,18 @@ import { IconoEntrenar, IconoInicio, IconoMas, IconoNutricion, IconoProgreso } f
 import { Nutricion } from './ui/pantallas/Marcadores';
 import { Mas } from './ui/pantallas/Mas';
 import { Backup } from './ui/pantallas/Backup';
+import { AvisoInstalar } from './ui/componentes/AvisoInstalar';
 
 type Ruta = { patron: string; render: (p: Record<string, string>) => ReactNode };
 
 function Logo() {
   return (
-    <header className="encabezado">
-      <h1 className="logo">FORJA</h1>
-    </header>
+    <>
+      <header className="encabezado">
+        <h1 className="logo">FORJA</h1>
+      </header>
+      <AvisoInstalar />
+    </>
   );
 }
 

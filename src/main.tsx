@@ -2,6 +2,9 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import { usarAlmacen } from './data/db';
 import { crearAlmacenIDB } from './data/idb';
+import { estaInstalada, pedirPersistencia } from './data/persistencia';
+
+if (estaInstalada()) void pedirPersistencia();
 
 const raiz = createRoot(document.getElementById('raiz')!);
 
