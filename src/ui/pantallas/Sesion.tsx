@@ -14,6 +14,7 @@ import { Miniatura } from '../componentes/SelectorEjercicios';
 import { Stepper } from '../componentes/Stepper';
 import { Temporizador } from '../componentes/Temporizador';
 import { Enlace, navegar } from '../router';
+import { desbloquearAudio } from '../sonido';
 
 type Contexto = { dia: DiaRutina | undefined; ejercicios: Record<string, Ejercicio>; info: Record<string, InfoEjercicio>; incremento: number };
 
@@ -72,7 +73,9 @@ export function Sesion() {
   }
 
   function completar(ejercicioId: string, numero: number) {
-    const nueva = despachar({ tipo: 'completar', ejercicioId, numero });
+    desbloquearAudio();
+    const sinPeso = contexto.ejercicios[ejercicioId]?.equipo === 'body only';
+    const nueva = despachar({ tipo: 'completar', ejercicioId, numero, sinPeso });
     const hecha = nueva.series.find((x) => x.ejercicioId === ejercicioId && x.numero === numero);
     if (!hecha?.completada) {
       setAviso('Cargá el peso y las repeticiones antes de completar la serie.');
@@ -124,7 +127,9 @@ export function Sesion() {
               </div>
               {info && (
                 <span className={`chip ${info.sugerencia.motivo === 'subir' ? 'chip-dorado' : ''}`} style={{ alignSelf: 'flex-start', cursor: 'default' }}>
-                  {textoSugerencia(info.sugerencia)}
+                  {e?.equipo === 'body only' && info.sugerencia.peso === null
+                    ? 'Peso corporal: cargá peso solo si usás lastre'
+                    : textoSugerencia(info.sugerencia)}
                 </span>
               )}
               {series.map((x) => {

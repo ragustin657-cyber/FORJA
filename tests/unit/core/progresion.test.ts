@@ -71,13 +71,32 @@ test('una sola caída no baja el peso', () => {
   expect(sugerirSiguiente(h, objetivo, 'superior').motivo).toBe('mantener');
 });
 
-test('bajar tiene prioridad sobre subir', () => {
+test('si completó todo al tope, sube aunque las reps vengan bajando', () => {
   const h = [
     [serie(80, 14), serie(80, 14), serie(80, 14)],
     [serie(80, 13), serie(80, 13), serie(80, 13)],
     [serie(80, 12), serie(80, 12), serie(80, 12)],
   ];
-  expect(sugerirSiguiente(h, objetivo, 'superior').motivo).toBe('bajar');
+  expect(sugerirSiguiente(h, objetivo, 'superior').motivo).toBe('subir');
+});
+
+test('después de seguir un bajar, la próxima sesión no vuelve a bajar', () => {
+  const h = [
+    [serie(100, 10), serie(100, 10), serie(100, 10)],
+    [serie(100, 9), serie(100, 9), serie(100, 9)],
+    [serie(100, 8), serie(100, 8), serie(100, 8)],
+    [serie(90, 10), serie(90, 10), serie(90, 10)],
+  ];
+  expect(sugerirSiguiente(h, objetivo, 'inferior')).toEqual({ peso: 90, motivo: 'mantener' });
+});
+
+test('las caídas solo cuentan entre sesiones con el mismo peso', () => {
+  const h = [
+    [serie(100, 10), serie(100, 10), serie(100, 10)],
+    [serie(95, 10), serie(95, 10), serie(95, 10)],
+    [serie(90, 10), serie(90, 10), serie(90, 10)],
+  ];
+  expect(sugerirSiguiente(h, objetivo, 'inferior').motivo).toBe('mantener');
 });
 
 test('primera vez sin historial', () => {

@@ -19,8 +19,17 @@ export async function infoEjercicio(e: EjercicioEnDia): Promise<InfoEjercicio> {
   return { sugerencia, ultima: historial[historial.length - 1] ?? [] };
 }
 
-/** Crea y guarda la sesión del día, salvo que ya haya una en curso. */
-export async function empezarDia(rutina: Rutina, dia: DiaRutina): Promise<void> {
+let empezando: Promise<void> | null = null;
+
+/** Crea y guarda la sesión del día, salvo que ya haya una en curso. Un doble toque no crea dos. */
+export function empezarDia(rutina: Rutina, dia: DiaRutina): Promise<void> {
+  empezando ??= crearSiNoHay(rutina, dia).finally(() => {
+    empezando = null;
+  });
+  return empezando;
+}
+
+async function crearSiNoHay(rutina: Rutina, dia: DiaRutina): Promise<void> {
   if (await sesionesRepo.enCurso()) return;
   const sugerencias: Record<string, Sugerencia> = {};
   const ultima: Record<string, SerieRegistrada[]> = {};

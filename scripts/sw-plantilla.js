@@ -5,7 +5,7 @@ const ARCHIVOS = __ARCHIVOS__;
 const EXTRA = 'forja-extra';
 
 self.addEventListener('install', (evento) => {
-  evento.waitUntil(caches.open(VERSION).then((cache) => cache.addAll(ARCHIVOS)).then(() => self.skipWaiting()));
+  evento.waitUntil(caches.open(VERSION).then((cache) => cache.addAll(ARCHIVOS.map((url) => new Request(url, { cache: 'reload' })))).then(() => self.skipWaiting()));
 });
 
 self.addEventListener('activate', (evento) => {

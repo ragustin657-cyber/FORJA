@@ -88,3 +88,23 @@ test('textoSugerencia', () => {
   expect(textoSugerencia({ peso: 72.5, motivo: 'bajar' })).toBe('Bajá a 72,5 kg y reconstruí');
   expect(textoSugerencia({ peso: null, motivo: 'primera-vez' })).toBe('Primera vez: elegí un peso cómodo');
 });
+
+test('en ejercicios con peso corporal se puede completar una serie sin peso', () => {
+  const sesion = reducirSesion(base(), { tipo: 'completar', ejercicioId: 'remo', numero: 1, sinPeso: true });
+  expect(sesion.series.find((x) => x.ejercicioId === 'remo' && x.numero === 1)?.completada).toBe(true);
+});
+
+test('con peso corporal igual hacen falta repeticiones', () => {
+  let sesion = reducirSesion(base(), { tipo: 'cambiar', ejercicioId: 'remo', numero: 1, campo: 'reps', valor: null });
+  sesion = reducirSesion(sesion, { tipo: 'completar', ejercicioId: 'remo', numero: 1, sinPeso: true });
+  expect(sesion.series.find((x) => x.ejercicioId === 'remo' && x.numero === 1)?.completada).toBe(false);
+});
+
+test('resumenSeries sin peso muestra solo las repeticiones', () => {
+  expect(resumenSeries([s('p', 1, 0, 10), s('p', 2, 0, 8)])).toBe('10, 8 reps');
+});
+
+test('las reps se guardan redondeadas', () => {
+  const sesion = reducirSesion(base(), { tipo: 'cambiar', ejercicioId: 'press', numero: 1, campo: 'reps', valor: 8.6 });
+  expect(sesion.series[0].reps).toBe(9);
+});

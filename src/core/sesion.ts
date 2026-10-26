@@ -4,7 +4,7 @@ import type { Sugerencia } from './progresion';
 
 export type Accion =
   | { tipo: 'cambiar'; ejercicioId: string; numero: number; campo: 'peso' | 'reps'; valor: number | null }
-  | { tipo: 'completar'; ejercicioId: string; numero: number }
+  | { tipo: 'completar'; ejercicioId: string; numero: number; sinPeso?: boolean }
   | { tipo: 'descompletar'; ejercicioId: string; numero: number }
   | { tipo: 'agregar'; ejercicioId: string };
 
@@ -43,9 +43,12 @@ function actualizar(s: Sesion, ejercicioId: string, numero: number, cambio: (x: 
 export function reducirSesion(s: Sesion, a: Accion): Sesion {
   switch (a.tipo) {
     case 'cambiar':
-      return actualizar(s, a.ejercicioId, a.numero, (x) => ({ ...x, [a.campo]: Math.max(0, a.valor ?? 0) }));
+      return actualizar(s, a.ejercicioId, a.numero, (x) => {
+        const v = Math.max(0, a.valor ?? 0);
+        return { ...x, [a.campo]: a.campo === 'reps' ? Math.round(v) : v };
+      });
     case 'completar':
-      return actualizar(s, a.ejercicioId, a.numero, (x) => (x.peso > 0 && x.reps >= 1 ? { ...x, completada: true } : x));
+      return actualizar(s, a.ejercicioId, a.numero, (x) => ((x.peso > 0 || a.sinPeso) && x.reps >= 1 ? { ...x, completada: true } : x));
     case 'descompletar':
       return actualizar(s, a.ejercicioId, a.numero, (x) => ({ ...x, completada: false }));
     case 'agregar': {
@@ -60,7 +63,7 @@ export function reducirSesion(s: Sesion, a: Accion): Sesion {
   }
 }
 
-/** "60 kg × 10, 10, 9" o, con pesos distintos, "60 kg × 10 · 62,5 kg × 8". Solo series completadas. */
+/** "60 kg × 10, 10, 9", con pesos distintos "60 kg × 10 · 62,5 kg × 8", sin peso "10, 8 reps". Solo series completadas. */
 export function resumenSeries(series: SerieRegistrada[]): string {
   const grupos: { peso: number; reps: number[] }[] = [];
   for (const s of series.filter((x) => x.completada)) {
@@ -68,7 +71,7 @@ export function resumenSeries(series: SerieRegistrada[]): string {
     if (g && g.peso === s.peso) g.reps.push(s.reps);
     else grupos.push({ peso: s.peso, reps: [s.reps] });
   }
-  return grupos.map((g) => `${kg(g.peso)} × ${g.reps.join(', ')}`).join(' · ');
+  return grupos.map((g) => (g.peso > 0 ? `${kg(g.peso)} × ${g.reps.join(', ')}` : `${g.reps.join(', ')} reps`)).join(' · ');
 }
 
 export function textoSugerencia(s: Sugerencia): string {

@@ -45,17 +45,22 @@ export function sugerirSiguiente(historial: SerieHecha[][], objetivo: Objetivo, 
   const sesiones = historial.filter((s) => s.some((x) => x.completada && x.peso > 0));
   if (sesiones.length === 0) return { peso: null, motivo: 'primera-vez' };
 
+  const pesoBase = (s: SerieHecha[]) => Math.max(...s.filter((x) => x.completada && x.peso > 0).map((x) => x.peso));
   const ultima = sesiones[sesiones.length - 1].filter((x) => x.completada && x.peso > 0);
-  const base = Math.max(...ultima.map((x) => x.peso));
+  const base = pesoBase(ultima);
 
-  const ultimas3 = sesiones.slice(-3).map(valorSesion);
+  const alTope = ultima.filter((x) => x.peso === base && x.reps >= objetivo.repsMax).length;
+  if (alTope >= objetivo.series) return { peso: redondearPeso(base + AUMENTO[tipo], incremento), motivo: 'subir' };
+
+  // Las caídas solo cuentan entre las últimas sesiones hechas con el mismo peso:
+  // así, después de bajar el peso, la cuenta vuelve a empezar.
+  const mismoPeso: SerieHecha[][] = [];
+  for (let i = sesiones.length - 1; i >= 0 && pesoBase(sesiones[i]) === base; i--) mismoPeso.unshift(sesiones[i]);
+  const ultimas3 = mismoPeso.slice(-3).map(valorSesion);
   if (ultimas3.length === 3 && ultimas3.every((v) => v !== null)) {
     const [a, b, c] = ultimas3 as number[];
     if (a > b && b > c) return { peso: redondearPeso(base * FACTOR_BAJA, incremento), motivo: 'bajar' };
   }
-
-  const alTope = ultima.filter((x) => x.peso === base && x.reps >= objetivo.repsMax).length;
-  if (alTope >= objetivo.series) return { peso: redondearPeso(base + AUMENTO[tipo], incremento), motivo: 'subir' };
 
   return { peso: base, motivo: 'mantener' };
 }

@@ -1,25 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-
-function pitido() {
-  try {
-    const Ctx = window.AudioContext ?? (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-    const ctx = new Ctx();
-    for (const [inicio, frecuencia] of [[0, 880], [0.25, 880], [0.5, 1320]] as const) {
-      const osc = ctx.createOscillator();
-      const vol = ctx.createGain();
-      osc.frequency.value = frecuencia;
-      vol.gain.setValueAtTime(0.25, ctx.currentTime + inicio);
-      vol.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + inicio + 0.2);
-      osc.connect(vol).connect(ctx.destination);
-      osc.start(ctx.currentTime + inicio);
-      osc.stop(ctx.currentTime + inicio + 0.2);
-    }
-    setTimeout(() => ctx.close(), 1000);
-  } catch {
-    /* sin audio */
-  }
-  navigator.vibrate?.([200, 100, 200]);
-}
+import { pitido } from '../sonido';
 
 const mmss = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
 
