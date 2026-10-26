@@ -20,6 +20,7 @@ test('tocar Entrenar navega', async () => {
   try {
     const nav = app.pagina.getByRole('navigation');
     await nav.getByRole('link', { name: 'Entrenar' }).click();
+    await app.pagina.locator('nav a[aria-current="page"]', { hasText: 'Entrenar' }).waitFor({ timeout: 5000 });
     assert.equal(await nav.getByRole('link', { name: 'Entrenar' }).getAttribute('aria-current'), 'page');
     assert.equal(await nav.getByRole('link', { name: 'Inicio' }).getAttribute('aria-current'), null);
     assert.match(app.pagina.url(), /#\/entrenar$/);
