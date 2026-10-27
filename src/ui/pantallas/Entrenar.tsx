@@ -59,7 +59,10 @@ export function Entrenar() {
           </article>
         ))}
 
-        <Boton variante="secundario" ancho onClick={() => navegar('/entrenar/rutina/nueva')}>Nueva rutina</Boton>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+          <Enlace a="/entrenar/plan/nuevo" className="boton boton-secundario">Armar un plan</Enlace>
+          <Boton variante="secundario" onClick={() => navegar('/entrenar/rutina/nueva')}>Nueva rutina</Boton>
+        </div>
       </div>
     </>
   );
