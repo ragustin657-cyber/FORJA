@@ -14,6 +14,7 @@ import { Backup } from './ui/pantallas/Backup';
 import { Biblioteca } from './ui/pantallas/Biblioteca';
 import { DetalleEjercicio } from './ui/pantallas/DetalleEjercicio';
 import { Entrenar } from './ui/pantallas/Entrenar';
+import { PlanNuevo } from './ui/pantallas/PlanNuevo';
 import { EditorRutina } from './ui/pantallas/EditorRutina';
 import { Sesion } from './ui/pantallas/Sesion';
 import { ResumenSesion } from './ui/pantallas/ResumenSesion';
@@ -31,6 +32,7 @@ type Ruta = { patron: string; render: (p: Record<string, string>) => ReactNode }
 const RUTAS: Ruta[] = [
   { patron: '/', render: () => <Inicio /> },
   { patron: '/entrenar', render: () => <Entrenar /> },
+  { patron: '/entrenar/plan/nuevo', render: () => <PlanNuevo /> },
   { patron: '/entrenar/rutina/:id', render: (p) => <EditorRutina key={p.id} id={p.id} /> },
   { patron: '/entrenar/sesion', render: () => <Sesion /> },
   { patron: '/entrenar/resumen/:id', render: (p) => <ResumenSesion key={p.id} id={p.id} /> },

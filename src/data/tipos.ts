@@ -21,6 +21,8 @@ export interface EjercicioEnDia {
   repsMin: number;
   repsMax: number;
   descansoSeg: number;
+  /** En los planes: los ejercicios básicos suman una serie en la semana 3 del bloque. */
+  basico?: boolean;
 }
 
 export interface DiaRutina {
@@ -53,6 +55,8 @@ export interface Sesion {
   inicio: number;
   fin: number | null;
   series: SerieRegistrada[];
+  /** Sesión de una semana de descarga de un plan: no cuenta para sugerir el próximo peso. */
+  descarga?: boolean;
 }
 
 export interface Ajustes {

@@ -50,8 +50,11 @@ export function sugerirSiguiente(historial: SerieHecha[][], objetivo: Objetivo, 
   const ultima = sesiones[sesiones.length - 1].filter((x) => x.completada && x.peso > 0);
   const base = pesoBase(ultima);
 
+  // Si la última sesión tuvo menos series planeadas (por ejemplo, la semana 1 de un plan),
+  // alcanza con haberlas hecho todas al tope.
+  const planeadas = sesiones[sesiones.length - 1].length;
   const alTope = ultima.filter((x) => x.peso === base && x.reps >= objetivo.repsMax).length;
-  if (alTope >= objetivo.series) return { peso: redondearPeso(base + AUMENTO[tipo], incremento), motivo: 'subir' };
+  if (alTope >= Math.min(objetivo.series, planeadas)) return { peso: redondearPeso(base + AUMENTO[tipo], incremento), motivo: 'subir' };
 
   // Las caídas solo cuentan entre las últimas sesiones hechas con el mismo peso:
   // así, después de bajar el peso, la cuenta vuelve a empezar.

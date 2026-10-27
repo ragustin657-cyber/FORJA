@@ -204,3 +204,13 @@ img { max-width: 100%; display: block; }
   border-radius: var(--radio-chico); background: var(--color-tarjeta-alta); border: 1px solid transparent;
 }
 .opcion[aria-pressed="true"] { border-color: var(--color-bordo-claro); background: rgba(122, 31, 43, 0.35); }
+
+/* Tira de semanas del plan */
+.plan-semanas { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(12, 1fr); gap: 4px; }
+.plan-semana {
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 6px;
+  background: var(--color-tarjeta-alta); color: var(--color-texto-2); font-size: 12px; font-weight: 700;
+}
+.plan-semana.descarga { color: var(--color-dorado); }
+.plan-semana.pasada { opacity: 0.45; }
+.plan-semana.actual { background: var(--color-bordo); color: var(--color-texto); opacity: 1; }
