@@ -20,7 +20,9 @@ test('validarMeta', () => {
 });
 
 test('objetivo, avance y lo que falta', () => {
-  expect(objetivoMeta({ peso: 100, reps: 1 })).toBe(e1rm(100, 1)!);
+  // a 1 repetición la meta es el peso tal cual (Epley lo inflaría a 103,3)
+  expect(objetivoMeta({ peso: 100, reps: 1 })).toBe(100);
+  expect(faltaKg(132, objetivoMeta({ peso: 140, reps: 1 }))).toBe(8);
   expect(objetivoMeta({ peso: 80, reps: 5 })).toBe(e1rm(80, 5)!);
   expect(avance(null, 100)).toBe(0);
   expect(avance(88, 100)).toBeCloseTo(0.88, 6);

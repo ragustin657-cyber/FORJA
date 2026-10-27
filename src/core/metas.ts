@@ -34,7 +34,8 @@ export function validarMeta(peso: string, reps: string): { valores?: { peso: num
   return errores.length ? { errores } : { valores: { peso: p!, reps: r }, errores };
 }
 
-export const objetivoMeta = (m: { peso: number; reps: number }): number => e1rm(m.peso, m.reps)!;
+/** Fuerza que hay que alcanzar. A 1 repetición es el peso tal cual; con más, la fórmula de Epley. */
+export const objetivoMeta = (m: { peso: number; reps: number }): number => (m.reps === 1 ? m.peso : e1rm(m.peso, m.reps)!);
 
 export const avance = (mejor: number | null, objetivo: number): number => (mejor === null ? 0 : Math.min(1, mejor / objetivo));
 
