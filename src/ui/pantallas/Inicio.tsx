@@ -1,17 +1,76 @@
+import { useState } from 'react';
 import { fechaRelativa } from '../../core/formato';
+import { calcularMetas } from '../../core/nutricion/calorias';
+import { necesitaPesarse } from '../../core/nutricion/peso';
+import { totales } from '../../core/nutricion/registro';
+import { parsearNumero } from '../../core/unidades';
 import { descripcionRecord, recordsRecientes } from '../../core/records';
 import { proximoDia } from '../../core/rutina';
 import { necesitaCopia } from '../../core/recordatorios';
 import { ajustesRepo } from '../../data/repos/ajustes';
+import { nutricionRepo } from '../../data/repos/nutricion';
+import { registroRepo } from '../../data/repos/registro';
 import { ejerciciosRepo } from '../../data/repos/ejercicios';
 import { rutinasRepo } from '../../data/repos/rutinas';
 import { sesionesRepo } from '../../data/repos/sesiones';
 import { empezarDia } from '../acciones';
+import { Anillos } from '../componentes/Anillos';
 import { AvisoInstalar } from '../componentes/AvisoInstalar';
 import { Boton } from '../componentes/Boton';
 import { Tarjeta } from '../componentes/Tarjeta';
 import { useCarga } from '../datos';
+import { fechaDeHoy } from '../registro';
 import { Enlace, navegar } from '../router';
+
+/** Calorías y proteína de hoy contra la meta, y si toca pesarse. Undefined si no hay plan. */
+async function cargarNutricionHoy() {
+  const perfil = await nutricionRepo.perfil();
+  const pesos = await nutricionRepo.pesos();
+  const ultimo = pesos[pesos.length - 1];
+  if (!perfil || !ultimo) return undefined;
+  const ahora = Date.now();
+  const metas = calcularMetas(perfil, ultimo.kg, new Date(ahora));
+  const total = totales(await registroRepo.delDia(fechaDeHoy()));
+  return { metas, total, pesarse: necesitaPesarse(ultimo.fecha, ahora) };
+}
+
+function TocaPesarte({ alGuardar }: { alGuardar: () => void }) {
+  const [texto, setTexto] = useState('');
+  const [error, setError] = useState('');
+  const [guardando, setGuardando] = useState(false);
+  return (
+    <section aria-label="Toca pesarte" className="tarjeta pila">
+      <h2 style={{ fontSize: 20, margin: 0 }}>Toca pesarte</h2>
+      <p className="texto-2" style={{ margin: 0 }}>Pasó una semana desde tu último peso. Pesate en ayunas y cargalo para seguir tu progreso.</p>
+      <div className="fila" style={{ gap: 8, alignItems: 'flex-end' }}>
+        <label className="campo" style={{ flex: 1 }}>
+          Peso (kg)
+          <input className="entrada" inputMode="decimal" aria-label="Peso (kg)" value={texto} onChange={(e) => setTexto(e.target.value)} />
+        </label>
+        <Boton
+          disabled={guardando}
+          onClick={async () => {
+            const kg = parsearNumero(texto);
+            if (kg === null || kg < 35 || kg > 250) {
+              setError('El peso tiene que estar entre 35 y 250 kg.');
+              return;
+            }
+            setGuardando(true);
+            try {
+              await nutricionRepo.registrarPeso(kg, Date.now());
+              alGuardar();
+            } finally {
+              setGuardando(false);
+            }
+          }}
+        >
+          Guardar
+        </Boton>
+      </div>
+      {error && <p className="error" style={{ margin: 0 }}>{error}</p>}
+    </section>
+  );
+}
 
 async function cargar() {
   const [rutinas, finalizadas, enCurso] = await Promise.all([rutinasRepo.activas(), sesionesRepo.finalizadas(), sesionesRepo.enCurso()]);
@@ -28,6 +87,7 @@ async function cargar() {
 
 export function Inicio() {
   const { datos } = useCarga(cargar);
+  const { datos: nutri, recargar: recargarNutri } = useCarga(cargarNutricionHoy);
 
   return (
     <>
@@ -70,6 +130,15 @@ export function Inicio() {
               <Boton ancho onClick={() => navegar('/entrenar/rutina/nueva')}>Armar mi rutina</Boton>
             </Tarjeta>
           )}
+
+          {nutri && (
+            <Enlace a="/nutricion/hoy" className="tarjeta pila" aria-label="Lo que comiste hoy" style={{ gap: 10 }}>
+              <span className="subtitulo" style={{ margin: 0 }}>Lo que comiste hoy</span>
+              <Anillos kcal={nutri.total.kcal} metaKcal={nutri.metas.kcal} proteina={nutri.total.proteina} metaProteina={nutri.metas.proteina} />
+            </Enlace>
+          )}
+
+          {nutri?.pesarse && <TocaPesarte alGuardar={recargarNutri} />}
 
           {datos.copia && (
             <div className="aviso fila-entre">

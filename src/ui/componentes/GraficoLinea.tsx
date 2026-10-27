@@ -3,12 +3,13 @@ import { useState } from 'react';
 type Punto = { x: number; y: number; etiqueta: string; detalle: string };
 
 /** Gráfico de línea simple en SVG: línea dorada, pocos ejes, toque para ver el detalle. */
-export function GraficoLinea({ puntos, titulo, unidad }: { puntos: Punto[]; titulo: string; unidad: string }) {
+/** `tendencia` (opcional): una segunda línea punteada, un valor por punto. */
+export function GraficoLinea({ puntos, titulo, unidad, tendencia }: { puntos: Punto[]; titulo: string; unidad: string; tendencia?: number[] }) {
   const [elegido, setElegido] = useState<number>(puntos.length - 1);
   const ancho = 340;
   const alto = 180;
   const margen = { izq: 48, der: 12, arr: 14, aba: 24 };
-  const ys = puntos.map((p) => p.y);
+  const ys = [...puntos.map((p) => p.y), ...(tendencia ?? [])];
   const minY = Math.floor(Math.min(...ys) * 0.95);
   const maxY = Math.ceil(Math.max(...ys) * 1.05);
   const xs = puntos.map((_, i) => margen.izq + (i * (ancho - margen.izq - margen.der)) / Math.max(1, puntos.length - 1));
@@ -38,6 +39,12 @@ export function GraficoLinea({ puntos, titulo, unidad }: { puntos: Punto[]; titu
           </g>
         ))}
         <path d={area} fill="url(#relleno-dorado)" />
+        {tendencia && (
+          <path
+            d={tendencia.map((v, i) => `${i === 0 ? 'M' : 'L'}${xs[i].toFixed(1)},${y(v).toFixed(1)}`).join(' ')}
+            fill="none" stroke="#A69B97" strokeWidth="1.5" strokeDasharray="4 4"
+          />
+        )}
         <path d={camino} fill="none" stroke="#C9A227" strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round" />
         {puntos.map((pt, i) => (
           <g key={i} onClick={() => setElegido(i)} style={{ cursor: 'pointer' }}>
