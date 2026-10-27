@@ -112,3 +112,26 @@ test('avisa cuando las calorías salen fuera de lo razonable', () => {
   const enorme = calcularMetas({ ...base, alturaCm: 220, actividad: 'muyAlto', objetivo: 'ganar' }, 200, HOY);
   expect(enorme.alerta).toBe('Tus números dan muy altos. Revisá los datos y, si están bien, consultá a un profesional.');
 });
+
+test('el ajuste quincenal se aplica antes de los topes', () => {
+  const mantener = { ...base, objetivo: 'mantener' as const };
+  const sin = calcularMetas(mantener, 80, HOY).kcal;
+  expect(calcularMetas({ ...mantener, ajusteKcal: -150 }, 80, HOY).kcal).toBe(sin - 150);
+  expect(calcularMetas({ ...mantener, ajusteKcal: 300 }, 80, HOY).kcal).toBe(sin + 300);
+  // bajando, el tope del 1 % por semana sigue valiendo
+  expect(calcularMetas({ ...base, ajusteKcal: -150 }, 80, HOY).kcal).toBe(2060);
+  expect(calcularMetas({ ...base, ajusteKcal: -600 }, 80, HOY).kcal).toBe(1880);
+});
+
+test('el ajuste aparece en la explicación', () => {
+  const m = calcularMetas({ ...base, objetivo: 'mantener', ajusteKcal: -150 }, 80, HOY);
+  expect(m.explicacion).toContain('Según cómo viene tu peso, le restamos 150 kcal.');
+  const g = calcularMetas({ ...base, objetivo: 'mantener', ajusteKcal: 150 }, 80, HOY);
+  expect(g.explicacion).toContain('Según cómo viene tu peso, le sumamos 150 kcal.');
+});
+
+test('el hash cambia con el ajuste pero no si es 0', () => {
+  expect(hashPerfil({ ...base, ajusteKcal: 0 }, 80)).toBe(hashPerfil(base, 80));
+  expect(hashPerfil({ ...base, ajusteKcal: -150 }, 80)).not.toBe(hashPerfil(base, 80));
+  expect(hashPerfil({ ...base, ultimoAjuste: 5 }, 80)).toBe(hashPerfil(base, 80));
+});

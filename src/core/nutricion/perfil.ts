@@ -11,6 +11,10 @@ export interface Perfil {
   comidas: 3 | 4 | 5;
   noComoGrupos: Grupo[];
   noComoTexto: string[];
+  /** Ajuste de calorías por día, según cómo viene el peso (cada 2 semanas). */
+  ajusteKcal?: number;
+  /** Cuándo se revisó el ajuste por última vez (se haya aplicado o no). */
+  ultimoAjuste?: number;
 }
 
 /** Mensajes de error del perfil; vacío si es válido. */
@@ -32,8 +36,11 @@ export function validarPerfil(p: Partial<Perfil> & { pesoKg?: number }, hoy: Dat
 
 /** Huella de los datos que cambian las metas o el menú. */
 export function hashPerfil(p: Perfil, pesoKg: number): string {
-  return JSON.stringify([
+  const datos: unknown[] = [
     p.sexo, p.nacimiento, p.alturaCm, p.actividad, p.objetivo, p.comidas, pesoKg,
     [...p.noComoGrupos].sort(), [...p.noComoTexto].map((t) => t.trim().toLowerCase()).sort(),
-  ]);
+  ];
+  // Solo se suma si hay ajuste, para que los menús guardados antes de esta versión sigan al día.
+  if (p.ajusteKcal) datos.push(p.ajusteKcal);
+  return JSON.stringify(datos);
 }
