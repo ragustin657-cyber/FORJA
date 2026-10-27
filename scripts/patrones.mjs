@@ -1,0 +1,107 @@
+// Genera src/contenido/patrones.json: ejercicios candidatos por patrón de movimiento y equipo,
+// en orden de preferencia. Valida que existan, estén traducidos y encajen con el equipo.
+import { readFile, writeFile } from 'node:fs/promises';
+
+const RAIZ = new URL('..', import.meta.url).pathname;
+const PATRONES = {
+  sentadilla: {
+    gimnasio: ['Barbell_Squat', 'Front_Barbell_Squat', 'Hack_Squat', 'Leg_Press'],
+    mancuernas: ['Dumbbell_Squat', 'Plie_Dumbbell_Squat'],
+    casa: ['Bodyweight_Squat'],
+  },
+  bisagra: {
+    gimnasio: ['Barbell_Deadlift', 'Romanian_Deadlift', 'Stiff-Legged_Barbell_Deadlift'],
+    mancuernas: ['Stiff-Legged_Dumbbell_Deadlift', 'Single_Leg_Glute_Bridge'],
+    casa: ['Hyperextensions_With_No_Hyperextension_Bench', 'Single_Leg_Glute_Bridge'],
+  },
+  'empuje-horizontal': {
+    gimnasio: ['Barbell_Bench_Press_-_Medium_Grip', 'Incline_Dumbbell_Press', 'Dumbbell_Bench_Press', 'Barbell_Incline_Bench_Press_-_Medium_Grip'],
+    mancuernas: ['Dumbbell_Bench_Press', 'Incline_Dumbbell_Press', 'Dumbbell_Floor_Press'],
+    casa: ['Pushups', 'Push-Up_Wide', 'Incline_Push-Up'],
+  },
+  'empuje-vertical': {
+    gimnasio: ['Standing_Military_Press', 'Dumbbell_Shoulder_Press', 'Machine_Shoulder_Military_Press'],
+    mancuernas: ['Dumbbell_Shoulder_Press', 'Arnold_Dumbbell_Press', 'Standing_Dumbbell_Press'],
+    casa: ['Push-Ups_With_Feet_Elevated'],
+  },
+  'tiron-horizontal': {
+    gimnasio: ['Bent_Over_Barbell_Row', 'Seated_Cable_Rows', 'One-Arm_Dumbbell_Row', 'T-Bar_Row_with_Handle'],
+    mancuernas: ['One-Arm_Dumbbell_Row', 'Bent_Over_Two-Dumbbell_Row', 'Dumbbell_Incline_Row'],
+    casa: [],
+  },
+  'tiron-vertical': {
+    gimnasio: ['Wide-Grip_Lat_Pulldown', 'Pullups', 'Close-Grip_Front_Lat_Pulldown'],
+    mancuernas: ['Pullups', 'Chin-Up'],
+    casa: ['Chin-Up', 'Pullups'],
+  },
+  unilateral: {
+    gimnasio: ['Split_Squat_with_Dumbbells', 'Dumbbell_Lunges', 'Barbell_Walking_Lunge'],
+    mancuernas: ['Split_Squat_with_Dumbbells', 'Dumbbell_Lunges', 'Dumbbell_Step_Ups', 'Dumbbell_Rear_Lunge'],
+    casa: ['Single_Leg_Glute_Bridge', 'Glute_Kickback'],
+  },
+  femoral: {
+    gimnasio: ['Lying_Leg_Curls', 'Seated_Leg_Curl'],
+    mancuernas: ['Stiff-Legged_Dumbbell_Deadlift', 'Single_Leg_Glute_Bridge'],
+    casa: ['Single_Leg_Glute_Bridge'],
+  },
+  cuadriceps: {
+    gimnasio: ['Leg_Extensions', 'Leg_Press'],
+    mancuernas: ['Dumbbell_Step_Ups', 'Bodyweight_Squat'],
+    casa: ['Bodyweight_Squat'],
+  },
+  gemelos: {
+    gimnasio: ['Standing_Calf_Raises', 'Seated_Calf_Raise'],
+    mancuernas: ['Standing_Dumbbell_Calf_Raise'],
+    casa: [],
+  },
+  'pecho-aislado': {
+    gimnasio: ['Cable_Crossover', 'Dumbbell_Flyes', 'Butterfly'],
+    mancuernas: ['Dumbbell_Flyes', 'Incline_Dumbbell_Flyes'],
+    casa: ['Push-Up_Wide'],
+  },
+  'hombro-lateral': {
+    gimnasio: ['Side_Lateral_Raise', 'Cable_Seated_Lateral_Raise'],
+    mancuernas: ['Side_Lateral_Raise', 'Seated_Side_Lateral_Raise'],
+    casa: [],
+  },
+  'hombro-posterior': {
+    gimnasio: ['Face_Pull', 'Reverse_Machine_Flyes'],
+    mancuernas: ['Seated_Bent-Over_Rear_Delt_Raise', 'Bent_Over_Dumbbell_Rear_Delt_Raise_With_Head_On_Bench'],
+    casa: [],
+  },
+  biceps: {
+    gimnasio: ['Barbell_Curl', 'Dumbbell_Alternate_Bicep_Curl', 'Hammer_Curls'],
+    mancuernas: ['Dumbbell_Bicep_Curl', 'Hammer_Curls', 'Incline_Dumbbell_Curl'],
+    casa: [],
+  },
+  triceps: {
+    gimnasio: ['Triceps_Pushdown_-_Rope_Attachment', 'EZ-Bar_Skullcrusher', 'Cable_Rope_Overhead_Triceps_Extension'],
+    mancuernas: ['Lying_Dumbbell_Tricep_Extension', 'Standing_Dumbbell_Triceps_Extension', 'Tricep_Dumbbell_Kickback'],
+    casa: ['Push-Ups_-_Close_Triceps_Position', 'Bench_Dips'],
+  },
+  core: {
+    gimnasio: ['Plank', 'Cable_Crunch', 'Hanging_Leg_Raise'],
+    mancuernas: ['Plank', 'Dead_Bug', 'Crunches'],
+    casa: ['Plank', 'Dead_Bug', 'Crunches', 'Reverse_Crunch'],
+  },
+};
+const PERMITIDO = { gimnasio: null, mancuernas: ['dumbbell', 'body only', 'bands'], casa: ['body only', 'bands'] };
+
+const ejercicios = new Map(JSON.parse(await readFile(RAIZ + 'src/contenido/ejercicios.json', 'utf8')).map((e) => [e.id, e]));
+const problemas = [];
+for (const [patron, porEquipo] of Object.entries(PATRONES)) {
+  for (const [equipo, ids] of Object.entries(porEquipo)) {
+    for (const id of ids) {
+      const e = ejercicios.get(id);
+      if (!e) problemas.push(`${patron}/${equipo}: ${id} no existe`);
+      else if (!e.traducido) problemas.push(`${patron}/${equipo}: ${id} no está traducido`);
+      else if (PERMITIDO[equipo] && !PERMITIDO[equipo].includes(e.equipo)) problemas.push(`${patron}/${equipo}: ${id} es ${e.equipo}`);
+    }
+  }
+}
+if (problemas.length) {
+  console.error(problemas.join('\n'));
+  process.exit(1);
+}
+await writeFile(RAIZ + 'src/contenido/patrones.json', JSON.stringify(PATRONES, null, 2) + '\n');
+console.log('patrones.json listo');
