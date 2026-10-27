@@ -125,3 +125,13 @@ test('alternativas: hasta 5, mismo tipo, sin el actual ni excluidos, ordenadas p
     previa = distancia;
   }
 });
+
+test('reemplazarComida cambia solo esa comida y no modifica el original', async () => {
+  const { reemplazarComida } = await import('../../../../src/core/nutricion/menu');
+  const menu = armarMenu(entrada());
+  const nuevo = reemplazarComida(menu, 2, 1, 'pizza-casera', 1.3);
+  expect(nuevo[2].comidas[1]).toEqual({ tipo: menu[2].comidas[1].tipo, platoId: 'pizza-casera', factor: 1.3 });
+  expect(nuevo[2].comidas[0]).toEqual(menu[2].comidas[0]);
+  expect(nuevo[0]).toEqual(menu[0]);
+  expect(menu[2].comidas[1].platoId).not.toBe('pizza-casera');
+});

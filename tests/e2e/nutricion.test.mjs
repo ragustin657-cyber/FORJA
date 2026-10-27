@@ -86,3 +86,95 @@ test('si cambia el plan con un menú armado, avisa y deja rehacerlo', async () =
     await app.cerrar();
   }
 });
+
+const kcalDe = (texto) => Number(texto.replace(/[^\d]/g, ''));
+
+test('Nutrición muestra el menú de hoy con sus 4 comidas', async () => {
+  const app = await abrirApp();
+  const p = app.pagina;
+  try {
+    p.setDefaultTimeout(5000);
+    await cargarPlan(p);
+    const hoy = p.getByRole('region', { name: 'Menú de hoy' });
+    for (const t of ['Desayuno', 'Almuerzo', 'Merienda', 'Cena']) await hoy.getByText(t, { exact: true }).waitFor();
+    assert.equal(await hoy.getByText(/kcal/).count() >= 4, true);
+  } finally {
+    await app.cerrar();
+  }
+});
+
+test('la semana muestra cada día dentro de ±5 % y se puede cambiar un plato', async () => {
+  const app = await abrirApp();
+  const p = app.pagina;
+  try {
+    p.setDefaultTimeout(5000);
+    await cargarPlan(p);
+    await p.getByRole('link', { name: 'Semana completa' }).click();
+    await p.getByRole('tab', { name: 'Lun' }).click();
+    for (const dia of ['Lun', 'Jue', 'Dom']) {
+      await p.getByRole('tab', { name: dia }).click();
+      const total = kcalDe(await p.getByTestId('total-dia').textContent());
+      assert.ok(Math.abs(total - 2210) / 2210 <= 0.05, `${dia}: ${total}`);
+    }
+    await p.getByRole('tab', { name: 'Lun' }).click();
+    const almuerzo = p.getByRole('article', { name: 'Almuerzo' });
+    const antes = await almuerzo.getByRole('link').first().textContent();
+    await almuerzo.getByRole('button', { name: 'Cambiar' }).click();
+    const opciones = p.getByRole('list', { name: 'Alternativas' }).getByRole('button');
+    assert.ok((await opciones.count()) >= 1);
+    const elegido = (await opciones.first().getAttribute('aria-label')).replace('Elegir ', '');
+    await opciones.first().click();
+    await p.getByRole('article', { name: 'Almuerzo' }).getByRole('link', { name: elegido }).waitFor();
+    assert.notEqual(elegido, antes);
+    await p.reload();
+    await p.getByRole('tab', { name: 'Lun' }).click();
+    await p.getByRole('article', { name: 'Almuerzo' }).getByRole('link', { name: elegido }).waitFor();
+  } finally {
+    await app.cerrar();
+  }
+});
+
+test('rehacer la semana cambia los platos', async () => {
+  const app = await abrirApp();
+  const p = app.pagina;
+  try {
+    p.setDefaultTimeout(5000);
+    await cargarPlan(p);
+    await p.getByRole('link', { name: 'Semana completa' }).click();
+    const nombres = async () => {
+      const todos = [];
+      for (const d of ['Lun', 'Mar', 'Mié']) {
+        await p.getByRole('tab', { name: d }).click();
+        todos.push(...(await p.getByRole('main').getByRole('article').getByRole('link').allTextContents()));
+      }
+      return todos.join('|');
+    };
+    const antes = await nombres();
+    await p.getByRole('button', { name: 'Rehacer semana' }).click();
+    await p.waitForFunction(() => !document.querySelector('[aria-busy="true"]'));
+    assert.notEqual(await nombres(), antes);
+  } finally {
+    await app.cerrar();
+  }
+});
+
+test('el detalle del plato muestra ingredientes en gramos, pasos y macros', async () => {
+  const app = await abrirApp();
+  const p = app.pagina;
+  try {
+    p.setDefaultTimeout(5000);
+    await cargarPlan(p);
+    const hoy = p.getByRole('region', { name: 'Menú de hoy' });
+    const nombre = await hoy.getByRole('link').first().textContent();
+    await hoy.getByRole('link').first().click();
+    await p.getByRole('heading', { name: nombre }).waitFor();
+    const ingredientes = p.getByRole('list', { name: 'Ingredientes' }).getByRole('listitem');
+    assert.ok((await ingredientes.count()) >= 2);
+    assert.match(await ingredientes.first().textContent(), /\d+ g/);
+    assert.ok((await p.getByRole('list', { name: 'Preparación' }).getByRole('listitem').count()) >= 2);
+    await p.getByText('Proteína', { exact: true }).waitFor();
+    assert.deepEqual(app.errores, []);
+  } finally {
+    await app.cerrar();
+  }
+});

@@ -50,3 +50,11 @@ export function listaCompras(menu: DiaMenu[], platos: Map<string, Plato>, alimen
       .sort((x, y) => x.nombre.localeCompare(y.nombre, 'es')),
   })).filter((g) => g.items.length > 0);
 }
+
+/** Para una receta: unidades solo si la cantidad está a menos de 10 % de una cantidad justa ("2 huevos (100 g)"); si no, gramos. */
+export function textoPorcion(gramos: number, unidad?: Alimento['unidad']): string {
+  if (!unidad) return peso(gramos);
+  const n = Math.round(gramos / unidad.gramos);
+  if (n < 1 || Math.abs(gramos - n * unidad.gramos) > unidad.gramos * n * 0.1) return peso(gramos);
+  return `${n} ${n === 1 ? unidad.nombre : unidad.plural} (${peso(gramos)})`;
+}

@@ -71,3 +71,18 @@ test('dentro de cada grupo los ítems van en orden alfabético', () => {
   const lista = listaCompras([{ comidas: [{ tipo: 'cena', platoId: 'd', factor: 1 }] }], dos, extra);
   expect(lista[0].items.map((i) => i.nombre)).toEqual(['Arroz', 'Proteína']);
 });
+
+test('textoPorcion usa unidades solo cuando la cantidad es casi una cantidad justa de unidades', async () => {
+  const { textoPorcion } = await import('../../../../src/core/nutricion/compras');
+  const huevo = { nombre: 'huevo', plural: 'huevos', gramos: 50 };
+  const lata = { nombre: 'lata', plural: 'latas', gramos: 300 };
+  const papa = { nombre: 'papa', plural: 'papas', gramos: 170 };
+  expect(textoPorcion(100, huevo)).toBe('2 huevos (100 g)');
+  expect(textoPorcion(50, huevo)).toBe('1 huevo (50 g)');
+  expect(textoPorcion(55, huevo)).toBe('1 huevo (55 g)');
+  expect(textoPorcion(75, huevo)).toBe('75 g');
+  expect(textoPorcion(90, lata)).toBe('90 g');
+  expect(textoPorcion(225, papa)).toBe('225 g');
+  expect(textoPorcion(340, papa)).toBe('2 papas (340 g)');
+  expect(textoPorcion(1200)).toBe('1,2 kg');
+});

@@ -143,3 +143,10 @@ export function alternativas(e: Entrada, menu: DiaMenu[], dia: number, comida: n
     .sort((a, b) => Math.abs(a.macros.kcal - objetivo) - Math.abs(b.macros.kcal - objetivo) || b.macros.proteina - a.macros.proteina)
     .slice(0, 5);
 }
+
+/** Copia del menú con una comida reemplazada. */
+export function reemplazarComida(menu: DiaMenu[], dia: number, comida: number, platoId: string, factor: number): DiaMenu[] {
+  return menu.map((d, i) =>
+    i !== dia ? d : { comidas: d.comidas.map((c, j) => (j !== comida ? c : { tipo: c.tipo, platoId, factor })) },
+  );
+}
