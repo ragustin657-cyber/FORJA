@@ -7,6 +7,8 @@ import { Semana } from './ui/pantallas/nutricion/Semana';
 import { Plato } from './ui/pantallas/nutricion/Plato';
 import { Compras } from './ui/pantallas/nutricion/Compras';
 import { Hoy } from './ui/pantallas/nutricion/Hoy';
+import { Agregar } from './ui/pantallas/nutricion/Agregar';
+import type { TipoComida } from './core/nutricion/tipos';
 import { Mas } from './ui/pantallas/Mas';
 import { Backup } from './ui/pantallas/Backup';
 import { Biblioteca } from './ui/pantallas/Biblioteca';
@@ -35,6 +37,7 @@ const RUTAS: Ruta[] = [
   { patron: '/nutricion/plato/:dia/:comida', render: (p) => <Plato key={p.dia + '-' + p.comida} dia={Number(p.dia)} comida={Number(p.comida)} /> },
   { patron: '/nutricion/hoy', render: () => <Hoy /> },
   { patron: '/nutricion/hoy/:fecha', render: (p) => <Hoy key={p.fecha} fecha={p.fecha} /> },
+  { patron: '/nutricion/agregar/:fecha/:tipo', render: (p) => <Agregar key={p.fecha + p.tipo} fecha={p.fecha} tipo={p.tipo as TipoComida} /> },
   { patron: '/progreso', render: () => <Progreso /> },
   { patron: '/progreso/ejercicio/:id', render: (p) => <ProgresoEjercicio key={p.id} id={p.id} /> },
   { patron: '/mas', render: () => <Mas /> },

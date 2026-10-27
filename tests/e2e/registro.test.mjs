@@ -94,3 +94,72 @@ test('se puede ir al día anterior, y un día sin menú solo deja agregar', asyn
     await app.cerrar();
   }
 });
+
+async function irAgregar(p, comida) {
+  await cargarPlan(p);
+  await p.getByRole('region', { name: 'Tus números' }).waitFor();
+  await p.getByRole('link', { name: 'Registrar lo que comí' }).click();
+  await p.getByRole('article', { name: comida }).getByRole('link', { name: 'Agregar' }).click();
+  await p.getByRole('heading', { name: `Agregar a ${comida.toLowerCase()}` }).waitFor();
+}
+
+test('agregar un alimento con gramos lo suma a la comida', async () => {
+  const app = await abrirApp();
+  const p = app.pagina;
+  try {
+    p.setDefaultTimeout(5000);
+    await irAgregar(p, 'Merienda');
+    await p.getByRole('tab', { name: 'Alimentos' }).click();
+    await p.getByLabel('Buscar').fill('banana');
+    await p.getByRole('button', { name: /^Banana/ }).click();
+    await p.getByLabel('Gramos').fill('120');
+    await p.getByRole('button', { name: 'Agregar', exact: true }).click();
+    const merienda = p.getByRole('article', { name: 'Merienda' });
+    await merienda.getByText('Banana').waitFor();
+    await merienda.getByText('120 g · 107 kcal', { exact: false }).waitFor();
+    assert.equal(await consumidas(p), 107);
+    assert.deepEqual(app.errores, []);
+  } finally {
+    await app.cerrar();
+  }
+});
+
+test('agregar un plato, y después repetirlo desde Recientes', async () => {
+  const app = await abrirApp();
+  const p = app.pagina;
+  try {
+    p.setDefaultTimeout(5000);
+    await irAgregar(p, 'Cena');
+    await p.getByRole('tab', { name: 'Platos' }).click();
+    await p.getByLabel('Buscar').fill('lentejas');
+    await p.getByRole('button', { name: /^Guiso de lentejas/ }).click();
+    await p.getByRole('button', { name: 'Agregar', exact: true }).click();
+    await p.getByRole('article', { name: 'Cena' }).getByText('Guiso de lentejas').waitFor();
+    const despuesCena = await consumidas(p);
+    assert.ok(despuesCena > 0);
+
+    await p.getByRole('article', { name: 'Almuerzo' }).getByRole('link', { name: 'Agregar' }).click();
+    await p.getByRole('tab', { name: 'Recientes', selected: true }).waitFor();
+    await p.getByRole('button', { name: 'Agregar Guiso de lentejas' }).click();
+    await p.getByRole('article', { name: 'Almuerzo' }).getByText('Guiso de lentejas').waitFor();
+    assert.ok(Math.abs((await consumidas(p)) - despuesCena * 2) <= 1);
+  } finally {
+    await app.cerrar();
+  }
+});
+
+test('gramos inválidos no se agregan', async () => {
+  const app = await abrirApp();
+  const p = app.pagina;
+  try {
+    p.setDefaultTimeout(5000);
+    await irAgregar(p, 'Merienda');
+    await p.getByRole('tab', { name: 'Alimentos' }).click();
+    await p.getByLabel('Buscar').fill('banana');
+    await p.getByRole('button', { name: /^Banana/ }).click();
+    await p.getByLabel('Gramos').fill('0');
+    assert.equal(await p.getByRole('button', { name: 'Agregar', exact: true }).isDisabled(), true);
+  } finally {
+    await app.cerrar();
+  }
+});
