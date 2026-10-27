@@ -1,4 +1,4 @@
 [test]
 coverageSkipTestFiles = true
 coverageThreshold = { lines = 1.0, functions = 1.0 }
-coveragePathIgnorePatterns = ["src/data/idb.ts", "src/ui/**", "tests/**"]
+coveragePathIgnorePatterns = ["vendor/**", "src/data/idb.ts", "src/ui/**", "tests/**"]
