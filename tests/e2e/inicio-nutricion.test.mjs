@@ -7,7 +7,7 @@ const DIA = 86_400_000;
 test('sin plan, Inicio no muestra los anillos', async () => {
   const app = await abrirApp();
   try {
-    await app.pagina.getByRole('heading', { name: 'FORJA' }).waitFor();
+    await app.pagina.getByRole('heading', { name: 'FORJA', exact: true }).waitFor();
     await app.pagina.getByText('¡Bienvenido a FORJA!').waitFor();
     assert.equal(await app.pagina.getByRole('link', { name: /Lo que comiste hoy/ }).count(), 0);
     assert.equal(await app.pagina.getByText('Toca pesarte').count(), 0);
