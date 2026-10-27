@@ -107,13 +107,13 @@ test('finalizadas devuelve las sesiones terminadas de la más nueva a la más vi
 });
 
 test('ajustes trae defaults si no hay nada guardado', async () => {
-  expect(await ajustesRepo.obtener()).toEqual({ incrementoKg: 2.5, ultimaCopia: null });
+  expect(await ajustesRepo.obtener()).toEqual({ incrementoKg: 2.5, ultimaCopia: null, temporizadorFoto: 0, fotosPospuestas: null });
 });
 
 test('ajustes guarda cambios parciales', async () => {
   await ajustesRepo.guardar({ incrementoKg: 1 });
   await ajustesRepo.guardar({ ultimaCopia: 123 });
-  expect(await ajustesRepo.obtener()).toEqual({ incrementoKg: 1, ultimaCopia: 123 });
+  expect(await ajustesRepo.obtener()).toEqual({ incrementoKg: 1, ultimaCopia: 123, temporizadorFoto: 0, fotosPospuestas: null });
 });
 
 test('nuevoId genera ids distintos', async () => {

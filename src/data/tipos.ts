@@ -57,4 +57,8 @@ export interface Sesion {
 export interface Ajustes {
   incrementoKg: number;
   ultimaCopia: number | null;
+  /** Temporizador de la cámara de fotos de progreso (segundos). */
+  temporizadorFoto: 0 | 5 | 10;
+  /** Cuándo se tocó "Ahora no" en el recordatorio de fotos. */
+  fotosPospuestas: number | null;
 }

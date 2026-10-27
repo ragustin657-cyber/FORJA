@@ -2,7 +2,7 @@ import { TABLAS, type Almacen, type NombreTabla, type Registro, type Tabla } fro
 
 const NOMBRE_BASE = 'forja';
 /** Subir este número al agregar tablas; onupgradeneeded crea las que falten. */
-const VERSION_BASE = 3;
+const VERSION_BASE = 4;
 
 function pedido<T>(p: IDBRequest<T>): Promise<T> {
   return new Promise((ok, mal) => {
