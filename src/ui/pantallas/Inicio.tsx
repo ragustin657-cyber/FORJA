@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { fechaRelativa } from '../../core/formato';
 import { calcularMetas } from '../../core/nutricion/calorias';
 import { necesitaPesarse } from '../../core/nutricion/peso';
+import { necesitaFotos } from '../../core/cuerpo/fotos';
+import { cuerpoRepo } from '../../data/repos/cuerpo';
 import { totales } from '../../core/nutricion/registro';
 import { parsearNumero } from '../../core/unidades';
 import { descripcionRecord, recordsRecientes } from '../../core/records';
@@ -32,6 +34,37 @@ async function cargarNutricionHoy() {
   const metas = calcularMetas(perfil, ultimo.kg, new Date(ahora));
   const total = totales(await registroRepo.delDia(fechaDeHoy()));
   return { metas, total, pesarse: necesitaPesarse(ultimo.fecha, ahora) };
+}
+
+async function cargarRecordatorioFotos() {
+  const [fotos, ajustes] = await Promise.all([cuerpoRepo.fotos(), ajustesRepo.obtener()]);
+  const ultima = fotos.map((f) => f.fecha).sort().pop();
+  return necesitaFotos(ultima, ajustes.fotosPospuestas, Date.now()) ? { primeras: ultima === undefined } : null;
+}
+
+function RecordatorioFotos({ primeras, alPosponer }: { primeras: boolean; alPosponer: () => void }) {
+  return (
+    <section aria-label="Fotos de progreso" className="tarjeta pila">
+      <h2 style={{ fontSize: 20, margin: 0 }}>Fotos de progreso</h2>
+      <p className="texto-2" style={{ margin: 0 }}>
+        {primeras ? 'Sacá tus primeras fotos para ver tu cambio.' : 'Pasaron 2 semanas desde tus últimas fotos. Sacá las de hoy y anotá tus medidas.'}
+      </p>
+      <Enlace a="/progreso/fotos/nueva" className="boton boton-primario boton-ancho">Sacar fotos</Enlace>
+      <div className="fila-entre">
+        <Enlace a="/progreso/medidas" className="chip">Medidas</Enlace>
+        <button
+          type="button"
+          className="chip"
+          onClick={async () => {
+            await ajustesRepo.guardar({ fotosPospuestas: Date.now() });
+            alPosponer();
+          }}
+        >
+          Ahora no
+        </button>
+      </div>
+    </section>
+  );
 }
 
 function TocaPesarte({ alGuardar }: { alGuardar: () => void }) {
@@ -88,6 +121,7 @@ async function cargar() {
 export function Inicio() {
   const { datos } = useCarga(cargar);
   const { datos: nutri, recargar: recargarNutri } = useCarga(cargarNutricionHoy);
+  const { datos: fotos, recargar: recargarFotos } = useCarga(cargarRecordatorioFotos);
 
   return (
     <>
@@ -139,6 +173,8 @@ export function Inicio() {
           )}
 
           {nutri?.pesarse && <TocaPesarte alGuardar={recargarNutri} />}
+
+          {fotos && <RecordatorioFotos primeras={fotos.primeras} alPosponer={recargarFotos} />}
 
           {datos.copia && (
             <div className="aviso fila-entre">

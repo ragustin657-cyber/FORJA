@@ -190,6 +190,19 @@ export function Camara() {
       <div className="pila">
         <Opciones nombre="Pose" valor={pose} opciones={POSES} onCambio={setPose} />
 
+        {!sinCamara && !previa && (
+          <div className="fila" style={{ gap: 8, flexWrap: 'wrap' }}>
+            <Opciones nombre="Temporizador" valor={temporizador} opciones={TEMPORIZADORES.map((t) => ({ id: t, nombre: `${t} s` }))} onCambio={(t) => {
+              setTemporizador(t);
+              void ajustesRepo.guardar({ temporizadorFoto: t });
+            }} />
+            <div className="chips">
+              <button type="button" className="chip" onClick={() => setFrontal(!frontal)}>Cambiar cámara</button>
+              <button type="button" className="chip" onClick={() => setGuia(!guia)}>{guia ? 'Ocultar guía' : 'Mostrar guía'}</button>
+            </div>
+          </div>
+        )}
+
         {sinCamara ? (
           <div className="aviso" role="status">No pudimos usar la cámara. Revisá el permiso en Ajustes del iPhone o elegí una foto de la galería.</div>
         ) : (
@@ -221,16 +234,6 @@ export function Camara() {
           <>
             {!sinCamara && (
               <>
-                <div className="fila-entre">
-                  <Opciones nombre="Temporizador" valor={temporizador} opciones={TEMPORIZADORES.map((t) => ({ id: t, nombre: `${t} s` }))} onCambio={(t) => {
-                    setTemporizador(t);
-                    void ajustesRepo.guardar({ temporizadorFoto: t });
-                  }} />
-                </div>
-                <div className="fila" style={{ gap: 8 }}>
-                  <Boton variante="secundario" onClick={() => setFrontal(!frontal)}>Cambiar cámara</Boton>
-                  <Boton variante="secundario" onClick={() => setGuia(!guia)}>{guia ? 'Ocultar guía' : 'Mostrar guía'}</Boton>
-                </div>
                 <Boton ancho onClick={disparar} disabled={cuenta !== null || !lista}>Sacar foto</Boton>
               </>
             )}

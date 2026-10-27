@@ -7,6 +7,7 @@ import { sesionesRepo } from '../../data/repos/sesiones';
 import { Encabezado } from '../componentes/Encabezado';
 import { GraficoLinea } from '../componentes/GraficoLinea';
 import { Medidas } from './cuerpo/Medidas';
+import { Fotos } from './cuerpo/Fotos';
 import { Miniatura } from '../componentes/SelectorEjercicios';
 import { useCarga } from '../datos';
 import { Enlace } from '../router';
@@ -61,6 +62,7 @@ export function Progreso() {
       <div className="pila" style={{ marginBottom: 12 }}>
         <PesoCorporal />
         <Medidas />
+        <Fotos />
       </div>
       <h2 className="subtitulo">Fuerza</h2>
       {datos && datos.length === 0 && (
