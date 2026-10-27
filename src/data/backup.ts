@@ -51,8 +51,8 @@ export async function exportar(opciones: { incluirFotos: boolean }): Promise<Blo
   zip.file(ARCHIVO_DATOS, JSON.stringify(contenido));
   if (opciones.incluirFotos) {
     for (const i of await almacen().tabla<ImagenGuardada>('imagenes').todos()) {
-      zip.file(`${CARPETA_FOTOS}${i.id}.jpg`, await i.imagen.arrayBuffer());
-      zip.file(`${CARPETA_FOTOS}${i.id}-mini.jpg`, await i.miniatura.arrayBuffer());
+      zip.file(`${CARPETA_FOTOS}${i.id}.jpg`, await i.imagen.arrayBuffer(), { compression: 'STORE' });
+      zip.file(`${CARPETA_FOTOS}${i.id}-mini.jpg`, await i.miniatura.arrayBuffer(), { compression: 'STORE' });
     }
   }
   return zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });

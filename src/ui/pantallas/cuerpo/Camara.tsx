@@ -112,6 +112,9 @@ export function Camara() {
     })();
     return () => {
       vivo = false;
+      // Si la cámara se apaga o cambia, una cuenta en curso dispararía sobre un video viejo.
+      clearInterval(reloj.current);
+      setCuenta(null);
       flujo?.getTracks().forEach((t) => t.stop());
     };
   }, [frontal, visible]);
@@ -122,14 +125,15 @@ export function Camara() {
   }, []);
   useEffect(() => cancelarCuenta, [cancelarCuenta]);
 
-  async function mostrarPrevia(fuente: ImageBitmap | HTMLVideoElement) {
+  async function mostrarPrevia(fuente: ImageBitmap | HTMLVideoElement | HTMLImageElement) {
     const r = await procesarImagen(fuente);
+    if (fuente instanceof ImageBitmap) fuente.close();
     setPrevia({ imagen: r.imagen, miniatura: r.miniatura, url: URL.createObjectURL(r.imagen) });
   }
 
   async function capturar() {
     const v = video.current;
-    if (!v || !v.videoWidth) return;
+    if (!v || !v.videoWidth || v.paused || !(v.srcObject as MediaStream | null)?.active) return;
     await mostrarPrevia(v);
   }
 
@@ -163,6 +167,10 @@ export function Camara() {
   async function guardar() {
     if (!previa || !fotos) return;
     setReemplazar(false);
+    if (!fecha || fecha > hoy) {
+      setError('Elegí una fecha de hoy o anterior.');
+      return;
+    }
     setGuardando(true);
     setError(null);
     try {
@@ -181,7 +189,7 @@ export function Camara() {
     }
   }
 
-  const usar = () => (fotos?.some((f) => f.id === idFoto(fecha, pose)) ? setReemplazar(true) : void guardar());
+  const usar = () => (fecha <= hoy && fotos?.some((f) => f.id === idFoto(fecha, pose)) ? setReemplazar(true) : void guardar());
   const completas = fotos !== null && posesFaltantes(fotos, fecha).length === 0;
 
   return (
@@ -190,7 +198,7 @@ export function Camara() {
       <div className="pila">
         <Opciones nombre="Pose" valor={pose} opciones={POSES} onCambio={setPose} />
 
-        {!sinCamara && !previa && (
+        {!sinCamara && !previa && cuenta === null && (
           <div className="fila" style={{ gap: 8, flexWrap: 'wrap' }}>
             <Opciones nombre="Temporizador" valor={temporizador} opciones={TEMPORIZADORES.map((t) => ({ id: t, nombre: `${t} s` }))} onCambio={(t) => {
               setTemporizador(t);
@@ -237,7 +245,7 @@ export function Camara() {
                 <Boton ancho onClick={disparar} disabled={cuenta !== null || !lista}>Sacar foto</Boton>
               </>
             )}
-            <label className="boton boton-secundario boton-ancho">
+            {cuenta === null && <label className="boton boton-secundario boton-ancho">
               Elegir de la galería
               <input
                 type="file"
@@ -248,15 +256,13 @@ export function Camara() {
                   e.target.value = '';
                   if (!archivo) return;
                   try {
-                    const bmp = await desdeArchivo(archivo);
-                    await mostrarPrevia(bmp);
-                    bmp.close();
+                    await mostrarPrevia(await desdeArchivo(archivo));
                   } catch {
                     setError('No se pudo abrir esa imagen.');
                   }
                 }}
               />
-            </label>
+            </label>}
           </>
         )}
 

@@ -191,3 +191,10 @@ test('una copia de la versión 3 es de una app más nueva', async () => {
   const v3 = await zipCon({ 'datos.json': JSON.stringify({ app: 'forja', version: 3, fecha: 5, tablas: {} }) });
   await expect(leerResumen(v3)).rejects.toMatchObject({ motivo: 'version-nueva' });
 });
+
+test('las fotos van sin comprimir (JPEG no gana nada y así la copia sale rápido)', async () => {
+  await cargarFoto('2026-10-13', 'frente', 'A'.repeat(5000));
+  const zip = await JSZip.loadAsync(await (await exportar({ incluirFotos: true })).arrayBuffer());
+  const datos = (zip.files['fotos/2026-10-13-frente.jpg'] as unknown as { _data: { compressedSize: number; uncompressedSize: number } })._data;
+  expect(datos.compressedSize).toBe(datos.uncompressedSize);
+});

@@ -100,3 +100,26 @@ test('restaurar una copia sin fotos avisa que se conservan las del iPhone', asyn
     await app.cerrar();
   }
 });
+
+test('si iOS no deja abrir la hoja de compartir, aparece "Compartir copia" para tocar de nuevo', async () => {
+  const app = await abrirApp({ ruta: '#/mas/backup' });
+  const p = app.pagina;
+  try {
+    p.setDefaultTimeout(5000);
+    await p.evaluate(() => {
+      window.__compartidos = 0;
+      navigator.canShare = () => true;
+      let primera = true;
+      navigator.share = async () => {
+        if (primera) { primera = false; throw new DOMException('sin gesto', 'NotAllowedError'); }
+        window.__compartidos++;
+      };
+    });
+    await p.getByRole('button', { name: 'Exportar copia' }).click();
+    await p.getByRole('button', { name: 'Compartir copia' }).click();
+    await p.getByText('Copia lista. Guardala en Archivos o iCloud Drive.').waitFor();
+    assert.equal(await p.evaluate(() => window.__compartidos), 1);
+  } finally {
+    await app.cerrar();
+  }
+});

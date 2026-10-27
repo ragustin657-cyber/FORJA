@@ -5,10 +5,12 @@ const CALIDAD = 0.82;
 const MAX_IMAGEN = 1600;
 const MAX_MINIATURA = 320;
 
-type Fuente = ImageBitmap | HTMLVideoElement | HTMLCanvasElement;
+type Fuente = ImageBitmap | HTMLVideoElement | HTMLCanvasElement | HTMLImageElement;
 
 function tamano(f: Fuente): { ancho: number; alto: number } {
-  return f instanceof HTMLVideoElement ? { ancho: f.videoWidth, alto: f.videoHeight } : { ancho: f.width, alto: f.height };
+  if (f instanceof HTMLVideoElement) return { ancho: f.videoWidth, alto: f.videoHeight };
+  if (f instanceof HTMLImageElement) return { ancho: f.naturalWidth, alto: f.naturalHeight };
+  return { ancho: f.width, alto: f.height };
 }
 
 function aJpeg(f: Fuente, ancho: number, alto: number, espejar: boolean): Promise<Blob> {
@@ -36,7 +38,20 @@ export async function procesarImagen(fuente: Fuente, opciones: { espejar?: boole
   };
 }
 
-/** Lee una foto de la galería respetando su orientación (EXIF). */
-export function desdeArchivo(archivo: Blob): Promise<ImageBitmap> {
-  return createImageBitmap(archivo, { imageOrientation: 'from-image' });
+/**
+ * Lee una foto de la galería respetando su orientación (EXIF). Si el navegador no acepta la opción
+ * de orientación, la decodifica con <img>, que en Safari también aplica la orientación.
+ */
+export async function desdeArchivo(archivo: Blob): Promise<ImageBitmap | HTMLImageElement> {
+  try {
+    return await createImageBitmap(archivo, { imageOrientation: 'from-image' });
+  } catch {
+    const url = URL.createObjectURL(archivo);
+    // Se libera más tarde: Safari puede necesitar la URL hasta que se dibuja la imagen.
+    setTimeout(() => URL.revokeObjectURL(url), 60_000);
+    const img = new Image();
+    img.src = url;
+    await img.decode();
+    return img;
+  }
 }

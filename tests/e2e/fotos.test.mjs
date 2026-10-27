@@ -170,3 +170,66 @@ test('sin permiso de cámara avisa y deja elegir de la galería', async () => {
     await app.cerrar();
   }
 });
+
+test('si la app pasa a segundo plano durante la cuenta, se cancela', async () => {
+  const app = await abrirConCamara({ reloj: true });
+  const { p } = app;
+  try {
+    await p.locator('video').waitFor();
+    await p.getByRole('radiogroup', { name: 'Temporizador' }).getByRole('radio', { name: '10 s' }).click();
+    await p.getByRole('button', { name: 'Sacar foto' }).click();
+    await p.getByRole('timer').waitFor();
+    assert.equal(await p.getByRole('button', { name: 'Cambiar cámara' }).count(), 0);
+    await p.evaluate(() => {
+      Object.defineProperty(document, 'hidden', { configurable: true, get: () => true });
+      document.dispatchEvent(new Event('visibilitychange'));
+    });
+    await p.getByRole('timer').waitFor({ state: 'detached' });
+    await p.clock.runFor(11000);
+    assert.equal(await p.getByRole('button', { name: 'Usar foto' }).count(), 0);
+  } finally {
+    await app.cerrar();
+  }
+});
+
+test('una foto con fecha futura no se guarda', async () => {
+  const app = await abrirConCamara();
+  const { p } = app;
+  try {
+    await p.getByRole('button', { name: 'Sacar foto' }).click();
+    await p.getByLabel('Fecha').fill('2099-01-01');
+    await p.getByRole('button', { name: 'Usar foto' }).click();
+    await p.getByText('Elegí una fecha de hoy o anterior.').waitFor();
+    assert.deepEqual(await fotosGuardadas(p), []);
+  } finally {
+    await app.cerrar();
+  }
+});
+
+test('si el navegador no acepta la orientación EXIF, la galería usa otro camino', async () => {
+  const app = await abrirConCamara();
+  const { p } = app;
+  try {
+    await p.locator('video').waitFor();
+    await p.evaluate(() => {
+      const original = window.createImageBitmap;
+      window.createImageBitmap = (fuente, ...resto) => {
+        if (fuente instanceof Blob) return Promise.reject(new TypeError('opción no soportada'));
+        return original(fuente, ...resto);
+      };
+    });
+    const bytes = await p.evaluate(async () => {
+      const c = document.createElement('canvas');
+      c.width = 300; c.height = 400;
+      c.getContext('2d').fillRect(0, 0, 50, 50);
+      const b = await new Promise((ok) => c.toBlob(ok, 'image/jpeg', 0.8));
+      return [...new Uint8Array(await b.arrayBuffer())];
+    });
+    await p.locator('input[type=file]').setInputFiles({ name: 'foto.jpg', mimeType: 'image/jpeg', buffer: Buffer.from(bytes) });
+    await p.getByRole('button', { name: 'Usar foto' }).click();
+    await p.waitForFunction(() => document.querySelector('[role=radio][aria-checked=true]')?.textContent === 'Perfil');
+    assert.equal((await fotosGuardadas(p)).length, 1);
+  } finally {
+    await app.cerrar();
+  }
+});
