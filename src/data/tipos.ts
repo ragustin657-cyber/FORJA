@@ -21,6 +21,8 @@ export interface EjercicioEnDia {
   repsMin: number;
   repsMax: number;
   descansoSeg: number;
+  /** En los planes: los ejercicios básicos suman una serie en la semana 3 del bloque. */
+  basico?: boolean;
 }
 
 export interface DiaRutina {
