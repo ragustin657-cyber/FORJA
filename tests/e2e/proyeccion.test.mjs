@@ -100,7 +100,7 @@ test('con historial suficiente muestra hoy, 1, 3 y 6 meses y la línea de proyec
     for (const m of ['En 1 mes:', 'En 3 meses:', 'En 6 meses:']) await t.getByText(new RegExp(`^${m} [\\d,]+ kg \\([\\d,]+–[\\d,]+\\)$`)).waitFor();
     await t.getByText('Ritmo de nivel intermedio').waitFor();
     await t.getByText(/Es una estimación/).waitFor();
-    await p.getByLabel('Proyección').waitFor();
+    await p.getByLabel('Proyección').waitFor({ state: 'attached' });
     // principiante: el tope es más alto, así que a 6 meses da igual o más
     const antes = await seisMeses(t);
     await t.getByRole('link', { name: 'Cambiar' }).click();

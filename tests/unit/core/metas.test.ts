@@ -54,3 +54,12 @@ test('textoMeta', () => {
   expect(textoMeta({ tipo: 'sin-estimar', motivo: 'estable' })).toBe('Cuando vuelvas a subir, estimamos la fecha.');
   expect(textoMeta({ tipo: 'sin-estimar', motivo: 'faltan-datos' })).toBe('Con más entrenamientos estimamos la fecha.');
 });
+
+test('una serie más liviana a 1 repetición no logra la meta', () => {
+  expect(e1rm(136, 1)).toBe(136);
+  expect(avance(e1rm(136, 1), objetivoMeta({ peso: 140, reps: 1 }))).toBeLessThan(1);
+});
+
+test('si no está lograda, siempre falta al menos 0,5 kg', () => {
+  expect(faltaKg(116.5, objetivoMeta({ peso: 100, reps: 5 }))).toBe(0.5);
+});

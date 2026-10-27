@@ -34,12 +34,14 @@ export function validarMeta(peso: string, reps: string): { valores?: { peso: num
   return errores.length ? { errores } : { valores: { peso: p!, reps: r }, errores };
 }
 
-/** Fuerza que hay que alcanzar. A 1 repetición es el peso tal cual; con más, la fórmula de Epley. */
-export const objetivoMeta = (m: { peso: number; reps: number }): number => (m.reps === 1 ? m.peso : e1rm(m.peso, m.reps)!);
+/** Fuerza que hay que alcanzar (a 1 repetición, `e1rm` devuelve el peso tal cual). */
+export const objetivoMeta = (m: { peso: number; reps: number }): number => e1rm(m.peso, m.reps)!;
 
 export const avance = (mejor: number | null, objetivo: number): number => (mejor === null ? 0 : Math.min(1, mejor / objetivo));
 
-export const faltaKg = (mejor: number | null, objetivo: number): number => Math.max(0, Math.round((objetivo - (mejor ?? 0)) * 2) / 2);
+/** Kilos que faltan, redondeados a 0,5. Si la meta no está lograda, nunca dice 0. */
+export const faltaKg = (mejor: number | null, objetivo: number): number =>
+  mejor !== null && mejor >= objetivo ? 0 : Math.max(0.5, Math.round((objetivo - (mejor ?? 0)) * 2) / 2);
 
 export function fechaMeta(p: Proyeccion, objetivo: number, mejor: number | null): EstadoMeta {
   if (mejor !== null && mejor >= objetivo) return { tipo: 'lograda' };

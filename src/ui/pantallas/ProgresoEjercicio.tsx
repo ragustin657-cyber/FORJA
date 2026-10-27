@@ -1,6 +1,6 @@
 import { kg, numero } from '../../core/formato';
 import { textoNivel } from '../../core/nivel';
-import { proyectadoEn, proyectar, type Proyeccion } from '../../core/proyeccion';
+import { mesesParaGrafico, proyectadoEn, proyectar, type Proyeccion } from '../../core/proyeccion';
 import { calcularRecords, puntosDeProgreso } from '../../core/records';
 import { ajustesRepo } from '../../data/repos/ajustes';
 import { ejerciciosRepo } from '../../data/repos/ejercicios';
@@ -82,7 +82,9 @@ export function ProgresoEjercicio({ id }: { id: string }) {
   const ahora = Date.now();
   const proyeccion = proyectar(puntos, ahora, datos.nivel);
   const lineaProyeccion =
-    proyeccion.estado === 'ok' ? [0, 1, 3, 6].map((m) => ({ x: ahora + m * MES * 86_400_000, y: proyectadoEn(proyeccion, m * MES) })) : undefined;
+    proyeccion.estado === 'ok'
+      ? mesesParaGrafico((puntos[puntos.length - 1].fecha - puntos[0].fecha) / 86_400_000).map((m) => ({ x: ahora + m * MES * 86_400_000, y: proyectadoEn(proyeccion, m * MES) }))
+      : undefined;
   const records = calcularRecords(historial.map((h) => h.series));
   const mejoresReps = Object.entries(records.repsPorPeso)
     .map(([peso, reps]) => ({ peso: Number(peso), reps }))

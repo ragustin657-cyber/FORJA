@@ -14,7 +14,8 @@ const REPS_MAX_E1RM = 15;
 /** Fuerza máxima estimada (fórmula de Epley). Null si las repeticiones o el peso no sirven para estimar. */
 export function e1rm(peso: number, reps: number): number | null {
   if (peso <= 0 || reps < 1 || reps > REPS_MAX_E1RM) return null;
-  return peso * (1 + reps / 30);
+  // A 1 repetición, la fuerza máxima es el peso levantado (Epley lo inflaría un 3 %).
+  return reps === 1 ? peso : peso * (1 + reps / 30);
 }
 
 /** La serie completada con mayor fuerza estimada, o null si no hay ninguna válida. */

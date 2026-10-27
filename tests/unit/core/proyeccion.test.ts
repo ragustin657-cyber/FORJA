@@ -86,3 +86,34 @@ test('último entrenamiento hace 90 días: valores finitos y crecientes', () => 
   expect(v[0]).toBeLessThanOrEqual(v[1]);
   expect(v[1]).toBeLessThanOrEqual(v[2]);
 });
+
+// ── Arreglos de la revisión ──
+import { mesesParaGrafico } from '../../../src/core/proyeccion';
+
+test('3 semanas justas con unos minutos de diferencia alcanzan para proyectar', () => {
+  const p = [0, 7, 14, 21].map((d, i) => ({ fecha: T0 + d * DIA + (i === 0 ? 10 * 60_000 : 0), e1rm: 80 + d }));
+  expect(proyectar(p, T0 + 21 * DIA, 'intermedio').estado).toBe('ok');
+});
+
+test('no proyecta por debajo de lo que levantaste en las últimas 6 semanas', () => {
+  const p = [100, 110, 101, 104, 105].map((e, i) => ({ fecha: T0 + i * 7 * DIA, e1rm: e }));
+  const r = proyectar(p, T0 + 28 * DIA, 'intermedio');
+  if (r.estado !== 'ok') throw new Error(r.estado);
+  expect(r.hoy).toBe(110);
+  for (const m of r.meses) expect(m.valor).toBeGreaterThanOrEqual(110);
+});
+
+test('después de un parate largo, "hoy" no se infla', () => {
+  const p = [80, 90, 98, 104, 108].map((e, i) => ({ fecha: T0 + i * 7 * DIA, e1rm: e }));
+  const ultimo = T0 + 28 * DIA;
+  const r = proyectar(p, ultimo + 90 * DIA, 'intermedio');
+  if (r.estado !== 'ok') throw new Error(r.estado);
+  expect(r.base).toBeCloseTo(Math.max(valorCurva(r.curva, ultimo + 14 * DIA), 108), 6);
+  expect(r.base).toBeLessThan(valorCurva(r.curva, ultimo + 90 * DIA));
+});
+
+test('el gráfico proyecta hasta un horizonte proporcional al historial', () => {
+  expect(mesesParaGrafico(21)).toEqual([0, 1]);
+  expect(mesesParaGrafico(95)).toEqual([0, 1, 3]);
+  expect(mesesParaGrafico(200)).toEqual([0, 1, 3, 6]);
+});

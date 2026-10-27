@@ -3,6 +3,12 @@ const DIA = 86_400_000;
 const MES = 30.44;
 const MINIMO_PUNTOS = 4;
 const MINIMO_DIAS = 21;
+/** Tolerancia para sesiones a distinta hora (unos 15 minutos). */
+const TOLERANCIA_DIAS = 0.01;
+/** Después de la última sesión, la curva se evalúa como mucho 14 días hacia adelante. */
+const EXTRAPOLACION_DIAS = 14;
+/** Lo levantado en las 6 semanas previas a la última sesión es el piso de la proyección. */
+const PISO_DIAS = 42;
 
 export type Nivel = 'principiante' | 'intermedio' | 'avanzado';
 export const TASA: Record<Nivel, number> = { principiante: 0.05, intermedio: 0.02, avanzado: 0.01 };
@@ -49,7 +55,12 @@ export function valorCurva(c: Curva, fecha: number): number {
 
 /** Valor proyectado (sin redondear) a `dias` desde hoy: la curva, sin pasar el ritmo del nivel. */
 export function proyectadoEn(p: Ok, dias: number): number {
-  return Math.min(valorCurva(p.curva, p.ahora + dias * DIA), p.base * (1 + p.tasa) ** (dias / MES));
+  return Math.max(p.base, Math.min(valorCurva(p.curva, p.ahora + dias * DIA), p.base * (1 + p.tasa) ** (dias / MES)));
+}
+
+/** Meses a dibujar en el gráfico: no más lejos que lo que dura el historial (mínimo 1 mes). */
+export function mesesParaGrafico(spanDias: number): number[] {
+  return [0, ...[1, 3, 6].filter((m) => m * MES <= Math.max(MES, spanDias))];
 }
 
 export function proyectar(puntos: Punto[], ahora: number, nivel: Nivel): Proyeccion {
@@ -57,11 +68,14 @@ export function proyectar(puntos: Punto[], ahora: number, nivel: Nivel): Proyecc
   // Se toleran unos minutos de diferencia entre sesiones para no sumar un día de más.
   const span = puntos.length ? (Math.max(...fechas) - Math.min(...fechas)) / DIA : 0;
   const curva = ajustarCurva(puntos);
-  if (puntos.length < MINIMO_PUNTOS || span < MINIMO_DIAS || !curva) {
-    return { estado: 'faltan-datos', faltanSesiones: Math.max(0, MINIMO_PUNTOS - puntos.length), faltanDias: Math.max(0, Math.ceil(MINIMO_DIAS - span - 0.01)) };
+  if (puntos.length < MINIMO_PUNTOS || span < MINIMO_DIAS - TOLERANCIA_DIAS || !curva) {
+    return { estado: 'faltan-datos', faltanSesiones: Math.max(0, MINIMO_PUNTOS - puntos.length), faltanDias: Math.max(0, Math.ceil(MINIMO_DIAS - span - TOLERANCIA_DIAS)) };
   }
-  const base = valorCurva(curva, ahora);
-  if (curva.b <= 0) return { estado: 'estable', hoy: medio(base) };
+  const ultima = Math.max(...fechas);
+  const tendencia = valorCurva(curva, Math.min(ahora, ultima + EXTRAPOLACION_DIAS * DIA));
+  if (curva.b <= 0) return { estado: 'estable', hoy: medio(tendencia) };
+  const piso = Math.max(...puntos.filter((q) => q.fecha >= ultima - PISO_DIAS * DIA).map((q) => q.e1rm));
+  const base = Math.max(tendencia, piso);
   const p: Ok = { estado: 'ok', hoy: medio(base), base, curva, tasa: TASA[nivel], ahora, meses: [] };
   p.meses = ([1, 3, 6] as const).map((m) => {
     const valor = proyectadoEn(p, m * MES);
