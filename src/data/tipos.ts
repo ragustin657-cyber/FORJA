@@ -1,3 +1,4 @@
+import type { Nivel } from '../core/proyeccion';
 import type { TipoEjercicio } from '../core/progresion';
 
 export interface Ejercicio {
@@ -61,4 +62,6 @@ export interface Ajustes {
   temporizadorFoto: 0 | 5 | 10;
   /** Cuándo se tocó "Ahora no" en el recordatorio de fotos. */
   fotosPospuestas: number | null;
+  /** Nivel de entrenamiento: define el ritmo máximo de la proyección de fuerza. */
+  nivel: Nivel;
 }

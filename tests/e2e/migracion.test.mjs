@@ -31,7 +31,7 @@ test('al actualizar la base de datos se conservan las rutinas de la versión ant
     await p.goto(servidor.url + '#/entrenar');
     await p.getByRole('article', { name: 'Mi rutina vieja' }).waitFor({ timeout: 8000 });
     const version = await p.evaluate(() => new Promise((ok) => { const r = indexedDB.open('forja'); r.onsuccess = () => { ok(r.result.version); r.result.close(); }; }));
-    assert.equal(version, 4);
+    assert.equal(version, 5);
   } finally {
     await navegador.close();
     await servidor.cerrar();
@@ -70,7 +70,7 @@ test('al pasar de la versión 2 a la 3 se conservan el perfil y las rutinas, y a
     await p.goto(servidor.url + '#/nutricion');
     await p.getByText('2.210').first().waitFor({ timeout: 8000 });
     const info = await p.evaluate(() => new Promise((ok) => { const r = indexedDB.open('forja'); r.onsuccess = () => { ok({ v: r.result.version, tablas: [...r.result.objectStoreNames] }); r.result.close(); }; }));
-    assert.equal(info.v, 4);
+    assert.equal(info.v, 5);
     assert.ok(info.tablas.includes('registros') && info.tablas.includes('productos'));
   } finally {
     await navegador.close();
@@ -113,8 +113,44 @@ test('al pasar de la versión 3 a la 4 se conservan los datos y aparecen las tab
     await p.goto(servidor.url + '#/nutricion/hoy');
     await p.getByText('Arroz de la v3').waitFor({ timeout: 8000 });
     const info = await p.evaluate(() => new Promise((ok) => { const r = indexedDB.open('forja'); r.onsuccess = () => { ok({ v: r.result.version, tablas: [...r.result.objectStoreNames] }); r.result.close(); }; }));
-    assert.equal(info.v, 4);
+    assert.equal(info.v, 5);
     for (const t of ['medidas', 'fotos', 'imagenes']) assert.ok(info.tablas.includes(t), t);
+  } finally {
+    await navegador.close();
+    await servidor.cerrar();
+  }
+});
+
+test('al pasar de la versión 4 a la 5 se conservan medidas y fotos, y aparece la tabla de metas', async () => {
+  const servidor = await iniciarServidor();
+  const navegador = await chromium.launch();
+  try {
+    const contexto = await navegador.newContext({ ...devices['iPhone 13'], serviceWorkers: 'block' });
+    const p = await contexto.newPage();
+    await p.goto(servidor.url + 'manifest.webmanifest');
+    await p.evaluate(
+      () =>
+        new Promise((ok, mal) => {
+          const pedido = indexedDB.open('forja', 4);
+          pedido.onupgradeneeded = () => {
+            for (const t of ['ejercicios', 'rutinas', 'sesiones', 'ajustes', 'perfil', 'pesos', 'menus', 'compras', 'registros', 'productos', 'medidas', 'fotos', 'imagenes']) pedido.result.createObjectStore(t, { keyPath: 'id' });
+          };
+          pedido.onsuccess = () => {
+            const tx = pedido.result.transaction(['medidas', 'fotos', 'imagenes'], 'readwrite');
+            tx.objectStore('medidas').put({ id: '2026-10-20', fecha: Date.now() - 86400000, brazo: 36 });
+            tx.objectStore('fotos').put({ id: '2026-10-20-frente', fecha: '2026-10-20', pose: 'frente', creado: 1 });
+            tx.objectStore('imagenes').put({ id: '2026-10-20-frente', imagen: new Blob(['x'], { type: 'image/jpeg' }), miniatura: new Blob(['x'], { type: 'image/jpeg' }) });
+            tx.oncomplete = () => { pedido.result.close(); ok(); };
+          };
+          pedido.onerror = () => mal(pedido.error);
+        }),
+    );
+    await p.goto(servidor.url + '#/progreso');
+    await p.getByText('Brazo 36 cm').waitFor({ timeout: 8000 });
+    await p.getByRole('link', { name: 'Fotos del 20/10/2026' }).waitFor({ timeout: 8000 });
+    const info = await p.evaluate(() => new Promise((ok) => { const r = indexedDB.open('forja'); r.onsuccess = () => { ok({ v: r.result.version, tablas: [...r.result.objectStoreNames] }); r.result.close(); }; }));
+    assert.equal(info.v, 5);
+    assert.ok(info.tablas.includes('metas'));
   } finally {
     await navegador.close();
     await servidor.cerrar();
