@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { ErrorBackup, exportar, leerResumen, nombreArchivo, restaurar } from '../../data/backup';
+import { ErrorBackup, exportar, leerResumen, nombreArchivo, restaurar, tamanoFotos } from '../../data/backup';
+import { cuerpoRepo } from '../../data/repos/cuerpo';
 import { ajustesRepo } from '../../data/repos/ajustes';
 import { Boton } from '../componentes/Boton';
 import { Encabezado } from '../componentes/Encabezado';
@@ -7,6 +8,9 @@ import { Tarjeta } from '../componentes/Tarjeta';
 import { fechaRelativa } from '../../core/formato';
 
 type Resumen = Awaited<ReturnType<typeof leerResumen>>;
+
+const megas = (bytes: number) => `${Math.max(0.1, bytes / 1_000_000).toFixed(1).replace('.', ',')} MB`;
+const fotosTexto = (n: number) => `${n} ${n === 1 ? 'foto' : 'fotos'}`;
 
 async function entregar(blob: Blob) {
   const archivo = new File([blob], nombreArchivo(), { type: 'application/zip' });
@@ -33,18 +37,26 @@ export function Backup() {
   const [error, setError] = useState<string | null>(null);
   const [pendiente, setPendiente] = useState<{ archivo: File; resumen: Resumen } | null>(null);
   const [ocupado, setOcupado] = useState(false);
+  const [fotos, setFotos] = useState<{ cantidad: number; bytes: number }>({ cantidad: 0, bytes: 0 });
+  const [preguntar, setPreguntar] = useState(false);
   const entrada = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     ajustesRepo.obtener().then((a) => setUltima(a.ultimaCopia));
+    Promise.all([cuerpoRepo.fotos(), tamanoFotos()]).then(([fs, bytes]) => setFotos({ cantidad: fs.length, bytes }));
   }, []);
 
-  async function alExportar() {
+  async function alExportar(incluirFotos?: boolean) {
     setError(null);
     setMensaje(null);
+    if (incluirFotos === undefined && fotos.cantidad > 0) {
+      setPreguntar(true);
+      return;
+    }
+    setPreguntar(false);
     setOcupado(true);
     try {
-      await entregar(await exportar({ incluirFotos: false }));
+      await entregar(await exportar({ incluirFotos: incluirFotos ?? false }));
       const ahora = Date.now();
       await ajustesRepo.guardar({ ultimaCopia: ahora });
       setUltima(ahora);
@@ -77,6 +89,7 @@ export function Backup() {
       await restaurar(pendiente.archivo);
       setPendiente(null);
       setMensaje('¡Listo! Tus datos se restauraron.');
+      Promise.all([cuerpoRepo.fotos(), tamanoFotos()]).then(([fs, bytes]) => setFotos({ cantidad: fs.length, bytes }));
       setUltima((await ajustesRepo.obtener()).ultimaCopia);
     } catch (e) {
       setError(e instanceof ErrorBackup ? e.message : 'No se pudo restaurar la copia.');
@@ -92,12 +105,22 @@ export function Backup() {
         <Tarjeta>
           <h2 style={{ fontSize: 18, marginBottom: 6 }}>Guardar tus datos</h2>
           <p className="texto-2" style={{ marginTop: 0 }}>
-            Tus rutinas y entrenamientos viven solo en este iPhone. Hacé una copia una vez por mes y guardala en Archivos o iCloud Drive.
+            Tus rutinas, entrenamientos, comidas y fotos viven solo en este iPhone. Hacé una copia una vez por mes y guardala en Archivos o iCloud Drive.
           </p>
           <p className="texto-2" style={{ fontSize: 14 }}>
             {ultima ? `Última copia: ${fechaRelativa(ultima)}` : 'Todavía no hiciste ninguna copia.'}
           </p>
-          <Boton ancho onClick={alExportar} disabled={ocupado}>Exportar copia</Boton>
+          <Boton ancho onClick={() => alExportar()} disabled={ocupado}>Exportar copia</Boton>
+          {preguntar && (
+            <section aria-label="¿Incluir fotos?" className="aviso pila" style={{ marginTop: 14 }}>
+              <strong>¿Incluir fotos?</strong>
+              <span className="texto-2">Tenés {fotosTexto(fotos.cantidad)} de progreso (≈ {megas(fotos.bytes)}). Sin fotos la copia es más liviana.</span>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+                <Boton onClick={() => alExportar(true)} disabled={ocupado}>Con fotos ({megas(fotos.bytes)})</Boton>
+                <Boton variante="secundario" onClick={() => alExportar(false)} disabled={ocupado}>Sin fotos</Boton>
+              </div>
+            </section>
+          )}
         </Tarjeta>
 
         <Tarjeta>
@@ -110,8 +133,11 @@ export function Backup() {
           {pendiente && (
             <div className="aviso" style={{ marginTop: 14 }}>
               <p style={{ marginTop: 0 }}>
-                Copia del {new Date(pendiente.resumen.fecha).toLocaleDateString('es-AR')}: {pendiente.resumen.sesiones} entrenamientos y {pendiente.resumen.rutinas} rutinas.
+                Copia del {new Date(pendiente.resumen.fecha).toLocaleDateString('es-AR')}: {pendiente.resumen.sesiones} entrenamientos, {pendiente.resumen.rutinas} rutinas y {fotosTexto(pendiente.resumen.fotos)}.
               </p>
+              {pendiente.resumen.fotos === 0 && fotos.cantidad > 0 && (
+                <p className="texto-2">Esta copia no tiene fotos: se conservan las que ya tenés.</p>
+              )}
               <p className="texto-2">Ojo: restaurar reemplaza todos tus datos actuales por los de la copia.</p>
               <div className="fila">
                 <Boton variante="secundario" onClick={() => setPendiente(null)}>Cancelar</Boton>
