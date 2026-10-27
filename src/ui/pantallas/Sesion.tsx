@@ -8,6 +8,7 @@ import { sesionesRepo } from '../../data/repos/sesiones';
 import type { DiaRutina, Ejercicio, Sesion as TSesion } from '../../data/tipos';
 import { infoEjercicio, semanaDeRutina, sugerenciaDeSemana, type InfoEjercicio } from '../acciones';
 import { textoSemana } from '../plan';
+import { diaDeSemana } from '../../core/planes';
 import { Boton } from '../componentes/Boton';
 import { Encabezado } from '../componentes/Encabezado';
 import { IconoCheck } from '../componentes/Iconos';
@@ -30,7 +31,9 @@ async function cargarContexto(s: TSesion): Promise<Contexto> {
   // La semana se calcula con el inicio de la sesión: si cruza la medianoche del domingo, no cambia.
   const semana = await semanaDeRutina(s.rutinaId, s.inicio);
   const incremento = (await ajustesRepo.obtener()).incrementoKg;
-  const dia = rutina?.dias.find((d) => d.id === s.diaId);
+  const diaBase = rutina?.dias.find((d) => d.id === s.diaId);
+  // Con plan, la sugerencia se calcula con las series de esa semana (igual que al crear la sesión).
+  const dia = diaBase && semana ? diaDeSemana(diaBase, semana.semanaBloque) : diaBase;
   const ids = [...new Set(s.series.map((x) => x.ejercicioId))];
   const ejercicios: Record<string, Ejercicio> = {};
   const info: Record<string, InfoEjercicio> = {};

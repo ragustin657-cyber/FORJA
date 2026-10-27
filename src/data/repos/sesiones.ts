@@ -23,8 +23,9 @@ export const sesionesRepo = {
     return (await terminadas()).reverse();
   },
   /** Series de un ejercicio por sesión terminada, de la más vieja a la más nueva. */
-  async historialDeEjercicio(ejercicioId: string): Promise<SerieRegistrada[][]> {
+  async historialDeEjercicio(ejercicioId: string, opciones: { sinDescarga?: boolean } = {}): Promise<SerieRegistrada[][]> {
     return (await terminadas())
+      .filter((s) => !(opciones.sinDescarga && s.descarga))
       .map((s) => s.series.filter((x) => x.ejercicioId === ejercicioId))
       .filter((series) => series.length > 0);
   },

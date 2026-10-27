@@ -11,7 +11,7 @@ const PATRONES = {
   },
   bisagra: {
     gimnasio: ['Barbell_Deadlift', 'Romanian_Deadlift', 'Stiff-Legged_Barbell_Deadlift'],
-    mancuernas: ['Stiff-Legged_Dumbbell_Deadlift', 'Single_Leg_Glute_Bridge'],
+    mancuernas: ['Stiff-Legged_Dumbbell_Deadlift'],
     casa: ['Hyperextensions_With_No_Hyperextension_Bench', 'Single_Leg_Glute_Bridge'],
   },
   'empuje-horizontal': {
@@ -31,7 +31,7 @@ const PATRONES = {
   },
   'tiron-vertical': {
     gimnasio: ['Wide-Grip_Lat_Pulldown', 'Pullups', 'Close-Grip_Front_Lat_Pulldown'],
-    mancuernas: ['Pullups', 'Chin-Up'],
+    mancuernas: ['Bent-Arm_Dumbbell_Pullover', 'Straight-Arm_Dumbbell_Pullover'],
     casa: ['Chin-Up', 'Pullups'],
   },
   unilateral: {

@@ -133,3 +133,49 @@ test('entrenamientos de esta semana', () => {
   ];
   expect(sesionesDeLaSemana(sesiones, 'p', new Date(2026, 9, 29, 20))).toBe(2);
 });
+
+// ── Arreglos de la revisión ──
+import { sugerirSiguiente, type SerieHecha } from '../../../src/core/progresion';
+
+test('en 12 semanas haciendo todas las repeticiones, el peso de un básico sube', () => {
+  const base = { ejercicioId: 'banca', series: 4, repsMin: 8, repsMax: 12, descansoSeg: 90, basico: true };
+  const historial: { series: SerieHecha[]; descarga: boolean }[] = [];
+  const pesos: number[] = [];
+  let peso = 100;
+  for (let semana = 1; semana <= 12; semana++) {
+    const sb = (((semana - 1) % 4) + 1) as 1 | 2 | 3 | 4;
+    const series = seriesDeSemana(base, sb);
+    const sinDescarga = historial.filter((h) => !h.descarga).map((h) => h.series);
+    const s = sugerirSiguiente(sinDescarga, { series, repsMin: 8, repsMax: 12 }, 'superior', 2.5);
+    peso = s.peso ?? peso;
+    const usado = sb === 4 ? pesoDeDescarga(peso, 2.5)! : peso;
+    pesos.push(usado);
+    historial.push({ series: Array.from({ length: series }, () => ({ peso: usado, reps: 12, completada: true })), descarga: sb === 4 });
+  }
+  const normales = pesos.filter((_, i) => (i + 1) % 4 !== 0);
+  for (let i = 1; i < normales.length; i++) expect(normales[i], `semana ${i}`).toBeGreaterThanOrEqual(normales[i - 1]);
+  expect(pesos[10]).toBeGreaterThan(pesos[0] + 10);
+});
+
+test('la descarga baja el peso aunque sea liviano', () => {
+  expect(pesoDeDescarga(10, 2.5)).toBe(7.5);
+  expect(pesoDeDescarga(12.5, 2.5)).toBe(10);
+  expect(pesoDeDescarga(2.5, 2.5)).toBe(2.5);
+});
+
+test('con mancuernas no hay dominadas ni puentes como básicos', () => {
+  for (const dias of [3, 4, 5, 6] as const) {
+    for (const d of generarRutina(entrada({ dias, equipo: 'mancuernas' }), reales, id, 1).dias) {
+      const ids = d.ejercicios.map((e) => e.ejercicioId);
+      expect(ids.some((x) => x === 'Pullups' || x === 'Chin-Up'), d.nombre).toBe(false);
+      expect(d.ejercicios.filter((e) => e.basico).map((e) => e.ejercicioId), d.nombre).not.toContain('Single_Leg_Glute_Bridge');
+    }
+  }
+});
+
+test('ningún día queda con menos de 3 ejercicios, tampoco para principiantes', () => {
+  for (const nivel of ['principiante', 'intermedio'] as const)
+    for (const equipo of ['gimnasio', 'mancuernas', 'casa'] as const)
+      for (const dias of diasPermitidos(equipo))
+        for (const d of generarRutina(entrada({ dias, equipo, nivel }), reales, id, 1).dias) expect(d.ejercicios.length, `${nivel}/${equipo}/${dias}/${d.nombre}`).toBeGreaterThanOrEqual(3);
+});

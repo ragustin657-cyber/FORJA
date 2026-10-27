@@ -140,3 +140,12 @@ test('ejerciciosConHistorial lista los ids usados en sesiones terminadas', async
   await sesionesRepo.guardar({ ...sesion('s2', 300, null, 60), series: [{ ejercicioId: 'otro', numero: 1, peso: 1, reps: 1, completada: true }] });
   expect(await sesionesRepo.ejerciciosConHistorial()).toEqual(['press']);
 });
+
+test('historialDeEjercicio puede dejar afuera las sesiones de descarga', async () => {
+  const { sesionesRepo } = await import('../../../src/data/repos/sesiones');
+  const serie = (peso: number) => ({ ejercicioId: 'banca', numero: 1, peso, reps: 10, completada: true });
+  await sesionesRepo.guardar({ id: 'a', rutinaId: 'r', diaId: 'd', inicio: 1, fin: 2, series: [serie(100)] });
+  await sesionesRepo.guardar({ id: 'b', rutinaId: 'r', diaId: 'd', inicio: 3, fin: 4, series: [serie(90)], descarga: true });
+  expect((await sesionesRepo.historialDeEjercicio('banca')).map((s) => s[0].peso)).toEqual([100, 90]);
+  expect((await sesionesRepo.historialDeEjercicio('banca', { sinDescarga: true })).map((s) => s[0].peso)).toEqual([100]);
+});

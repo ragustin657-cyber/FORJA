@@ -28,6 +28,7 @@ test('cobertura mínima por equipo', () => {
   for (const p of PATRONES) {
     expect(P[p].gimnasio.length, p).toBeGreaterThanOrEqual(2);
     expect(P[p].mancuernas.length, p).toBeGreaterThanOrEqual(1);
+    expect(P[p].mancuernas, p).not.toContain('Pullups');
   }
   for (const p of ['sentadilla', 'bisagra', 'empuje-horizontal', 'unilateral', 'core']) expect(P[p].casa.length, p).toBeGreaterThanOrEqual(1);
   expect(P['tiron-horizontal'].casa.length + P['tiron-vertical'].casa.length).toBeGreaterThanOrEqual(1);

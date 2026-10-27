@@ -21,8 +21,7 @@
       "Stiff-Legged_Barbell_Deadlift"
     ],
     "mancuernas": [
-      "Stiff-Legged_Dumbbell_Deadlift",
-      "Single_Leg_Glute_Bridge"
+      "Stiff-Legged_Dumbbell_Deadlift"
     ],
     "casa": [
       "Hyperextensions_With_No_Hyperextension_Bench",
@@ -83,8 +82,8 @@
       "Close-Grip_Front_Lat_Pulldown"
     ],
     "mancuernas": [
-      "Pullups",
-      "Chin-Up"
+      "Bent-Arm_Dumbbell_Pullover",
+      "Straight-Arm_Dumbbell_Pullover"
     ],
     "casa": [
       "Chin-Up",

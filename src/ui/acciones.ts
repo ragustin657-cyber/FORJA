@@ -13,7 +13,8 @@ export type InfoEjercicio = { sugerencia: Sugerencia; ultima: SerieRegistrada[] 
 /** Sugerencia de progresión y series de la última vez para un ejercicio de la rutina. */
 export async function infoEjercicio(e: EjercicioEnDia): Promise<InfoEjercicio> {
   const [historial, ejercicio, ajustes] = await Promise.all([
-    sesionesRepo.historialDeEjercicio(e.ejercicioId),
+    // Las sesiones de descarga (más livianas a propósito) no cuentan para sugerir el próximo peso.
+    sesionesRepo.historialDeEjercicio(e.ejercicioId, { sinDescarga: true }),
     ejerciciosRepo.porId(e.ejercicioId),
     ajustesRepo.obtener(),
   ]);
@@ -58,5 +59,6 @@ async function crearSiNoHay(rutina: Rutina, dia: DiaRutina): Promise<void> {
     sugerencias[e.ejercicioId] = sugerenciaDeSemana(info.sugerencia, semana?.descarga ?? false, incrementoKg);
     ultima[e.ejercicioId] = info.ultima;
   }
-  await sesionesRepo.guardar(crearSesion(rutina, delDia, sugerencias, ultima, ahora, nuevoId()));
+  const sesion = crearSesion(rutina, delDia, sugerencias, ultima, ahora, nuevoId());
+  await sesionesRepo.guardar(semana?.descarga ? { ...sesion, descarga: true } : sesion);
 }

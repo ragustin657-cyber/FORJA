@@ -55,6 +55,8 @@ export interface Sesion {
   inicio: number;
   fin: number | null;
   series: SerieRegistrada[];
+  /** Sesión de una semana de descarga de un plan: no cuenta para sugerir el próximo peso. */
+  descarga?: boolean;
 }
 
 export interface Ajustes {

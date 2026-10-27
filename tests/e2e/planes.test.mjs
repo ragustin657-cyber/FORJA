@@ -289,3 +289,54 @@ test('una sesión empezada el domingo a la noche sigue en su semana después de 
     await app.cerrar();
   }
 });
+
+test('el chip de sugerencia coincide con el peso precargado (series de la semana)', async () => {
+  const app = await abrirApp();
+  const p = app.pagina;
+  try {
+    p.setDefaultTimeout(5000);
+    await crearPlan(p);
+    await p.getByRole('region', { name: 'Tu plan' }).waitFor();
+    // la vez pasada: 5 series, solo 3 al tope (semana 1 pide 3 → sube)
+    await p.evaluate(() => new Promise((ok) => {
+      const r = indexedDB.open('forja');
+      r.onsuccess = () => {
+        const tx = r.result.transaction('sesiones', 'readwrite');
+        const inicio = Date.now() - 8 * 86_400_000;
+        tx.objectStore('sesiones').put({ id: 'previa', rutinaId: 'vieja', diaId: 'x', inicio, fin: inicio + 1,
+          series: [12, 12, 12, 10, 10].map((reps, i) => ({ ejercicioId: 'Barbell_Bench_Press_-_Medium_Grip', numero: i + 1, peso: 100, reps, completada: true })) });
+        tx.oncomplete = () => { r.result.close(); ok(); };
+      };
+    }));
+    await p.reload();
+    await p.getByRole('button', { name: 'Empezar Torso A' }).first().click();
+    await p.getByRole('region', { name: BANCA }).getByText('¡Subí a 102,5 kg!').waitFor();
+    assert.equal(await p.getByRole('textbox', { name: `Peso serie 1 de ${BANCA}` }).inputValue(), '102,5');
+  } finally {
+    await app.cerrar();
+  }
+});
+
+test('después de la semana de descarga, la sugerencia no parte del peso liviano', async () => {
+  const app = await abrirApp();
+  const p = app.pagina;
+  try {
+    p.setDefaultTimeout(5000);
+    await crearPlan(p);
+    await p.getByRole('region', { name: 'Tu plan' }).waitFor();
+    await sesionPrevia(p, 'Barbell_Bench_Press_-_Medium_Grip', 100, 10, 5, 10);
+    await moverInicio(p, 3); // semana 4: descarga
+    await p.reload();
+    await p.getByRole('button', { name: 'Empezar Torso A' }).first().click();
+    await p.getByRole('region', { name: BANCA }).getByText('Descarga: 90 kg').waitFor();
+    for (const n of [1, 2]) await p.getByRole('button', { name: `Completar serie ${n} de ${BANCA}` }).click();
+    await p.getByRole('button', { name: 'Terminar entrenamiento' }).click();
+    await p.getByRole('heading', { name: /Resumen|¡Buen entrenamiento/ }).first().waitFor().catch(() => undefined);
+    await moverInicio(p, 4); // semana 5
+    await irA(p, '/entrenar');
+    await p.getByRole('button', { name: 'Empezar Torso A' }).first().click();
+    await p.getByRole('region', { name: BANCA }).getByText('Mantené 100 kg y sumá repeticiones').waitFor();
+  } finally {
+    await app.cerrar();
+  }
+});

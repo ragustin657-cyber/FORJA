@@ -26,7 +26,7 @@ export const OBJETIVOS: { id: ObjetivoPlan; nombre: string }[] = [
 export const EQUIPOS: { id: Equipo; nombre: string; detalle: string }[] = [
   { id: 'gimnasio', nombre: 'Gimnasio completo', detalle: 'Barras, máquinas, poleas y mancuernas' },
   { id: 'mancuernas', nombre: 'Mancuernas', detalle: 'Mancuernas, peso corporal y bandas' },
-  { id: 'casa', nombre: 'Casa', detalle: 'Peso corporal y bandas' },
+  { id: 'casa', nombre: 'Casa', detalle: 'Peso corporal, bandas y una barra de dominadas' },
 ];
 
 export const PLANTILLAS: Record<string, string[]> = {
@@ -74,7 +74,7 @@ function elegir(lista: string[], variante: number, usados: Set<string>): string 
 export function generarRutina(e: EntradaPlan, patrones: Patrones, id: () => string, ahora: number): Rutina {
   const p = PARAMETROS[e.objetivo];
   const dias: DiaRutina[] = DIAS_POR_SEMANA[e.dias].map((nombre) => {
-    const huecos = PLANTILLAS[nombre].slice(0, e.nivel === 'principiante' ? -1 : undefined);
+    const huecos = PLANTILLAS[nombre];
     const usados = new Set<string>();
     const ejercicios: EjercicioEnDia[] = [];
     huecos.forEach((hueco, posicion) => {
@@ -85,6 +85,8 @@ export function generarRutina(e: EntradaPlan, patrones: Patrones, id: () => stri
       const basico = posicion < 2;
       ejercicios.push({ ejercicioId: elegido, ...(basico ? p.basico : p.accesorio), basico });
     });
+    // Principiante: un ejercicio menos, salvo que el día quede con menos de 3.
+    if (e.nivel === 'principiante' && ejercicios.length > 3) ejercicios.pop();
     return { id: id(), nombre, ejercicios };
   });
   const objetivo = OBJETIVOS.find((o) => o.id === e.objetivo)!.nombre.toLowerCase();
@@ -116,8 +118,11 @@ export function diaDeSemana(dia: DiaRutina, semanaBloque: SemanaBloque): DiaRuti
   return { ...dia, ejercicios: dia.ejercicios.map((e) => ({ ...e, series: seriesDeSemana(e, semanaBloque) })) };
 }
 
+/** 90 % redondeado al incremento; con pesos livianos, al menos un incremento menos (nunca menos de un incremento). */
 export function pesoDeDescarga(peso: number | null, incremento: number): number | null {
-  return peso === null ? null : redondearPeso(peso * 0.9, incremento);
+  if (peso === null) return null;
+  const r = redondearPeso(peso * 0.9, incremento);
+  return r < peso ? r : Math.max(incremento, redondearPeso(peso - incremento, incremento));
 }
 
 export function inicioDelPlan(opcion: 'este' | 'proximo', ahora: Date): string {
