@@ -95,7 +95,7 @@ img { max-width: 100%; display: block; }
   display: inline-flex; align-items: center; justify-content: center; gap: 8px;
   min-height: var(--alto-toque); padding: 0 20px;
   border-radius: var(--radio); border: none; cursor: pointer;
-  font-weight: 700; font-size: 16px;
+  font-weight: 700; font-size: 16px; text-align: center;
   transition: transform 0.08s ease, background 0.15s ease;
 }
 .boton:active { transform: scale(0.97); }
