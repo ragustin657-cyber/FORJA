@@ -9,7 +9,8 @@ test('e1rm con 10 repeticiones', () => {
 });
 
 test('e1rm con 1 repetición', () => {
-  expect(e1rm(100, 1)!).toBeCloseTo(103.33, 2);
+  expect(e1rm(100, 1)).toBe(100);
+  expect(e1rm(100, 2)!).toBeCloseTo(106.67, 2);
 });
 
 test('e1rm acepta hasta 15 repeticiones', () => {

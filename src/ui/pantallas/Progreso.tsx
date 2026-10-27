@@ -1,6 +1,8 @@
 import { numero } from '../../core/formato';
 import { promedioMovil } from '../../core/nutricion/peso';
 import { calcularRecords } from '../../core/records';
+import { avance, objetivoMeta } from '../../core/metas';
+import { metasRepo } from '../../data/repos/metas';
 import { nutricionRepo } from '../../data/repos/nutricion';
 import { ejerciciosRepo } from '../../data/repos/ejercicios';
 import { sesionesRepo } from '../../data/repos/sesiones';
@@ -46,10 +48,12 @@ function PesoCorporal() {
 export function Progreso() {
   const { datos } = useCarga(async () => {
     const ids = await sesionesRepo.ejerciciosConHistorial();
+    const metas = new Map((await metasRepo.todas()).map((m) => [m.id, m]));
     const filas = await Promise.all(
       ids.map(async (id) => ({
         ejercicio: await ejerciciosRepo.porId(id),
         records: calcularRecords(await sesionesRepo.historialDeEjercicio(id)),
+        meta: metas.get(id),
       })),
     );
     return filas.filter((f) => f.ejercicio).sort((a, b) => a.ejercicio!.nombre.localeCompare(b.ejercicio!.nombre, 'es'));
@@ -69,7 +73,7 @@ export function Progreso() {
         <div className="tarjeta vacio">Cuando termines tu primer entrenamiento, vas a ver acá cómo evoluciona tu fuerza.</div>
       )}
       <div className="pila">
-        {datos?.map(({ ejercicio, records }) => (
+        {datos?.map(({ ejercicio, records, meta }) => (
           <Enlace key={ejercicio!.id} a={'/progreso/ejercicio/' + encodeURIComponent(ejercicio!.id)} className="tarjeta fila" style={{ padding: 10 }}>
             <Miniatura e={ejercicio!} tam={48} />
             <span style={{ flex: 1 }}>
@@ -78,6 +82,16 @@ export function Progreso() {
               <span className="texto-2" style={{ fontSize: 13 }}>
                 {records.mejorE1rm ? `Fuerza estimada: ${numero(records.mejorE1rm)} kg` : 'Sin datos para estimar la fuerza'}
               </span>
+              {meta && (
+                <>
+                  <br />
+                  <span style={{ fontSize: 13, color: 'var(--color-dorado)' }}>
+                    {avance(records.mejorE1rm, objetivoMeta(meta)) >= 1
+                      ? 'Meta lograda 🏆'
+                      : `Meta ${numero(meta.peso)} kg × ${meta.reps} · ${Math.floor(avance(records.mejorE1rm, objetivoMeta(meta)) * 100)} %`}
+                  </span>
+                </>
+              )}
             </span>
             <span className="texto-2" aria-hidden>›</span>
           </Enlace>
