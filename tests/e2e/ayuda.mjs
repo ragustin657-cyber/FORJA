@@ -1,3 +1,4 @@
+import assert from 'node:assert/strict';
 // Utilidades para pruebas en un navegador real (Chromium con tamaño de iPhone).
 import { createServer } from 'node:http';
 import { readFile, stat } from 'node:fs/promises';
@@ -76,3 +77,22 @@ export async function cargarPlan(p, { peso = '80', altura = '180', actividad = '
   await p.getByRole('radiogroup', { name: 'Objetivo' }).getByText(objetivo, { exact: true }).click();
   await p.getByRole('button', { name: 'Guardar mi plan' }).click();
 }
+
+/** Toca la opción visible (la etiqueta), como una persona; el radio está oculto. */
+export const elegir = async (p, grupo, nombre) => {
+  const radio = p.getByRole('radiogroup', { name: grupo }).getByRole('radio', { name: new RegExp(`^${nombre}`) });
+  await p.getByRole('radiogroup', { name: grupo }).locator('label').filter({ has: p.getByRole('radio', { name: new RegExp(`^${nombre}`) }) }).click();
+  assert.equal(await radio.isChecked(), true);
+};
+
+/** Arma un plan desde Entrenar (valores por defecto: ganar músculo, 4 días, gimnasio, este lunes). */
+export async function crearPlan(p, { objetivo = 'Ganar músculo', dias = '4', equipo = 'Gimnasio completo', inicio = 'Este lunes' } = {}) {
+  await p.goto(p.url().split('#')[0] + '#/entrenar');
+  await p.getByRole('link', { name: 'Armar un plan' }).click();
+  await elegir(p, 'Objetivo', objetivo);
+  await elegir(p, 'Días por semana', dias);
+  await elegir(p, 'Equipo', equipo);
+  await elegir(p, 'Inicio', inicio);
+  await p.getByRole('button', { name: 'Crear plan' }).click();
+}
+

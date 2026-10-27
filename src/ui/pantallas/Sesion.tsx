@@ -10,6 +10,9 @@ import { infoEjercicio, semanaDeRutina, sugerenciaDeSemana, type InfoEjercicio }
 import { textoSemana } from '../plan';
 import { diaDeSemana } from '../../core/planes';
 import { Boton } from '../componentes/Boton';
+import { PanelAlternativas } from '../componentes/PanelAlternativas';
+import { PanelTiempo } from '../componentes/PanelTiempo';
+import type { EjercicioEnDia } from '../../data/tipos';
 import { Encabezado } from '../componentes/Encabezado';
 import { IconoCheck } from '../componentes/Iconos';
 import { Miniatura } from '../componentes/SelectorEjercicios';
@@ -52,6 +55,8 @@ export function Sesion() {
   const [ctx, setCtx] = useState<Contexto | null>(null);
   const [descansoHasta, setDescansoHasta] = useState<number | null>(null);
   const [aviso, setAviso] = useState<string | null>(null);
+  const [cambiando, setCambiando] = useState<string | null>(null);
+  const [pocoTiempo, setPocoTiempo] = useState(false);
   const [, setTic] = useState(0);
 
   useEffect(() => {
@@ -79,6 +84,13 @@ export function Sesion() {
   const actual = sesion;
   const contexto = ctx;
 
+  /** Parámetros del día para un ejercicio, también si reemplaza a otro ("está ocupada"). */
+  function parametros(ejercicioId: string): EjercicioEnDia {
+    const original = actual.cambios?.find((c) => c.a === ejercicioId)?.de ?? ejercicioId;
+    const enDia = contexto.dia?.ejercicios.find((x) => x.ejercicioId === original);
+    return { ...(enDia ?? { series: 3, repsMin: 8, repsMax: 12, descansoSeg: 90 }), ejercicioId };
+  }
+
   function despachar(a: Accion) {
     const nueva = reducirSesion(actual, a);
     setSesion(nueva);
@@ -96,7 +108,7 @@ export function Sesion() {
       return;
     }
     setAviso(null);
-    const descanso = contexto.dia?.ejercicios.find((x) => x.ejercicioId === ejercicioId)?.descansoSeg ?? 90;
+    const descanso = Math.min(parametros(ejercicioId).descansoSeg, actual.descansoMaxSeg ?? Infinity);
     if (descanso > 0) setDescansoHasta(Date.now() + descanso * 1000);
   }
 
@@ -118,9 +130,12 @@ export function Sesion() {
   return (
     <>
       <Encabezado titulo={contexto.dia?.nombre ?? 'Entrenamiento'} />
-      <p className="texto-2" style={{ marginTop: -12 }}>
-        {duracion(Date.now() - actual.inicio)} · {hechas} de {actual.series.length} series
-      </p>
+      <div className="fila-entre" style={{ marginTop: -12, marginBottom: 12 }}>
+        <span className="texto-2">
+          {duracion(Date.now() - actual.inicio)} · {hechas} de {actual.series.length} series
+        </span>
+        <button type="button" className="chip" onClick={() => setPocoTiempo(true)}>Poco tiempo</button>
+      </div>
       <div className="pila">
         {contexto.semana && (
           <div role="note" className={`aviso ${contexto.semana.descarga ? 'aviso-dorado' : ''}`} style={{ fontSize: 14, padding: '10px 14px' }}>
@@ -143,6 +158,9 @@ export function Sesion() {
                   </Enlace>
                   {vezPasada && <div className="texto-2" style={{ fontSize: 13 }}>La vez pasada: {vezPasada}</div>}
                 </div>
+                {series.some((x) => !x.completada) && (
+                  <button type="button" className="chip" onClick={() => setCambiando(id)}>Cambiar</button>
+                )}
               </div>
               {info && (
                 <span className={`chip ${info.sugerencia.motivo === 'subir' ? 'chip-dorado' : ''}`} style={{ alignSelf: 'flex-start', cursor: 'default' }}>
@@ -209,6 +227,42 @@ export function Sesion() {
         <Boton variante="dorado" ancho onClick={terminar}>Terminar entrenamiento</Boton>
         <div style={{ height: descansoHasta ? 90 : 0 }} />
       </div>
+      {cambiando && (
+        <PanelAlternativas
+          nombre={contexto.ejercicios[cambiando]?.nombre ?? 'Ejercicio'}
+          base={parametros(cambiando)}
+          enSesion={new Set(ids)}
+          onCerrar={() => setCambiando(null)}
+          onElegir={({ ejercicio, info }) => {
+            setCtx({ ...contexto, ejercicios: { ...contexto.ejercicios, [ejercicio.id]: ejercicio }, info: { ...contexto.info, [ejercicio.id]: info } });
+            despachar({ tipo: 'reemplazar', ejercicioId: cambiando, nuevoId: ejercicio.id, peso: info.sugerencia.peso });
+            setCambiando(null);
+          }}
+        />
+      )}
+      {pocoTiempo && (
+        <PanelTiempo
+          items={ids.map((id, i) => {
+            const delEjercicio = actual.series.filter((x) => x.ejercicioId === id);
+            const p = parametros(id);
+            const original = actual.cambios?.find((c) => c.a === id)?.de ?? id;
+            const posicion = contexto.dia?.ejercicios.findIndex((x) => x.ejercicioId === original) ?? i;
+            return {
+              ejercicioId: id,
+              pendientes: delEjercicio.filter((x) => !x.completada).length,
+              completadas: delEjercicio.filter((x) => x.completada).length,
+              descansoSeg: p.descansoSeg,
+              basico: p.basico ?? (posicion >= 0 ? posicion : i) < 2,
+            };
+          })}
+          nombre={(id) => contexto.ejercicios[id]?.nombre ?? 'Ejercicio'}
+          onCerrar={() => setPocoTiempo(false)}
+          onAplicar={(r) => {
+            despachar({ tipo: 'recortar', quitar: r.quitar, reducir: r.reducir, descansoMaxSeg: r.descansoMaxSeg });
+            setPocoTiempo(false);
+          }}
+        />
+      )}
       {descansoHasta && <Temporizador hasta={descansoHasta} onCambiar={setDescansoHasta} onCerrar={() => setDescansoHasta(null)} />}
     </>
   );
