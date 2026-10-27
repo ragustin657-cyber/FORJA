@@ -31,7 +31,7 @@ test('al actualizar la base de datos se conservan las rutinas de la versión ant
     await p.goto(servidor.url + '#/entrenar');
     await p.getByRole('article', { name: 'Mi rutina vieja' }).waitFor({ timeout: 8000 });
     const version = await p.evaluate(() => new Promise((ok) => { const r = indexedDB.open('forja'); r.onsuccess = () => { ok(r.result.version); r.result.close(); }; }));
-    assert.equal(version, 3);
+    assert.equal(version, 4);
   } finally {
     await navegador.close();
     await servidor.cerrar();
@@ -70,8 +70,51 @@ test('al pasar de la versión 2 a la 3 se conservan el perfil y las rutinas, y a
     await p.goto(servidor.url + '#/nutricion');
     await p.getByText('2.210').first().waitFor({ timeout: 8000 });
     const info = await p.evaluate(() => new Promise((ok) => { const r = indexedDB.open('forja'); r.onsuccess = () => { ok({ v: r.result.version, tablas: [...r.result.objectStoreNames] }); r.result.close(); }; }));
-    assert.equal(info.v, 3);
+    assert.equal(info.v, 4);
     assert.ok(info.tablas.includes('registros') && info.tablas.includes('productos'));
+  } finally {
+    await navegador.close();
+    await servidor.cerrar();
+  }
+});
+
+test('al pasar de la versión 3 a la 4 se conservan los datos y aparecen las tablas de cuerpo', async () => {
+  const servidor = await iniciarServidor();
+  const navegador = await chromium.launch();
+  try {
+    const contexto = await navegador.newContext({ ...devices['iPhone 13'], serviceWorkers: 'block' });
+    const p = await contexto.newPage();
+    await p.goto(servidor.url + 'manifest.webmanifest');
+    await p.evaluate(
+      () =>
+        new Promise((ok, mal) => {
+          const pedido = indexedDB.open('forja', 3);
+          pedido.onupgradeneeded = () => {
+            for (const t of ['ejercicios', 'rutinas', 'sesiones', 'ajustes', 'perfil', 'pesos', 'menus', 'compras', 'registros', 'productos']) pedido.result.createObjectStore(t, { keyPath: 'id' });
+          };
+          pedido.onsuccess = () => {
+            const tx = pedido.result.transaction(['rutinas', 'perfil', 'pesos', 'registros'], 'readwrite');
+            tx.objectStore('rutinas').put({ id: 'r1', nombre: 'Rutina de la v3', origen: 'manual', archivado: false, creada: 1, dias: [] });
+            tx.objectStore('perfil').put({ id: 'yo', sexo: 'hombre', nacimiento: '1996-05-10', alturaCm: 180, actividad: 'moderado', objetivo: 'bajar', comidas: 4, noComoGrupos: [], noComoTexto: [] });
+            tx.objectStore('pesos').put({ id: '2026-10-20', fecha: Date.now(), kg: 80 });
+            const d = new Date();
+            const hoy = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+            tx.objectStore('registros').put({ id: 'x', fecha: hoy, tipo: 'cena', origen: 'alimento', refId: 'arroz', cantidad: 100, nombre: 'Arroz de la v3', macros: { kcal: 350, proteina: 7, grasas: 1, carbos: 80 }, creado: 1 });
+            tx.oncomplete = () => {
+              pedido.result.close();
+              ok();
+            };
+          };
+          pedido.onerror = () => mal(pedido.error);
+        }),
+    );
+    await p.goto(servidor.url + '#/entrenar');
+    await p.getByRole('article', { name: 'Rutina de la v3' }).waitFor({ timeout: 8000 });
+    await p.goto(servidor.url + '#/nutricion/hoy');
+    await p.getByText('Arroz de la v3').waitFor({ timeout: 8000 });
+    const info = await p.evaluate(() => new Promise((ok) => { const r = indexedDB.open('forja'); r.onsuccess = () => { ok({ v: r.result.version, tablas: [...r.result.objectStoreNames] }); r.result.close(); }; }));
+    assert.equal(info.v, 4);
+    for (const t of ['medidas', 'fotos', 'imagenes']) assert.ok(info.tablas.includes(t), t);
   } finally {
     await navegador.close();
     await servidor.cerrar();

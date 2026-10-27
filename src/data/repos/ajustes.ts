@@ -2,7 +2,7 @@ import { almacen } from '../db';
 import type { Ajustes } from '../tipos';
 
 type Fila = Ajustes & { id: 'app' };
-const DEFAULTS: Ajustes = { incrementoKg: 2.5, ultimaCopia: null };
+const DEFAULTS: Ajustes = { incrementoKg: 2.5, ultimaCopia: null, temporizadorFoto: 0, fotosPospuestas: null };
 const tabla = () => almacen().tabla<Fila>('ajustes');
 
 export const ajustesRepo = {

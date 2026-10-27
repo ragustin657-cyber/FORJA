@@ -7,11 +7,11 @@ function Anillo({ valor, meta, color, etiqueta }: { valor: number; meta: number;
   return (
     <svg viewBox="0 0 76 76" width="76" height="76" aria-hidden data-etiqueta={etiqueta}>
       <circle cx="38" cy="38" r={r} fill="none" stroke="var(--color-tarjeta-alta)" strokeWidth="8" />
-      <circle
+      {pct > 0 && <circle
         cx="38" cy="38" r={r} fill="none" stroke={color} strokeWidth="8" strokeLinecap="round"
         strokeDasharray={`${(c * pct).toFixed(1)} ${c.toFixed(1)}`} transform="rotate(-90 38 38)"
         style={{ transition: 'stroke-dasharray 0.4s' }}
-      />
+      />}
       <text x="38" y="43" textAnchor="middle" fontSize="15" fontWeight="700" fill="var(--color-texto)">{Math.round(pct * 100)}%</text>
     </svg>
   );
