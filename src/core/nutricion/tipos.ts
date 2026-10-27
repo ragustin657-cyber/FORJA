@@ -42,3 +42,16 @@ export const TIPOS_COMIDA: Record<TipoComida, string> = {
   merienda: 'Merienda',
   cena: 'Cena',
 };
+
+/** Producto envasado: valores cada 100 g. El id es el código de barras, o "propio-…" si se cargó sin código. */
+export interface Producto {
+  id: string;
+  nombre: string;
+  marca?: string;
+  kcal: number;
+  proteina: number;
+  grasas: number;
+  carbos: number;
+  porcionG?: number;
+  origen: 'off' | 'manual';
+}
