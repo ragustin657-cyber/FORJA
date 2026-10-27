@@ -5,6 +5,7 @@ import { Nutricion } from './ui/pantallas/nutricion/Nutricion';
 import { MiPlan } from './ui/pantallas/nutricion/MiPlan';
 import { Semana } from './ui/pantallas/nutricion/Semana';
 import { Plato } from './ui/pantallas/nutricion/Plato';
+import { Compras } from './ui/pantallas/nutricion/Compras';
 import { Mas } from './ui/pantallas/Mas';
 import { Backup } from './ui/pantallas/Backup';
 import { Biblioteca } from './ui/pantallas/Biblioteca';
@@ -29,6 +30,7 @@ const RUTAS: Ruta[] = [
   { patron: '/nutricion', render: () => <Nutricion /> },
   { patron: '/nutricion/plan', render: () => <MiPlan /> },
   { patron: '/nutricion/semana', render: () => <Semana /> },
+  { patron: '/nutricion/compras', render: () => <Compras /> },
   { patron: '/nutricion/plato/:dia/:comida', render: (p) => <Plato key={p.dia + '-' + p.comida} dia={Number(p.dia)} comida={Number(p.comida)} /> },
   { patron: '/progreso', render: () => <Progreso /> },
   { patron: '/progreso/ejercicio/:id', render: (p) => <ProgresoEjercicio key={p.id} id={p.id} /> },

@@ -178,3 +178,25 @@ test('el detalle del plato muestra ingredientes en gramos, pasos y macros', asyn
     await app.cerrar();
   }
 });
+
+test('la lista de compras agrupa, se tacha y lo tachado se conserva', async () => {
+  const app = await abrirApp();
+  const p = app.pagina;
+  try {
+    p.setDefaultTimeout(5000);
+    await cargarPlan(p);
+    await p.getByRole('link', { name: 'Lista de compras' }).click();
+    await p.getByRole('heading', { name: 'Verdulería' }).waitFor();
+    await p.getByRole('heading', { name: 'Almacén' }).waitFor();
+    const primero = p.getByRole('checkbox').first();
+    const nombre = await primero.getAttribute('aria-label');
+    await primero.click();
+    await p.waitForFunction((n) => document.querySelector(`input[aria-label="${n}"]`)?.checked, nombre);
+    await p.reload();
+    await p.getByRole('checkbox', { name: nombre }).waitFor();
+    assert.equal(await p.getByRole('checkbox', { name: nombre }).isChecked(), true);
+    await p.getByText(/1 de \d+ comprados/).waitFor();
+  } finally {
+    await app.cerrar();
+  }
+});
