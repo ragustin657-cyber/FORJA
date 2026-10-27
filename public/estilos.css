@@ -110,6 +110,7 @@ img { max-width: 100%; display: block; }
   width: var(--alto-toque); height: var(--alto-toque); padding: 0;
   border-radius: 50%; background: var(--color-tarjeta-alta);
   display: inline-flex; align-items: center; justify-content: center; border: none; cursor: pointer;
+  flex-shrink: 0;
 }
 .boton-icono svg { width: 22px; height: 22px; }
 
@@ -124,15 +125,15 @@ img { max-width: 100%; display: block; }
 .stepper { display: flex; align-items: center; gap: 6px; }
 .stepper .boton-icono { width: 44px; height: 48px; border-radius: var(--radio-chico); font-size: 22px; font-weight: 700; }
 .stepper input {
-  width: 72px; min-height: 48px; text-align: center; padding: 0 2px;
+  width: 72px; min-height: 48px; text-align: center;
   background: var(--color-fondo); border: 1px solid var(--color-linea); border-radius: var(--radio-chico);
   font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums;
 }
 
-.stepper-compacto { gap: 4px; width: 100%; }
-.stepper-compacto .boton-icono { width: 30px; flex-shrink: 0; font-size: 20px; }
-/* El campo ocupa todo el espacio libre para que entren pesos como 22,5 o 102,5 */
-.stepper-compacto input { width: auto; flex: 1; min-width: 0; padding: 0; font-size: 17px; }
+.stepper-compacto { gap: 2px; }
+.stepper-compacto .boton-icono { width: 30px; font-size: 20px; }
+.stepper-compacto input { width: 58px; padding: 0 2px; font-size: 16px; }
+.boton-completar { width: 44px; height: 44px; }
 
 .chip {
   display: inline-flex; align-items: center; min-height: 34px; padding: 0 14px;
