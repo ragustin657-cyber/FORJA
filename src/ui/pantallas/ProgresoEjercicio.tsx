@@ -12,6 +12,7 @@ import { useCarga } from '../datos';
 import { Boton } from '../componentes/Boton';
 import { cargarSugerencia } from '../nivel';
 import { Enlace } from '../router';
+import { MetaEjercicio } from './MetaEjercicio';
 
 const MES = 30.44;
 const plural = (n: number, uno: string, varios: string) => `${n} ${n === 1 ? uno : varios}`;
@@ -108,6 +109,7 @@ export function ProgresoEjercicio({ id }: { id: string }) {
         </Tarjeta>
 
         <HastaDonde p={proyeccion} nivel={datos.nivel} alCambiarNivel={recargar} />
+        <MetaEjercicio ejercicioId={id} proyeccion={proyeccion} mejor={records.mejorE1rm} />
 
         <Tarjeta className="pila">
           <h2 style={{ fontSize: 16 }}>Récords</h2>

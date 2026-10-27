@@ -140,3 +140,44 @@ test('con la fuerza estable lo explica', async () => {
     await app.cerrar();
   }
 });
+
+test('poner, editar y quitar una meta; la lista de Progreso la muestra', async () => {
+  const app = await abrirApp({ ruta: '#/progreso' });
+  const p = app.pagina;
+  try {
+    p.setDefaultTimeout(5000);
+    await cargarHistorial(p, BANCA, SUBIDA);
+    await p.goto(urlEjercicio(p));
+    const meta = p.getByRole('region', { name: 'Meta' });
+    await meta.getByRole('button', { name: 'Poner meta' }).click();
+    await meta.getByLabel('Peso (kg)').fill('120');
+    await meta.getByLabel('Repeticiones').fill('20');
+    await meta.getByRole('button', { name: 'Guardar' }).click();
+    await meta.getByText('Las repeticiones tienen que ser un número entero de 1 a 15.').waitFor();
+    await meta.getByLabel('Repeticiones').fill('1');
+    await meta.getByRole('button', { name: 'Guardar' }).click();
+    await meta.getByText('120 kg × 1').waitFor();
+    await meta.getByText(/^Te faltan [\d,]+ kg$/).waitFor();
+    await meta.getByText(/^(Llegarías|Más de 2 años)/).waitFor();
+    await meta.getByRole('progressbar').waitFor();
+
+    await p.goto(p.url().split('#')[0] + '#/progreso');
+    await p.getByText(/^Meta 120 kg × 1 · \d+ %$/).waitFor();
+
+    await p.goto(urlEjercicio(p));
+    await meta.getByRole('button', { name: 'Editar' }).click();
+    await meta.getByLabel('Peso (kg)').fill('50');
+    await meta.getByRole('button', { name: 'Guardar' }).click();
+    await meta.getByText('¡Ya llegaste! 🏆').waitFor();
+    await p.goto(p.url().split('#')[0] + '#/progreso');
+    await p.getByText('Meta lograda 🏆').waitFor();
+
+    await p.goto(urlEjercicio(p));
+    await meta.getByRole('button', { name: 'Quitar meta' }).click();
+    await p.getByRole('dialog').getByRole('button', { name: 'Quitar' }).click();
+    await meta.getByRole('button', { name: 'Poner meta' }).waitFor();
+    assert.deepEqual(app.errores, []);
+  } finally {
+    await app.cerrar();
+  }
+});
