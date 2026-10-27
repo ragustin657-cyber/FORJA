@@ -21,6 +21,7 @@ import { Inicio } from './ui/pantallas/Inicio';
 import { Ajustes } from './ui/pantallas/Ajustes';
 import { Progreso } from './ui/pantallas/Progreso';
 import { ProgresoEjercicio } from './ui/pantallas/ProgresoEjercicio';
+import { CargarMedidas } from './ui/pantallas/cuerpo/CargarMedidas';
 
 type Ruta = { patron: string; render: (p: Record<string, string>) => ReactNode };
 
@@ -39,6 +40,7 @@ const RUTAS: Ruta[] = [
   { patron: '/nutricion/hoy/:fecha', render: (p) => <Hoy key={p.fecha} fecha={p.fecha} /> },
   { patron: '/nutricion/agregar/:fecha/:tipo', render: (p) => <Agregar key={p.fecha + p.tipo} fecha={p.fecha} tipo={p.tipo as TipoComida} /> },
   { patron: '/progreso', render: () => <Progreso /> },
+  { patron: '/progreso/medidas', render: () => <CargarMedidas /> },
   { patron: '/progreso/ejercicio/:id', render: (p) => <ProgresoEjercicio key={p.id} id={p.id} /> },
   { patron: '/mas', render: () => <Mas /> },
   { patron: '/mas/backup', render: () => <Backup /> },

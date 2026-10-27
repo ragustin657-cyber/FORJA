@@ -6,6 +6,7 @@ import { ejerciciosRepo } from '../../data/repos/ejercicios';
 import { sesionesRepo } from '../../data/repos/sesiones';
 import { Encabezado } from '../componentes/Encabezado';
 import { GraficoLinea } from '../componentes/GraficoLinea';
+import { Medidas } from './cuerpo/Medidas';
 import { Miniatura } from '../componentes/SelectorEjercicios';
 import { useCarga } from '../datos';
 import { Enlace } from '../router';
@@ -15,7 +16,7 @@ function PesoCorporal() {
   if (!pesos || pesos.length === 0) return null;
   const tendencia = promedioMovil(pesos);
   return (
-    <section aria-label="Peso corporal" className="tarjeta pila" style={{ marginBottom: 12 }}>
+    <section aria-label="Peso corporal" className="tarjeta pila">
       <span className="subtitulo" style={{ margin: 0 }}>Peso corporal</span>
       {pesos.length < 2 ? (
         <p className="texto-2" style={{ margin: 0 }}>
@@ -56,7 +57,12 @@ export function Progreso() {
   return (
     <>
       <Encabezado titulo="Progreso" />
-      <PesoCorporal />
+      <h2 className="subtitulo">Cuerpo</h2>
+      <div className="pila" style={{ marginBottom: 12 }}>
+        <PesoCorporal />
+        <Medidas />
+      </div>
+      <h2 className="subtitulo">Fuerza</h2>
       {datos && datos.length === 0 && (
         <div className="tarjeta vacio">Cuando termines tu primer entrenamiento, vas a ver acá cómo evoluciona tu fuerza.</div>
       )}
