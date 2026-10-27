@@ -42,7 +42,8 @@ export function metabolismoBasal(sexo: Sexo, pesoKg: number, alturaCm: number, a
 export function calcularMetas(perfil: Perfil, pesoKg: number, hoy: Date): Metas {
   const basal = metabolismoBasal(perfil.sexo, pesoKg, perfil.alturaCm, edad(perfil.nacimiento, hoy));
   const gasto = basal * FACTOR_ACTIVIDAD[perfil.actividad];
-  const buscado = gasto * (1 + AJUSTE[perfil.objetivo]);
+  const ajuste = perfil.ajusteKcal ?? 0;
+  const buscado = gasto * (1 + AJUSTE[perfil.objetivo]) + ajuste;
   const maxDeficit = (pesoKg * 0.01 * KCAL_POR_KG) / 7;
   // El piso vale para todos los objetivos; el tope del 1 % por semana, solo para bajar.
   const minimo = Math.max(basal, MINIMO[perfil.sexo], perfil.objetivo === 'bajar' ? gasto - maxDeficit : 0);
@@ -58,7 +59,8 @@ export function calcularMetas(perfil: Perfil, pesoKg: number, hoy: Date): Metas 
   const explicacion = [`Tu cuerpo gasta unas ${miles(decena(gasto))} kcal por día.`];
   if (perfil.objetivo === 'mantener') explicacion.push('Para mantener tu peso comés lo mismo que gastás.');
   else if (perfil.objetivo === 'ganar') explicacion.push(`Para ganar músculo comés un 10 % más: ${miles(kcal)} kcal.`);
-  else explicacion.push(`Para bajar grasa comés un 20 % menos: ${miles(decena(buscado))} kcal.`);
+  else explicacion.push(`Para bajar grasa comés un 20 % menos: ${miles(decena(buscado - ajuste))} kcal.`);
+  if (ajuste) explicacion.push(`Según cómo viene tu peso, le ${ajuste < 0 ? 'restamos' : 'sumamos'} ${miles(Math.abs(ajuste))} kcal.`);
   if (topeAplicado) explicacion.push(`Lo subimos a ${miles(kcal)} kcal para que no sea un plan demasiado estricto.`);
 
   const alerta = kcal > LIMITE_RAZONABLE ? 'Tus números dan muy altos. Revisá los datos y, si están bien, consultá a un profesional.' : undefined;

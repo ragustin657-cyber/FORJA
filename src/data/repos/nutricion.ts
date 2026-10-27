@@ -37,7 +37,14 @@ export const nutricionRepo = {
   /** Guarda el perfil y el peso del día (un registro por día: el último reemplaza al anterior). */
   async guardarPerfil(p: Perfil, pesoKg: number, ahora: number) {
     await almacen().tabla<Perfil>('perfil').poner(p);
-    await almacen().tabla<RegistroPeso>('pesos').poner({ id: dia(ahora), fecha: ahora, kg: pesoKg });
+    await nutricionRepo.registrarPeso(pesoKg, ahora);
+  },
+  /** Un peso por día: el último del día reemplaza al anterior. */
+  registrarPeso: (kg: number, ahora: number) => almacen().tabla<RegistroPeso>('pesos').poner({ id: dia(ahora), fecha: ahora, kg }),
+  /** Guarda el ajuste de calorías y la fecha del chequeo, sin tocar el resto del perfil. */
+  async guardarAjuste(ajusteKcal: number, ultimoAjuste: number) {
+    const p = await nutricionRepo.perfil();
+    if (p) await almacen().tabla<Perfil>('perfil').poner({ ...p, ajusteKcal, ultimoAjuste });
   },
   pesos,
   async pesoActual(): Promise<number | undefined> {

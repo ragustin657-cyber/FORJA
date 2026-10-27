@@ -103,7 +103,13 @@ export function MiPlan() {
     setErrores(problemas);
     if (problemas.length > 0) return;
     const { pesoKg: _p, ...perfil } = datos;
-    await nutricionRepo.guardarPerfil(perfil as Perfil, pesoKg!, Date.now());
+    // El ajuste quincenal se conserva; si cambia el objetivo, vuelve a 0 y el próximo chequeo es en 14 días.
+    const antes = await nutricionRepo.perfil();
+    const ahora = Date.now();
+    const ajuste: Pick<Perfil, 'ajusteKcal' | 'ultimoAjuste'> =
+      !antes ? {} : antes.objetivo === perfil.objetivo ? { ajusteKcal: antes.ajusteKcal, ultimoAjuste: antes.ultimoAjuste } : { ajusteKcal: 0, ultimoAjuste: ahora };
+    for (const k of ['ajusteKcal', 'ultimoAjuste'] as const) if (ajuste[k] === undefined) delete ajuste[k];
+    await nutricionRepo.guardarPerfil({ ...(perfil as Perfil), ...ajuste }, pesoKg!, ahora);
     navegar('/nutricion');
   }
 

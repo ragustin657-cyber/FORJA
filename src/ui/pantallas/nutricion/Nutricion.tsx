@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { proponerAjuste, type Propuesta } from '../../../core/nutricion/ajuste';
+import { nutricionRepo } from '../../../data/repos/nutricion';
 import { Boton } from '../../componentes/Boton';
 import { Encabezado } from '../../componentes/Encabezado';
 import { Tarjeta } from '../../componentes/Tarjeta';
@@ -16,8 +18,50 @@ function Macro({ nombre, valor }: { nombre: string; valor: number }) {
   );
 }
 
+/** Revisa el ajuste quincenal. Si se revisó y no hace falta ajustar, guarda la fecha del chequeo sin mostrar nada. */
+async function revisarAjuste(): Promise<Propuesta | null> {
+  const perfil = await nutricionRepo.perfil();
+  if (!perfil) return null;
+  const ahora = Date.now();
+  const r = proponerAjuste(perfil, await nutricionRepo.pesos(), ahora);
+  if (r === 'sin-cambios') {
+    await nutricionRepo.guardarAjuste(perfil.ajusteKcal ?? 0, ahora);
+    return null;
+  }
+  return r;
+}
+
+function TarjetaAjuste({ propuesta, alTerminar }: { propuesta: Propuesta; alTerminar: () => void }) {
+  const [ocupado, setOcupado] = useState(false);
+  const responder = async (aplicar: boolean) => {
+    setOcupado(true);
+    try {
+      const perfil = await nutricionRepo.perfil();
+      await nutricionRepo.guardarAjuste(aplicar ? propuesta.ajusteNuevo : (perfil?.ajusteKcal ?? 0), Date.now());
+      alTerminar();
+    } finally {
+      setOcupado(false);
+    }
+  };
+  return (
+    <section aria-label="Revisamos tu progreso" className="aviso aviso-dorado pila">
+      <span>
+        <strong>Revisamos tu progreso:</strong> {propuesta.motivo}.
+      </span>
+      <span>
+        Te proponemos 150 kcal {propuesta.delta < 0 ? 'menos' : 'más'} por día (de {miles(propuesta.kcalAntes)} a {miles(propuesta.kcalDespues)}).
+      </span>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
+        <Boton variante="dorado" disabled={ocupado} onClick={() => responder(true)}>Aplicar</Boton>
+        <Boton variante="secundario" disabled={ocupado} onClick={() => responder(false)}>Ahora no</Boton>
+      </div>
+    </section>
+  );
+}
+
 export function Nutricion() {
   const { datos, recargar } = useCarga(cargarNutricion);
+  const { datos: propuesta, recargar: recargarAjuste } = useCarga(revisarAjuste);
   const [rehaciendo, setRehaciendo] = useState(false);
 
   if (datos === undefined) {
@@ -41,6 +85,16 @@ export function Nutricion() {
     <>
       <Encabezado titulo="Nutrición" accion={<Enlace a="/nutricion/plan" className="chip">Mi plan</Enlace>} />
       <div className="pila">
+        {propuesta && (
+          <TarjetaAjuste
+            propuesta={propuesta}
+            alTerminar={() => {
+              recargarAjuste();
+              recargar();
+            }}
+          />
+        )}
+
         {desactualizado && (
           <div className="aviso aviso-dorado pila">
             <span><strong>Tu plan cambió.</strong> El menú de esta semana se armó con tus datos anteriores.</span>
@@ -78,6 +132,8 @@ export function Nutricion() {
           {metas.alerta && <div className="aviso" role="alert" style={{ fontSize: 14 }}>{metas.alerta}</div>}
           <p className="texto-2" style={{ fontSize: 12, margin: 0 }}>Son valores aproximados y recomendaciones generales.</p>
         </section>
+
+        <Enlace a="/nutricion/hoy" className="boton boton-primario boton-ancho">Registrar lo que comí</Enlace>
 
         <MenuDeHoy estado={datos} />
 

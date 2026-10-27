@@ -63,3 +63,16 @@ export async function esperarValor(locator, esperado, timeout = 5000) {
   }
   throw new Error(`Se esperaba "${esperado}" y quedó "${actual}"`);
 }
+
+/** Completa "Mi plan" con los datos de ejemplo (hombre, 30 años, 180 cm, 80 kg, moderado, bajar, 4 comidas). */
+export async function cargarPlan(p, { peso = '80', altura = '180', actividad = 'Moderado', objetivo = 'Bajar grasa' } = {}) {
+  await p.goto(p.url().split('#')[0] + '#/nutricion');
+  await p.getByRole('button', { name: 'Armá tu plan' }).click();
+  await p.getByRole('radiogroup', { name: 'Sexo' }).getByText('Hombre', { exact: true }).click();
+  await p.getByLabel('Fecha de nacimiento').fill('1996-05-10');
+  await p.getByLabel('Altura (cm)').fill(altura);
+  await p.getByLabel('Peso (kg)').fill(peso);
+  await p.getByRole('radiogroup', { name: 'Actividad' }).getByText(actividad, { exact: true }).click();
+  await p.getByRole('radiogroup', { name: 'Objetivo' }).getByText(objetivo, { exact: true }).click();
+  await p.getByRole('button', { name: 'Guardar mi plan' }).click();
+}
