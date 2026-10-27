@@ -54,10 +54,11 @@ export function proyectadoEn(p: Ok, dias: number): number {
 
 export function proyectar(puntos: Punto[], ahora: number, nivel: Nivel): Proyeccion {
   const fechas = puntos.map((p) => p.fecha);
+  // Se toleran unos minutos de diferencia entre sesiones para no sumar un día de más.
   const span = puntos.length ? (Math.max(...fechas) - Math.min(...fechas)) / DIA : 0;
   const curva = ajustarCurva(puntos);
   if (puntos.length < MINIMO_PUNTOS || span < MINIMO_DIAS || !curva) {
-    return { estado: 'faltan-datos', faltanSesiones: Math.max(0, MINIMO_PUNTOS - puntos.length), faltanDias: Math.max(0, Math.ceil(MINIMO_DIAS - span)) };
+    return { estado: 'faltan-datos', faltanSesiones: Math.max(0, MINIMO_PUNTOS - puntos.length), faltanDias: Math.max(0, Math.ceil(MINIMO_DIAS - span - 0.01)) };
   }
   const base = valorCurva(curva, ahora);
   if (curva.b <= 0) return { estado: 'estable', hoy: medio(base) };

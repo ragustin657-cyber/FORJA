@@ -83,3 +83,60 @@ test('sin plan no hay aviso de nivel', async () => {
     await app.cerrar();
   }
 });
+
+const SUBIDA = [[35, 80, 8], [28, 82.5, 8], [21, 85, 8], [14, 85, 9], [7, 87.5, 8], [0, 87.5, 10]];
+const urlEjercicio = (p, id = BANCA) => p.url().split('#')[0] + '#/progreso/ejercicio/' + encodeURIComponent(id);
+const seisMeses = async (t) => Number((await t.getByText(/^En 6 meses:/).innerText()).match(/En 6 meses: ([\d,]+) kg/)[1].replace(',', '.'));
+
+test('con historial suficiente muestra hoy, 1, 3 y 6 meses y la línea de proyección', async () => {
+  const app = await abrirApp({ ruta: '#/progreso' });
+  const p = app.pagina;
+  try {
+    p.setDefaultTimeout(5000);
+    await cargarHistorial(p, BANCA, SUBIDA);
+    await p.goto(urlEjercicio(p));
+    const t = p.getByRole('region', { name: 'Hasta dónde podés llegar' });
+    await t.getByText(/^Hoy: [\d,]+ kg estimados$/).waitFor();
+    for (const m of ['En 1 mes:', 'En 3 meses:', 'En 6 meses:']) await t.getByText(new RegExp(`^${m} [\\d,]+ kg \\([\\d,]+–[\\d,]+\\)$`)).waitFor();
+    await t.getByText('Ritmo de nivel intermedio').waitFor();
+    await t.getByText(/Es una estimación/).waitFor();
+    await p.getByLabel('Proyección').waitFor();
+    // principiante: el tope es más alto, así que a 6 meses da igual o más
+    const antes = await seisMeses(t);
+    await t.getByRole('link', { name: 'Cambiar' }).click();
+    await p.getByText('Menos de 1 año entrenando').click();
+    await p.goto(urlEjercicio(p));
+    await t.getByText('Ritmo de nivel principiante').waitFor();
+    assert.ok((await seisMeses(t)) >= antes);
+    assert.deepEqual(app.errores, []);
+  } finally {
+    await app.cerrar();
+  }
+});
+
+test('con poco historial dice cuánto falta', async () => {
+  const app = await abrirApp({ ruta: '#/progreso' });
+  const p = app.pagina;
+  try {
+    p.setDefaultTimeout(5000);
+    await cargarHistorial(p, BANCA, [[10, 80, 8], [3, 82.5, 8]]);
+    await p.goto(urlEjercicio(p));
+    await p.getByRole('region', { name: 'Hasta dónde podés llegar' }).getByText('Necesitás al menos 4 entrenamientos en 3 semanas para proyectar. Te faltan 2 entrenamientos y 14 días.').waitFor();
+    assert.equal(await p.getByLabel('Proyección').count(), 0);
+  } finally {
+    await app.cerrar();
+  }
+});
+
+test('con la fuerza estable lo explica', async () => {
+  const app = await abrirApp({ ruta: '#/progreso' });
+  const p = app.pagina;
+  try {
+    p.setDefaultTimeout(5000);
+    await cargarHistorial(p, BANCA, SUBIDA.map(([d]) => [d, 80, 8]));
+    await p.goto(urlEjercicio(p));
+    await p.getByRole('region', { name: 'Hasta dónde podés llegar' }).getByText(/Tu fuerza viene estable/).waitFor();
+  } finally {
+    await app.cerrar();
+  }
+});

@@ -3,16 +3,25 @@ import { useState } from 'react';
 type Punto = { x: number; y: number; etiqueta: string; detalle: string };
 
 /** Gráfico de línea simple en SVG: línea dorada, pocos ejes, toque para ver el detalle. */
-/** `tendencia` (opcional): una segunda línea punteada, un valor por punto. */
-export function GraficoLinea({ puntos, titulo, unidad, tendencia }: { puntos: Punto[]; titulo: string; unidad: string; tendencia?: number[] }) {
+/**
+ * `tendencia` (opcional): una segunda línea punteada, un valor por punto.
+ * `proyeccion` (opcional): línea punteada hacia el futuro; con ella los puntos se ubican por fecha (x).
+ */
+export function GraficoLinea({ puntos, titulo, unidad, tendencia, proyeccion }: {
+  puntos: Punto[]; titulo: string; unidad: string; tendencia?: number[]; proyeccion?: { x: number; y: number }[];
+}) {
   const [elegido, setElegido] = useState<number>(puntos.length - 1);
   const ancho = 340;
   const alto = 180;
   const margen = { izq: 48, der: 12, arr: 14, aba: 24 };
-  const ys = [...puntos.map((p) => p.y), ...(tendencia ?? [])];
+  const ys = [...puntos.map((p) => p.y), ...(tendencia ?? []), ...(proyeccion ?? []).map((p) => p.y)];
   const minY = Math.floor(Math.min(...ys) * 0.95);
   const maxY = Math.ceil(Math.max(...ys) * 1.05);
-  const xs = puntos.map((_, i) => margen.izq + (i * (ancho - margen.izq - margen.der)) / Math.max(1, puntos.length - 1));
+  const anchoUtil = ancho - margen.izq - margen.der;
+  const x0 = puntos[0].x;
+  const x1 = proyeccion?.length ? proyeccion[proyeccion.length - 1].x : x0;
+  const porFecha = (v: number) => margen.izq + ((v - x0) * anchoUtil) / Math.max(1, x1 - x0);
+  const xs = proyeccion?.length ? puntos.map((p) => porFecha(p.x)) : puntos.map((_, i) => margen.izq + (i * anchoUtil) / Math.max(1, puntos.length - 1));
   const y = (v: number) => margen.arr + ((maxY - v) * (alto - margen.arr - margen.aba)) / Math.max(1, maxY - minY);
   const camino = puntos.map((p, i) => `${i === 0 ? 'M' : 'L'}${xs[i].toFixed(1)},${y(p.y).toFixed(1)}`).join(' ');
   const area = `${camino} L${xs[xs.length - 1].toFixed(1)},${alto - margen.aba} L${xs[0].toFixed(1)},${alto - margen.aba} Z`;
@@ -43,6 +52,13 @@ export function GraficoLinea({ puntos, titulo, unidad, tendencia }: { puntos: Pu
           <path
             d={tendencia.map((v, i) => `${i === 0 ? 'M' : 'L'}${xs[i].toFixed(1)},${y(v).toFixed(1)}`).join(' ')}
             fill="none" stroke="#A69B97" strokeWidth="1.5" strokeDasharray="4 4"
+          />
+        )}
+        {proyeccion && proyeccion.length > 1 && (
+          <path
+            aria-label="Proyección"
+            d={proyeccion.map((q, i) => `${i === 0 ? 'M' : 'L'}${porFecha(q.x).toFixed(1)},${y(q.y).toFixed(1)}`).join(' ')}
+            fill="none" stroke="#C9A227" strokeOpacity="0.5" strokeWidth="2" strokeDasharray="5 5"
           />
         )}
         <path d={camino} fill="none" stroke="#C9A227" strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round" />

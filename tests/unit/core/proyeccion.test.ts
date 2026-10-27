@@ -34,6 +34,8 @@ test('faltan datos: sesiones y días', () => {
   expect(proyectar(pts(80, 3, [0, 5, 10]), ahora, 'intermedio')).toEqual({ estado: 'faltan-datos', faltanSesiones: 1, faltanDias: 11 });
   const mismoDia = [0, 0, 0, 0].map((_, i) => ({ fecha: T0 + i * 1000, e1rm: 80 + i }));
   expect(proyectar(mismoDia, ahora, 'intermedio')).toEqual({ estado: 'faltan-datos', faltanSesiones: 0, faltanDias: 21 });
+  const casi7 = [0, 7].map((d) => ({ fecha: T0 + d * DIA - (d ? 60_000 : 0), e1rm: 80 + d }));
+  expect(proyectar(casi7, ahora, 'intermedio')).toEqual({ estado: 'faltan-datos', faltanSesiones: 2, faltanDias: 14 });
   expect(proyectar([], ahora, 'intermedio')).toEqual({ estado: 'faltan-datos', faltanSesiones: 4, faltanDias: 21 });
 });
 
