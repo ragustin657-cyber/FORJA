@@ -8,6 +8,7 @@ import { Tarjeta } from '../../componentes/Tarjeta';
 import { useCarga } from '../../datos';
 import { ALIMENTOS, DIAS, PLATOS, cargarNutricion, diaDeHoy, entradaMenu, generarMenu, miles } from '../../nutricion';
 import { ComidaFila } from './ComidaFila';
+import { TotalDia } from './TotalDia';
 
 export function Semana() {
   const { datos, recargar } = useCarga(cargarNutricion);
@@ -76,12 +77,8 @@ export function Semana() {
           ))}
         </div>
         <Tarjeta className="pila" style={{ gap: 10 }}>
-          <div className="fila-entre">
-            <strong>{DIAS[dia]}</strong>
-            <span className="texto-2 numeros" data-testid="total-dia" style={{ fontSize: 14 }}>
-              Total del día: {miles(total.kcal)} kcal
-            </span>
-          </div>
+          <strong>{DIAS[dia]}</strong>
+          <TotalDia dia={menu.dias[dia]} meta={metas.kcal} />
           <div className="texto-2 numeros" style={{ fontSize: 13 }}>
             Proteína {miles(total.proteina)} g · Grasas {miles(total.grasas)} g · Carbohidratos {miles(total.carbos)} g
           </div>

@@ -522,6 +522,204 @@
   ]
  },
  {
+  "id": "licuado-frutas-chia",
+  "nombre": "Licuado de frutas con chía",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "banana",
+    "gramos": 120
+   },
+   {
+    "alimentoId": "frutillas",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "chia",
+    "gramos": 10
+   },
+   {
+    "alimentoId": "miel",
+    "gramos": 10
+   }
+  ],
+  "pasos": [
+   "Licuá las frutas con 200 ml de agua y hielo.",
+   "Sumá la chía y la miel y dejá reposar 5 minutos."
+  ]
+ },
+ {
+  "id": "huevos-batata",
+  "nombre": "Huevos revueltos con batata asada",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "huevo",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "batata",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "aceite-oliva",
+    "gramos": 5
+   }
+  ],
+  "pasos": [
+   "Asá la batata en cubos en sartén o microondas.",
+   "Hacé los huevos revueltos y serví juntos."
+  ]
+ },
+ {
+  "id": "galletas-arroz-palta-huevo",
+  "nombre": "Galletas de arroz con palta y huevo",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "galletas-arroz",
+    "gramos": 27
+   },
+   {
+    "alimentoId": "palta",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "huevo",
+    "gramos": 100
+   }
+  ],
+  "pasos": [
+   "Pisá la palta con sal y limón.",
+   "Untá las galletas y sumá los huevos a la plancha."
+  ]
+ },
+ {
+  "id": "bowl-frutas-mani",
+  "nombre": "Bowl de frutas con mantequilla de maní",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "banana",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "manzana",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "mantequilla-mani",
+    "gramos": 20
+   },
+   {
+    "alimentoId": "chia",
+    "gramos": 5
+   }
+  ],
+  "pasos": [
+   "Cortá las frutas en un bowl.",
+   "Sumá la mantequilla de maní y la chía."
+  ]
+ },
+ {
+  "id": "tostadas-sin-tacc-palta",
+  "nombre": "Tostadas sin TACC con palta y tomate",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "pan-sin-tacc",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "palta",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "tomate",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "huevo",
+    "gramos": 50
+   }
+  ],
+  "pasos": [
+   "Tostá el pan.",
+   "Untá la palta y sumá el tomate y el huevo a la plancha."
+  ]
+ },
+ {
+  "id": "omelette-espinaca",
+  "nombre": "Omelette de espinaca y champiñones",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "huevo",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "espinaca",
+    "gramos": 80
+   },
+   {
+    "alimentoId": "champinones",
+    "gramos": 80
+   },
+   {
+    "alimentoId": "aceite-oliva",
+    "gramos": 5
+   }
+  ],
+  "pasos": [
+   "Saltá la espinaca y los champiñones.",
+   "Sumá los huevos batidos y cociná de los dos lados."
+  ]
+ },
+ {
+  "id": "pan-sin-tacc-mani-banana",
+  "nombre": "Tostadas sin TACC con maní y banana",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "pan-sin-tacc",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "mantequilla-mani",
+    "gramos": 20
+   },
+   {
+    "alimentoId": "banana",
+    "gramos": 100
+   }
+  ],
+  "pasos": [
+   "Tostá el pan.",
+   "Untá la mantequilla de maní y sumá la banana en rodajas."
+  ]
+ },
+ {
   "id": "fruta-almendras",
   "nombre": "Manzana con almendras",
   "tipos": [

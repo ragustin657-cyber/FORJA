@@ -27,7 +27,7 @@ export function ComidaFila({ comida, dia, indice, onCambiar }: { comida: ComidaM
           </p>
         )}
       </div>
-      {onCambiar && plato && (
+      {onCambiar && (
         <button type="button" className="chip" onClick={onCambiar}>
           Cambiar
         </button>

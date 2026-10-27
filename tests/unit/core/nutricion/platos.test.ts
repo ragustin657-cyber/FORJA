@@ -61,3 +61,36 @@ test('exclusión por texto, sin importar tildes ni mayúsculas', () => {
 test('sin restricciones no excluye nada', () => {
   expect(platoExcluido(plato, alimentos, [], [])).toBe(false);
 });
+
+test('"no como" en plural o con mayúsculas excluye igual', () => {
+  const conVerduras = { ...plato, ingredientes: [...plato.ingredientes, { alimentoId: 'cebolla', gramos: 50 }] };
+  expect(platoExcluido(conVerduras, alimentos, [], ['cebollas'])).toBe(true);
+  expect(platoExcluido(conVerduras, alimentos, [], ['Cebollas'])).toBe(true);
+});
+
+test('"no como" busca palabras completas', () => {
+  const sal = new Map(alimentos);
+  sal.set('mani', { id: 'mani', nombre: 'Maní tostado sin sal', kcal: 590, proteina: 26, grasas: 49, carbos: 16, categoria: 'almacen', grupos: [] });
+  sal.set('salmon', { id: 'salmon', nombre: 'Salmón rosado', kcal: 197, proteina: 20, grasas: 13, carbos: 0, categoria: 'carniceria', grupos: ['pescado'] });
+  const p1 = { ...plato, pasos: ['Mezclar.'], ingredientes: [{ alimentoId: 'mani', gramos: 20 }] };
+  const p2 = { ...plato, pasos: ['Mezclar.'], ingredientes: [{ alimentoId: 'salmon', gramos: 100 }] };
+  expect(platoExcluido(p1, sal, [], ['sal'])).toBe(false);
+  expect(platoExcluido(p2, sal, [], ['sal'])).toBe(false);
+});
+
+test('"no como" también mira el nombre del plato y la preparación', () => {
+  const p = { ...plato, nombre: 'Pollo al curry', pasos: ['Rehogá el ajo picado.', 'Sumá el curry.'] };
+  expect(platoExcluido(p, alimentos, [], ['curry'])).toBe(true);
+  expect(platoExcluido(p, alimentos, [], ['ajos'])).toBe(true);
+  expect(platoExcluido(p, alimentos, [], ['canela'])).toBe(false);
+});
+
+test('el plural funciona con palabras terminadas en e o en consonante', () => {
+  const m = new Map(alimentos);
+  m.set('tomate', { id: 'tomate', nombre: 'Tomate', kcal: 20, proteina: 0.9, grasas: 0.2, carbos: 3.9, categoria: 'verduleria', grupos: [] });
+  m.set('limon', { id: 'limon', nombre: 'Limón', kcal: 38, proteina: 1.1, grasas: 0.3, carbos: 9, categoria: 'verduleria', grupos: [] });
+  const p = { ...plato, pasos: ['Mezclar.'], ingredientes: [{ alimentoId: 'tomate', gramos: 100 }, { alimentoId: 'limon', gramos: 10 }] };
+  expect(platoExcluido(p, m, [], ['tomates'])).toBe(true);
+  expect(platoExcluido(p, m, [], ['limones'])).toBe(true);
+  expect(platoExcluido(p, m, [], ['huevos'])).toBe(false);
+});

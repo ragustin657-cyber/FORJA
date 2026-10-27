@@ -30,13 +30,39 @@ export function gruposDePlato(plato: Plato, alimentos: Map<string, Alimento>): G
   return [...new Set(plato.ingredientes.flatMap((i) => alimentos.get(i.alimentoId)?.grupos ?? []))];
 }
 
-/** True si el plato tiene algún grupo excluido o algún ingrediente cuyo nombre contiene una palabra de "no como". */
+/** Palabras normalizadas y en singular; se descarta la palabra que sigue a "sin" ("maní sin sal" no tiene sal). */
+function raices(texto: string): string[] {
+  const palabras = normalizar(texto).split(/[^a-zñ]+/).filter(Boolean);
+  const salida: string[] = [];
+  for (let i = 0; i < palabras.length; i++) {
+    if (palabras[i] === 'sin') {
+      i++;
+      continue;
+    }
+    salida.push(singular(palabras[i]));
+  }
+  return salida;
+}
+
+/** Forma canónica para comparar singular y plural: "tomates" y "tomate" → "tomat"; "huevos" → "huevo". */
+function singular(p: string): string {
+  let r = p.length > 3 && p.endsWith('s') ? p.slice(0, -1) : p;
+  if (r.length > 3 && r.endsWith('e')) r = r.slice(0, -1);
+  return r;
+}
+
+/**
+ * True si el plato tiene algún grupo excluido, o si alguna palabra de "no como" aparece como palabra completa
+ * (sin importar tildes, mayúsculas ni plural) en sus ingredientes, su nombre o su preparación.
+ */
 export function platoExcluido(plato: Plato, alimentos: Map<string, Alimento>, grupos: Grupo[], texto: string[]): boolean {
   if (gruposDePlato(plato, alimentos).some((g) => grupos.includes(g))) return true;
-  const palabras = texto.map(normalizar).filter(Boolean);
-  if (palabras.length === 0) return false;
-  return plato.ingredientes.some((i) => {
-    const nombre = normalizar(alimentos.get(i.alimentoId)?.nombre ?? '');
-    return palabras.some((p) => nombre.includes(p));
-  });
+  const buscadas = texto.flatMap(raices);
+  if (buscadas.length === 0) return false;
+  const delPlato = new Set([
+    ...plato.ingredientes.flatMap((i) => raices(alimentos.get(i.alimentoId)?.nombre ?? '')),
+    ...raices(plato.nombre),
+    ...plato.pasos.flatMap(raices),
+  ]);
+  return buscadas.some((b) => delPlato.has(b));
 }

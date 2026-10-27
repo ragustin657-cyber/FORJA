@@ -69,3 +69,24 @@ test('la copia de seguridad incluye las tablas de nutrición', async () => {
   expect(await nutricionRepo.tachados('2026-10-26')).toEqual(['huevo']);
   expect((await almacen().tabla('pesos').todos()).length).toBe(1);
 });
+
+test('dos toques rápidos en la lista no pierden ninguna casilla', async () => {
+  await Promise.all([nutricionRepo.alternarTachado('s', 'a'), nutricionRepo.alternarTachado('s', 'b'), nutricionRepo.alternarTachado('s', 'c')]);
+  expect((await nutricionRepo.tachados('s')).sort()).toEqual(['a', 'b', 'c']);
+});
+
+test('si un toque falla al guardar, los siguientes se guardan igual', async () => {
+  const base = crearAlmacenMemoria();
+  let fallar = true;
+  usarAlmacen({
+    ...base,
+    tabla(nombre) {
+      const t = base.tabla(nombre);
+      if (nombre !== 'compras') return t;
+      return { ...t, async poner(v) { if (fallar) { fallar = false; throw new Error('disco lleno'); } return t.poner(v); } } as typeof t;
+    },
+  });
+  await expect(nutricionRepo.alternarTachado('s', 'a')).rejects.toThrow('disco lleno');
+  await nutricionRepo.alternarTachado('s', 'b');
+  expect(await nutricionRepo.tachados('s')).toEqual(['b']);
+});

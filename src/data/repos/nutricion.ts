@@ -24,6 +24,14 @@ async function pesos(): Promise<RegistroPeso[]> {
   return (await almacen().tabla<RegistroPeso>('pesos').todos()).sort((a, b) => a.fecha - b.fecha);
 }
 
+// Los toques en la lista de compras se aplican de a uno para que dos toques rápidos no se pisen.
+let cola: Promise<unknown> = Promise.resolve();
+function enOrden<T>(trabajo: () => Promise<T>): Promise<T> {
+  const siguiente = cola.then(trabajo, trabajo);
+  cola = siguiente.catch(() => undefined);
+  return siguiente;
+}
+
 export const nutricionRepo = {
   perfil: () => almacen().tabla<Perfil>('perfil').porId('yo'),
   /** Guarda el perfil y el peso del día (un registro por día: el último reemplaza al anterior). */
@@ -40,9 +48,11 @@ export const nutricionRepo = {
   async tachados(semana: string): Promise<string[]> {
     return (await almacen().tabla<Tachados>('compras').porId(semana))?.alimentos ?? [];
   },
-  async alternarTachado(semana: string, alimentoId: string) {
-    const actuales = await this.tachados(semana);
-    const alimentos = actuales.includes(alimentoId) ? actuales.filter((x) => x !== alimentoId) : [...actuales, alimentoId];
-    await almacen().tabla<Tachados>('compras').poner({ id: semana, alimentos });
+  alternarTachado(semana: string, alimentoId: string): Promise<void> {
+    return enOrden(async () => {
+      const actuales = await nutricionRepo.tachados(semana);
+      const alimentos = actuales.includes(alimentoId) ? actuales.filter((x) => x !== alimentoId) : [...actuales, alimentoId];
+      await almacen().tabla<Tachados>('compras').poner({ id: semana, alimentos });
+    });
   },
 };

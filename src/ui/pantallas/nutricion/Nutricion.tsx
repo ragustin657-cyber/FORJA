@@ -75,6 +75,7 @@ export function Nutricion() {
               <p key={l} style={{ margin: '2px 0' }}>{l}</p>
             ))}
           </div>
+          {metas.alerta && <div className="aviso" role="alert" style={{ fontSize: 14 }}>{metas.alerta}</div>}
           <p className="texto-2" style={{ fontSize: 12, margin: 0 }}>Son valores aproximados y recomendaciones generales.</p>
         </section>
 

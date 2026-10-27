@@ -62,3 +62,14 @@ test('excluyendo cualquier grupo solo, quedan al menos 3 platos por tipo de comi
 test('las unidades tienen gramos positivos', () => {
   expect(alimentos.filter((a) => a.unidad && a.unidad.gramos <= 0)).toEqual([]);
 });
+
+test('los copos de maíz son los sin TACC', () => {
+  expect(porId.get('copos-maiz')?.nombre).toMatch(/sin TACC/);
+});
+
+test('hay al menos 8 desayunos y meriendas sin lácteos ni gluten', () => {
+  const sin = platos.filter(
+    (p) => p.tipos.some((t) => t === 'desayuno' || t === 'merienda') && !p.ingredientes.some((i) => porId.get(i.alimentoId)?.grupos.some((g) => g === 'lacteos' || g === 'gluten')),
+  );
+  expect(sin.length).toBeGreaterThanOrEqual(8);
+});

@@ -3,15 +3,15 @@ import assert from 'node:assert/strict';
 import { abrirApp } from './ayuda.mjs';
 
 /** Completa "Mi plan" con los datos de ejemplo (hombre, 30 años, 180 cm, 80 kg, moderado, bajar, 4 comidas). */
-export async function cargarPlan(p, { peso = '80', altura = '180' } = {}) {
+export async function cargarPlan(p, { peso = '80', altura = '180', actividad = 'Moderado', objetivo = 'Bajar grasa' } = {}) {
   await p.goto(p.url().split('#')[0] + '#/nutricion');
   await p.getByRole('button', { name: 'Armá tu plan' }).click();
   await p.getByRole('radiogroup', { name: 'Sexo' }).getByText('Hombre', { exact: true }).click();
   await p.getByLabel('Fecha de nacimiento').fill('1996-05-10');
   await p.getByLabel('Altura (cm)').fill(altura);
   await p.getByLabel('Peso (kg)').fill(peso);
-  await p.getByRole('radiogroup', { name: 'Actividad' }).getByText('Moderado', { exact: true }).click();
-  await p.getByRole('radiogroup', { name: 'Objetivo' }).getByText('Bajar grasa', { exact: true }).click();
+  await p.getByRole('radiogroup', { name: 'Actividad' }).getByText(actividad, { exact: true }).click();
+  await p.getByRole('radiogroup', { name: 'Objetivo' }).getByText(objetivo, { exact: true }).click();
   await p.getByRole('button', { name: 'Guardar mi plan' }).click();
 }
 
@@ -87,7 +87,7 @@ test('si cambia el plan con un menú armado, avisa y deja rehacerlo', async () =
   }
 });
 
-const kcalDe = (texto) => Number(texto.replace(/[^\d]/g, ''));
+const kcalDe = (texto) => Number(texto.match(/([\d.]+) de/)[1].replace(/\./g, ''));
 
 test('Nutrición muestra el menú de hoy con sus 4 comidas', async () => {
   const app = await abrirApp();
@@ -196,6 +196,33 @@ test('la lista de compras agrupa, se tacha y lo tachado se conserva', async () =
     await p.getByRole('checkbox', { name: nombre }).waitFor();
     assert.equal(await p.getByRole('checkbox', { name: nombre }).isChecked(), true);
     await p.getByText(/1 de \d+ comprados/).waitFor();
+  } finally {
+    await app.cerrar();
+  }
+});
+
+test('el total del día se compara con tu meta y el menú de hoy también lo muestra', async () => {
+  const app = await abrirApp();
+  const p = app.pagina;
+  try {
+    p.setDefaultTimeout(5000);
+    await cargarPlan(p);
+    await p.getByRole('region', { name: 'Menú de hoy' }).getByText(/de 2\.210 kcal/).waitFor();
+    await p.getByRole('link', { name: 'Semana completa' }).click();
+    await p.getByTestId('total-dia').getByText(/de 2\.210 kcal/).waitFor();
+  } finally {
+    await app.cerrar();
+  }
+});
+
+test('con números fuera de lo razonable aparece el aviso y la diferencia del día', async () => {
+  const app = await abrirApp();
+  const p = app.pagina;
+  try {
+    p.setDefaultTimeout(5000);
+    await cargarPlan(p, { peso: '200', altura: '220', actividad: 'Muy alto', objetivo: 'Ganar músculo' });
+    await p.getByRole('region', { name: 'Tus números' }).getByText(/consultá a un profesional/).waitFor();
+    await p.getByRole('region', { name: 'Menú de hoy' }).getByText(/menos de tu meta/).waitFor();
   } finally {
     await app.cerrar();
   }

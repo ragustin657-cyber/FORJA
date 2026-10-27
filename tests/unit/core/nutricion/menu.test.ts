@@ -135,3 +135,25 @@ test('reemplazarComida cambia solo esa comida y no modifica el original', async 
   expect(nuevo[0]).toEqual(menu[0]);
   expect(menu[2].comidas[1].platoId).not.toBe('pizza-casera');
 });
+
+test('excluyendo cualquier grupo solo, la semana no tiene comidas vacías', () => {
+  for (const g of ['vacuna', 'cerdo', 'pollo', 'pescado', 'lacteos', 'huevo', 'gluten'] as const) {
+    for (const comidas of [3, 4, 5] as const) {
+      for (const semilla of [1, 2, 3, 4, 5]) {
+        const vacias = armarMenu(entrada({ noComoGrupos: [g], comidas, semilla })).flatMap((d) => d.comidas).filter((c) => c.platoId === null);
+        expect(vacias.length, `${g} / ${comidas} comidas / semilla ${semilla}`).toBe(0);
+      }
+    }
+  }
+});
+
+test('sin lácteos ni gluten la semana tampoco queda con comidas vacías', () => {
+  const vacias = armarMenu(entrada({ noComoGrupos: ['lacteos', 'gluten'] })).flatMap((d) => d.comidas).filter((c) => c.platoId === null);
+  expect(vacias.length).toBe(0);
+});
+
+test('si se agotaron los platos, se repite uno antes que dejar la comida vacía', () => {
+  const pocos = platos.filter((p) => !p.tipos.includes('desayuno')).concat(platos.filter((p) => p.tipos.includes('desayuno')).slice(0, 1));
+  const menu = armarMenu(entrada({ platos: pocos }));
+  expect(menu.every((d) => d.comidas[0].platoId !== null)).toBe(true);
+});

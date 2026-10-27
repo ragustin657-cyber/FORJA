@@ -13,12 +13,15 @@ export interface Metas {
   gasto: number;
   topeAplicado: boolean;
   explicacion: string[];
+  /** Aviso cuando los números salen fuera de lo razonable. */
+  alerta?: string;
 }
 
 export const FACTOR_ACTIVIDAD: Record<Actividad, number> = { sedentario: 1.2, liviano: 1.375, moderado: 1.55, alto: 1.725, muyAlto: 1.9 };
 const AJUSTE: Record<ObjetivoNutri, number> = { bajar: -0.2, mantener: 0, ganar: 0.1 };
 const MINIMO: Record<Sexo, number> = { hombre: 1500, mujer: 1200 };
 const KCAL_POR_KG = 7700;
+const LIMITE_RAZONABLE = 4500;
 
 const decena = (n: number) => Math.round(n / 10) * 10;
 const miles = (n: number) => n.toLocaleString('es-AR');
@@ -41,8 +44,9 @@ export function calcularMetas(perfil: Perfil, pesoKg: number, hoy: Date): Metas 
   const gasto = basal * FACTOR_ACTIVIDAD[perfil.actividad];
   const buscado = gasto * (1 + AJUSTE[perfil.objetivo]);
   const maxDeficit = (pesoKg * 0.01 * KCAL_POR_KG) / 7;
-  const minimo = Math.max(basal, MINIMO[perfil.sexo], gasto - maxDeficit);
-  const exacto = perfil.objetivo === 'bajar' ? Math.max(buscado, minimo) : buscado;
+  // El piso vale para todos los objetivos; el tope del 1 % por semana, solo para bajar.
+  const minimo = Math.max(basal, MINIMO[perfil.sexo], perfil.objetivo === 'bajar' ? gasto - maxDeficit : 0);
+  const exacto = Math.max(buscado, minimo);
   const topeAplicado = exacto > buscado;
   const kcal = decena(exacto);
 
@@ -57,5 +61,6 @@ export function calcularMetas(perfil: Perfil, pesoKg: number, hoy: Date): Metas 
   else explicacion.push(`Para bajar grasa comés un 20 % menos: ${miles(decena(buscado))} kcal.`);
   if (topeAplicado) explicacion.push(`Lo subimos a ${miles(kcal)} kcal para que no sea un plan demasiado estricto.`);
 
-  return { kcal, proteina, grasas, carbos, basal, gasto: Math.round(gasto), topeAplicado, explicacion };
+  const alerta = kcal > LIMITE_RAZONABLE ? 'Tus números dan muy altos. Revisá los datos y, si están bien, consultá a un profesional.' : undefined;
+  return { kcal, proteina, grasas, carbos, basal, gasto: Math.round(gasto), topeAplicado, explicacion, ...(alerta ? { alerta } : {}) };
 }

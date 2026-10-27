@@ -94,10 +94,10 @@ export function armarMenu(e: Entrada): DiaMenu[] {
       parteAcum += parte;
       const objetivo = e.metas.kcal * parte;
       const metaProteina = e.metas.proteina * parteAcum;
-      const candidatos = mezclar(
-        posibles.filter((p) => p.tipos.includes(tipo) && (usos.get(p.id) ?? 0) < MAX_USOS),
-        azar,
-      ).slice(0, CANDIDATOS);
+      const delTipo = posibles.filter((p) => p.tipos.includes(tipo));
+      const sinAgotar = delTipo.filter((p) => (usos.get(p.id) ?? 0) < MAX_USOS);
+      // Si ya se usaron todos dos veces, se repite uno antes que dejar la comida vacía.
+      const candidatos = mezclar(sinAgotar.length > 0 ? sinAgotar : delTipo, azar).slice(0, CANDIDATOS);
       let mejor: { platoId: string; factor: number; proteina: number; costo: number } | null = null;
       for (const p of candidatos) {
         const base = macrosDePlato(p, e.alimentos).kcal;

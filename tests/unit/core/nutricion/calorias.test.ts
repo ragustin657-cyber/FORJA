@@ -99,3 +99,16 @@ test('hashPerfil cambia con el peso y el objetivo, no con el orden de lo que no 
   expect(hashPerfil({ ...base, noComoTexto: ['ajo', 'cebolla'] }, 81)).not.toBe(h);
   expect(hashPerfil({ ...base, objetivo: 'ganar', noComoTexto: ['ajo', 'cebolla'] }, 80)).not.toBe(h);
 });
+
+test('el piso de calorías vale también para mantener y ganar', () => {
+  const chica = { ...base, sexo: 'mujer' as const, nacimiento: '1956-01-01', alturaCm: 150, actividad: 'sedentario' as const };
+  expect(calcularMetas({ ...chica, objetivo: 'mantener' }, 45, HOY).kcal).toBe(1200);
+  expect(calcularMetas({ ...chica, objetivo: 'ganar' }, 45, HOY).kcal).toBe(1200);
+  expect(calcularMetas({ ...chica, objetivo: 'mantener' }, 45, HOY).topeAplicado).toBe(true);
+});
+
+test('avisa cuando las calorías salen fuera de lo razonable', () => {
+  expect(calcularMetas(base, 80, HOY).alerta).toBeUndefined();
+  const enorme = calcularMetas({ ...base, alturaCm: 220, actividad: 'muyAlto', objetivo: 'ganar' }, 200, HOY);
+  expect(enorme.alerta).toBe('Tus números dan muy altos. Revisá los datos y, si están bien, consultá a un profesional.');
+});
