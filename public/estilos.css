@@ -197,3 +197,10 @@ img { max-width: 100%; display: block; }
   width: 36px; height: 36px; border-radius: 50%; background: var(--color-dorado); color: #1A1306;
   display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px;
 }
+
+/* Opción en tarjeta (radio con título y detalle) */
+.opcion {
+  position: relative; display: flex; flex-direction: column; gap: 2px; padding: 12px 14px; cursor: pointer;
+  border-radius: var(--radio-chico); background: var(--color-tarjeta-alta); border: 1px solid transparent;
+}
+.opcion[aria-pressed="true"] { border-color: var(--color-bordo-claro); background: rgba(122, 31, 43, 0.35); }
