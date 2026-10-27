@@ -77,8 +77,8 @@ serieDeGrasa(sexo, alturaCm, registros): { fecha: number; valor: number }[]
   - `ultimasMedidas`: la diferencia es contra el registro anterior que tenga esa medida; null si es la primera.
   - `serieDeMedida` ordena por fecha y omite los registros sin esa medida.
   - `grasaCorporal`:
-    - hombre con 180 cm, cintura 85 y cuello 38 → 16,9 (con 1 decimal);
-    - mujer con 165 cm, cintura 75, cadera 100 y cuello 33 → 31,0 (verificar con la fórmula en la prueba);
+    - hombre con 180 cm, cintura 85 y cuello 38 → 16,1 (con 1 decimal);
+    - mujer con 165 cm, cintura 75, cadera 100 y cuello 33 → 29,4;
     - cintura ≤ cuello → null;
     - mujer sin cadera → null;
     - resultado > 60 → null.
