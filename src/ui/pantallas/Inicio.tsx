@@ -23,6 +23,8 @@ import { Tarjeta } from '../componentes/Tarjeta';
 import { useCarga } from '../datos';
 import { fechaDeHoy } from '../registro';
 import { Enlace, navegar } from '../router';
+import { cargarPlan, diaMes, textoSemana } from '../plan';
+import { planesRepo } from '../../data/repos/planes';
 
 /** Calorías y proteína de hoy contra la meta, y si toca pesarse. Undefined si no hay plan. */
 async function cargarNutricionHoy() {
@@ -106,20 +108,22 @@ function TocaPesarte({ alGuardar }: { alGuardar: () => void }) {
 }
 
 async function cargar() {
-  const [rutinas, finalizadas, enCurso] = await Promise.all([rutinasRepo.activas(), sesionesRepo.finalizadas(), sesionesRepo.enCurso()]);
+  const [rutinas, finalizadas, enCurso, plan] = await Promise.all([rutinasRepo.activas(), sesionesRepo.finalizadas(), sesionesRepo.enCurso(), cargarPlan()]);
+  const delPlan = plan?.semana.estado === 'activo' ? plan.rutina : undefined;
   const ultima = finalizadas[0];
-  const rutina = rutinas.find((r) => r.id === ultima?.rutinaId) ?? rutinas[0];
-  const dia = rutina && proximoDia(rutina, ultima?.rutinaId === rutina.id ? ultima.diaId : null);
+  const rutina = delPlan ?? rutinas.find((r) => r.id === ultima?.rutinaId) ?? rutinas[0];
+  const ultimaDeRutina = finalizadas.find((s) => s.rutinaId === rutina?.id);
+  const dia = rutina && proximoDia(rutina, ultimaDeRutina?.diaId ?? null);
   const recientes = recordsRecientes([...finalizadas].reverse(), 3);
   const nombres = Object.fromEntries(
     await Promise.all(recientes.map(async (r) => [r.ejercicioId, (await ejerciciosRepo.porId(r.ejercicioId))?.nombre ?? 'Ejercicio'] as const)),
   );
   const copia = necesitaCopia((await ajustesRepo.obtener()).ultimaCopia, finalizadas.length > 0, Date.now());
-  return { rutina, dia, enCurso, recientes, nombres, ultima, copia };
+  return { rutina, dia, enCurso, recientes, nombres, ultima: ultimaDeRutina ?? ultima, copia, plan };
 }
 
 export function Inicio() {
-  const { datos } = useCarga(cargar);
+  const { datos, recargar } = useCarga(cargar);
   const { datos: nutri, recargar: recargarNutri } = useCarga(cargarNutricionHoy);
   const { datos: fotos, recargar: recargarFotos } = useCarga(cargarRecordatorioFotos);
 
@@ -139,6 +143,12 @@ export function Inicio() {
           ) : datos.rutina && datos.dia ? (
             <Tarjeta className="pila">
               <span className="subtitulo" style={{ margin: 0 }}>Hoy toca</span>
+              {datos.plan?.semana.estado === 'activo' && datos.plan.rutina.id === datos.rutina.id && (
+                <div className="fila" style={{ gap: 8 }}>
+                  <span className="texto-2" style={{ fontSize: 14 }}>{textoSemana(datos.plan.semana)}</span>
+                  {datos.plan.semana.descarga && <span className="chip chip-dorado">Descarga</span>}
+                </div>
+              )}
               <div>
                 <h2 className="titulo" style={{ fontSize: 24 }}>Próximo: {datos.dia.nombre}</h2>
                 <p className="texto-2" style={{ margin: '4px 0 0' }}>
@@ -163,6 +173,28 @@ export function Inicio() {
               <p className="texto-2" style={{ margin: 0 }}>Empezá armando tu rutina con los ejercicios que hacés en el gimnasio.</p>
               <Boton ancho onClick={() => navegar('/entrenar/rutina/nueva')}>Armar mi rutina</Boton>
             </Tarjeta>
+          )}
+
+          {datos.plan?.semana.estado === 'por-empezar' && (
+            <div className="aviso aviso-dorado">{`Tu plan arranca el lunes ${diaMes(datos.plan.plan.inicio)}`}</div>
+          )}
+
+          {datos.plan?.semana.estado === 'terminado' && (
+            <section aria-label="Plan terminado" className="tarjeta pila" style={{ borderColor: 'rgba(201,162,39,0.45)' }}>
+              <h2 style={{ fontSize: 20, margin: 0 }}>¡Terminaste tu plan de 12 semanas! 🏆</h2>
+              <p className="texto-2" style={{ margin: 0 }}>Mirá en Progreso cuánto subiste. Podés armar otro plan o seguir con tus rutinas.</p>
+              <Enlace a="/entrenar/plan/nuevo" className="boton boton-dorado boton-ancho">Armar otro plan</Enlace>
+              <Boton
+                variante="secundario"
+                ancho
+                onClick={async () => {
+                  await planesRepo.cambiarEstado(datos.plan!.plan.id, 'terminado');
+                  await recargar();
+                }}
+              >
+                Volver a mis rutinas
+              </Boton>
+            </section>
           )}
 
           {nutri && (

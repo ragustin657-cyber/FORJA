@@ -3,13 +3,15 @@ import { sesionesRepo } from '../../data/repos/sesiones';
 import { empezarDia } from '../acciones';
 import { Boton } from '../componentes/Boton';
 import { Encabezado } from '../componentes/Encabezado';
+import { TarjetaPlan } from '../componentes/TarjetaPlan';
+import { cargarPlan } from '../plan';
 import { useCarga } from '../datos';
 import { Enlace, navegar } from '../router';
 
 export function Entrenar() {
-  const { datos } = useCarga(async () => ({ rutinas: await rutinasRepo.activas(), enCurso: await sesionesRepo.enCurso() }));
+  const { datos, recargar } = useCarga(async () => ({ rutinas: await rutinasRepo.activas(), enCurso: await sesionesRepo.enCurso(), plan: await cargarPlan() }));
   if (!datos) return <Encabezado titulo="Entrenar" />;
-  const { rutinas, enCurso } = datos;
+  const { rutinas, enCurso, plan } = datos;
 
   return (
     <>
@@ -21,6 +23,8 @@ export function Entrenar() {
             <Boton variante="dorado" onClick={() => navegar('/entrenar/sesion')}>Retomar</Boton>
           </div>
         )}
+
+        {plan && <TarjetaPlan datos={plan} alCambiar={recargar} />}
 
         {rutinas.length === 0 && (
           <div className="tarjeta vacio">
