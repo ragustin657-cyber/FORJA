@@ -185,3 +185,107 @@ test('terminar el plan antes, plan por empezar y rutina del plan borrada', async
     await app.cerrar();
   }
 });
+
+const BANCA = 'Press de banca con barra';
+async function sesionPrevia(p, ejercicioId, peso, reps, series, diasAtras = 10) {
+  await p.evaluate(
+    ({ ejercicioId, peso, reps, series, diasAtras }) =>
+      new Promise((ok) => {
+        const r = indexedDB.open('forja');
+        r.onsuccess = () => {
+          const tx = r.result.transaction('sesiones', 'readwrite');
+          const inicio = Date.now() - diasAtras * 86_400_000;
+          tx.objectStore('sesiones').put({
+            id: 'previa', rutinaId: 'vieja', diaId: 'x', inicio, fin: inicio + 3_600_000,
+            series: Array.from({ length: series }, (_, i) => ({ ejercicioId, numero: i + 1, peso, reps, completada: true })),
+          });
+          tx.oncomplete = () => { r.result.close(); ok(); };
+        };
+      }),
+    { ejercicioId, peso, reps, series, diasAtras },
+  );
+}
+const seriesDe = (p, nombre) => p.getByRole('region', { name: nombre }).getByRole('button', { name: /^Completar serie/ });
+
+test('semana 1: una serie menos en los básicos y el aviso de la semana', async () => {
+  const app = await abrirApp();
+  const p = app.pagina;
+  try {
+    p.setDefaultTimeout(5000);
+    await crearPlan(p);
+    await p.getByRole('region', { name: 'Tu plan' }).waitFor();
+    await p.getByRole('button', { name: 'Empezar Torso A' }).first().click();
+    await p.getByRole('note').getByText('Semana 1 de 12 · Bloque 1').waitFor();
+    assert.equal(await seriesDe(p, BANCA).count(), 3);
+    assert.deepEqual(app.errores, []);
+  } finally {
+    await app.cerrar();
+  }
+});
+
+test('semana de descarga: menos series y peso al 90 %', async () => {
+  const app = await abrirApp();
+  const p = app.pagina;
+  try {
+    p.setDefaultTimeout(5000);
+    await crearPlan(p);
+    await p.getByRole('region', { name: 'Tu plan' }).waitFor();
+    await sesionPrevia(p, 'Barbell_Bench_Press_-_Medium_Grip', 100, 12, 4);
+    await moverInicio(p, 3);
+    await p.reload();
+    await p.getByRole('button', { name: 'Empezar Torso A' }).first().click();
+    await p.getByRole('note').getByText('Semana de descarga: más liviano a propósito, para recuperarte').waitFor();
+    assert.equal(await seriesDe(p, BANCA).count(), 2);
+    await p.getByRole('region', { name: BANCA }).getByText('Descarga: 92,5 kg').waitFor();
+    assert.equal(await p.getByRole('textbox', { name: `Peso serie 1 de ${BANCA}` }).inputValue(), '92,5');
+  } finally {
+    await app.cerrar();
+  }
+});
+
+test('una rutina propia no muestra el aviso ni cambia sus series', async () => {
+  const app = await abrirApp();
+  const p = app.pagina;
+  try {
+    p.setDefaultTimeout(5000);
+    await crearPlan(p);
+    await p.getByRole('region', { name: 'Tu plan' }).waitFor();
+    await irA(p, '/entrenar/rutina/nueva');
+    await p.getByLabel('Nombre de la rutina').fill('Mi rutina');
+    await p.getByRole('button', { name: 'Agregar día' }).click();
+    await p.getByRole('button', { name: 'Agregar ejercicio' }).first().click();
+    await p.getByRole('searchbox', { name: 'Buscar ejercicio' }).fill('press banca barra');
+    await p.getByRole('button', { name: `Agregar ${BANCA}`, exact: true }).click();
+    await p.getByRole('button', { name: 'Guardar rutina' }).click();
+    await p.getByRole('heading', { name: 'Mi rutina' }).waitFor();
+    await p.getByRole('article', { name: 'Mi rutina' }).getByRole('button', { name: /^Empezar/ }).first().click();
+    await seriesDe(p, BANCA).first().waitFor();
+    assert.equal(await seriesDe(p, BANCA).count(), 3);
+    assert.equal(await p.getByRole('note').count(), 0);
+  } finally {
+    await app.cerrar();
+  }
+});
+
+test('una sesión empezada el domingo a la noche sigue en su semana después de medianoche', async () => {
+  const app = await abrirApp();
+  const p = app.pagina;
+  try {
+    p.setDefaultTimeout(8000);
+    const d = new Date();
+    d.setDate(d.getDate() + ((7 - d.getDay()) % 7) + 7); // un domingo futuro
+    d.setHours(23, 50, 0, 0);
+    await p.clock.install({ time: d });
+    await p.reload();
+    await crearPlan(p);
+    await p.getByRole('region', { name: 'Tu plan' }).waitFor();
+    await p.getByRole('button', { name: 'Empezar Torso A' }).first().click();
+    await p.getByRole('note').getByText('Semana 1 de 12 · Bloque 1').waitFor();
+    await p.clock.setSystemTime(new Date(d.getTime() + 20 * 60_000));
+    await p.reload();
+    await p.getByRole('note').getByText('Semana 1 de 12 · Bloque 1').waitFor();
+    assert.equal(await seriesDe(p, BANCA).count(), 3);
+  } finally {
+    await app.cerrar();
+  }
+});

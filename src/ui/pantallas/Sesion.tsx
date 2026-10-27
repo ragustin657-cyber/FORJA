@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
-import { duracion } from '../../core/formato';
+import { duracion, kg } from '../../core/formato';
 import { reducirSesion, resumenSeries, textoSugerencia, type Accion } from '../../core/sesion';
 import { ajustesRepo } from '../../data/repos/ajustes';
 import { ejerciciosRepo } from '../../data/repos/ejercicios';
 import { rutinasRepo } from '../../data/repos/rutinas';
 import { sesionesRepo } from '../../data/repos/sesiones';
 import type { DiaRutina, Ejercicio, Sesion as TSesion } from '../../data/tipos';
-import { infoEjercicio, type InfoEjercicio } from '../acciones';
+import { infoEjercicio, semanaDeRutina, sugerenciaDeSemana, type InfoEjercicio } from '../acciones';
+import { textoSemana } from '../plan';
 import { Boton } from '../componentes/Boton';
 import { Encabezado } from '../componentes/Encabezado';
 import { IconoCheck } from '../componentes/Iconos';
@@ -16,10 +17,19 @@ import { Temporizador } from '../componentes/Temporizador';
 import { Enlace, navegar } from '../router';
 import { desbloquearAudio } from '../sonido';
 
-type Contexto = { dia: DiaRutina | undefined; ejercicios: Record<string, Ejercicio>; info: Record<string, InfoEjercicio>; incremento: number };
+type Contexto = {
+  dia: DiaRutina | undefined;
+  ejercicios: Record<string, Ejercicio>;
+  info: Record<string, InfoEjercicio>;
+  incremento: number;
+  semana: Awaited<ReturnType<typeof semanaDeRutina>>;
+};
 
 async function cargarContexto(s: TSesion): Promise<Contexto> {
   const rutina = await rutinasRepo.porId(s.rutinaId);
+  // La semana se calcula con el inicio de la sesión: si cruza la medianoche del domingo, no cambia.
+  const semana = await semanaDeRutina(s.rutinaId, s.inicio);
+  const incremento = (await ajustesRepo.obtener()).incrementoKg;
   const dia = rutina?.dias.find((d) => d.id === s.diaId);
   const ids = [...new Set(s.series.map((x) => x.ejercicioId))];
   const ejercicios: Record<string, Ejercicio> = {};
@@ -28,9 +38,10 @@ async function cargarContexto(s: TSesion): Promise<Contexto> {
     const e = await ejerciciosRepo.porId(id);
     if (e) ejercicios[id] = e;
     const enDia = dia?.ejercicios.find((x) => x.ejercicioId === id) ?? { ejercicioId: id, series: 3, repsMin: 8, repsMax: 12, descansoSeg: 90 };
-    info[id] = await infoEjercicio(enDia);
+    const i = await infoEjercicio(enDia);
+    info[id] = { ...i, sugerencia: sugerenciaDeSemana(i.sugerencia, semana?.descarga ?? false, incremento) };
   }
-  return { dia, ejercicios, info, incremento: (await ajustesRepo.obtener()).incrementoKg };
+  return { dia, ejercicios, info, incremento, semana };
 }
 
 export function Sesion() {
@@ -108,6 +119,11 @@ export function Sesion() {
         {duracion(Date.now() - actual.inicio)} · {hechas} de {actual.series.length} series
       </p>
       <div className="pila">
+        {contexto.semana && (
+          <div role="note" className={`aviso ${contexto.semana.descarga ? 'aviso-dorado' : ''}`} style={{ fontSize: 14, padding: '10px 14px' }}>
+            {contexto.semana.descarga ? 'Semana de descarga: más liviano a propósito, para recuperarte' : textoSemana(contexto.semana)}
+          </div>
+        )}
         {ids.map((id) => {
           const e = contexto.ejercicios[id];
           const nombre = e?.nombre ?? 'Ejercicio';
@@ -129,7 +145,9 @@ export function Sesion() {
                 <span className={`chip ${info.sugerencia.motivo === 'subir' ? 'chip-dorado' : ''}`} style={{ alignSelf: 'flex-start', cursor: 'default' }}>
                   {e?.equipo === 'body only' && info.sugerencia.peso === null
                     ? 'Peso corporal: cargá peso solo si usás lastre'
-                    : textoSugerencia(info.sugerencia)}
+                    : contexto.semana?.descarga && info.sugerencia.peso !== null
+                      ? `Descarga: ${kg(info.sugerencia.peso)}`
+                      : textoSugerencia(info.sugerencia)}
                 </span>
               )}
               {series.map((x) => {
