@@ -168,3 +168,15 @@ img { max-width: 100%; display: block; }
   padding-bottom: calc(16px + env(safe-area-inset-bottom));
 }
 .dialogo { width: 100%; max-width: 480px; background: var(--color-tarjeta); border: 1px solid var(--color-linea); border-radius: var(--radio); padding: 18px; }
+
+/* Cámara de fotos de progreso */
+.foto-camara { position: relative; width: 100%; aspect-ratio: 3 / 4; border-radius: 12px; overflow: hidden; background: #000; }
+.foto-camara video, .foto-camara .foto-capa { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.foto-camara .espejo { transform: scaleX(-1); }
+.foto-camara .foto-fantasma { opacity: 0.35; pointer-events: none; }
+.foto-camara .foto-silueta { position: absolute; inset: 6% 18%; color: rgba(243, 236, 232, 0.35); pointer-events: none; }
+.foto-cuenta {
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-size: 120px; font-weight: 800; color: var(--color-dorado); background: rgba(0, 0, 0, 0.25);
+  text-shadow: 0 4px 24px rgba(0, 0, 0, 0.6); cursor: pointer;
+}

@@ -28,3 +28,17 @@ export function pitido(): void {
   }
   navigator.vibrate?.([200, 100, 200]);
 }
+
+/** Un tic corto para la cuenta regresiva de la cámara. */
+export function tic(): void {
+  const ctx = contexto;
+  if (!ctx) return;
+  const osc = ctx.createOscillator();
+  const vol = ctx.createGain();
+  osc.frequency.value = 880;
+  vol.gain.setValueAtTime(0.2, ctx.currentTime);
+  vol.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.12);
+  osc.connect(vol).connect(ctx.destination);
+  osc.start();
+  osc.stop(ctx.currentTime + 0.12);
+}
