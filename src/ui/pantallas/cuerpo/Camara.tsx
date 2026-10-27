@@ -66,6 +66,7 @@ export function Camara() {
   const [cuenta, setCuenta] = useState<number | null>(null);
   const [previa, setPrevia] = useState<Previa | null>(null);
   const [sinCamara, setSinCamara] = useState(false);
+  const [lista, setLista] = useState(false);
   const [visible, setVisible] = useState(!document.hidden);
   const [reemplazar, setReemplazar] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -89,6 +90,7 @@ export function Camara() {
 
   useEffect(() => {
     if (!visible) return;
+    setLista(false);
     let flujo: MediaStream | null = null;
     let vivo = true;
     (async () => {
@@ -192,7 +194,10 @@ export function Camara() {
           <div className="aviso" role="status">No pudimos usar la cámara. Revisá el permiso en Ajustes del iPhone o elegí una foto de la galería.</div>
         ) : (
           <div className="foto-camara">
-            <video ref={video} playsInline muted autoPlay aria-label="Cámara" className={frontal ? 'espejo' : undefined} />
+            <video
+              ref={video} playsInline muted autoPlay aria-label="Cámara" className={frontal ? 'espejo' : undefined}
+              onPlaying={() => setLista(true)} onLoadedData={(e) => e.currentTarget.videoWidth > 0 && setLista(true)}
+            />
             {guia && !previa && (anterior ? (
               <img src={anterior} alt="Foto anterior" className={`foto-capa foto-fantasma${frontal ? ' espejo' : ''}`} />
             ) : (
@@ -226,7 +231,7 @@ export function Camara() {
                   <Boton variante="secundario" onClick={() => setFrontal(!frontal)}>Cambiar cámara</Boton>
                   <Boton variante="secundario" onClick={() => setGuia(!guia)}>{guia ? 'Ocultar guía' : 'Mostrar guía'}</Boton>
                 </div>
-                <Boton ancho onClick={disparar} disabled={cuenta !== null}>Sacar foto</Boton>
+                <Boton ancho onClick={disparar} disabled={cuenta !== null || !lista}>Sacar foto</Boton>
               </>
             )}
             <label className="boton boton-secundario boton-ancho">
