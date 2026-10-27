@@ -13,6 +13,8 @@ export interface Registro {
   refId: string;
   /** Factor del plato (menú o plato) o gramos (alimento o producto). */
   cantidad: number;
+  /** Porción elegida (½, 1, 1½…) para platos; solo para mostrar. */
+  porcion?: number;
   nombre: string;
   macros: Macros;
   creado: number;

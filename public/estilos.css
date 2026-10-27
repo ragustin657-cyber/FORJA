@@ -151,3 +151,7 @@ img { max-width: 100%; display: block; }
 }
 .aviso-dorado { background: rgba(201, 162, 39, 0.1); border-color: rgba(201, 162, 39, 0.4); }
 .error { color: #FF8A8A; font-size: 14px; }
+
+/* Barras de consumo del día */
+.barra-meta { height: 8px; border-radius: 999px; background: var(--color-tarjeta-alta); overflow: hidden; }
+.barra-meta > span { display: block; height: 100%; border-radius: 999px; background: var(--color-dorado); transition: width 0.3s; }

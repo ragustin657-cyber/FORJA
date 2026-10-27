@@ -79,6 +79,8 @@ export function Nutricion() {
           <p className="texto-2" style={{ fontSize: 12, margin: 0 }}>Son valores aproximados y recomendaciones generales.</p>
         </section>
 
+        <Enlace a="/nutricion/hoy" className="boton boton-primario boton-ancho">Registrar lo que comí</Enlace>
+
         <MenuDeHoy estado={datos} />
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8 }}>
