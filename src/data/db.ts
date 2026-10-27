@@ -4,7 +4,7 @@
  */
 
 /** Tablas del esquema. Agregar una tabla nueva acá la incluye sola en las copias de seguridad. */
-export const TABLAS = ['ejercicios', 'rutinas', 'sesiones', 'ajustes'] as const;
+export const TABLAS = ['ejercicios', 'rutinas', 'sesiones', 'ajustes', 'perfil', 'pesos', 'menus', 'compras'] as const;
 export type NombreTabla = (typeof TABLAS)[number];
 
 export interface Registro {
