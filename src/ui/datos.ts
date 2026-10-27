@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import contenido from '../contenido/ejercicios.json';
 import { ejerciciosRepo } from '../data/repos/ejercicios';
 import type { Ejercicio } from '../data/tipos';
@@ -14,19 +14,35 @@ export async function prepararBiblioteca() {
   await ejerciciosRepo.sincronizarBiblioteca(ejerciciosDeContenido());
 }
 
-/** Carga datos asíncronos y permite recargarlos. */
-export function useCarga<T>(cargar: () => Promise<T>, deps: unknown[] = []): { datos: T | undefined; recargar: () => void } {
+/** Carga datos asíncronos y permite recargarlos. `recargar()` termina cuando los datos nuevos ya están en pantalla. */
+export function useCarga<T>(cargar: () => Promise<T>, deps: unknown[] = []): { datos: T | undefined; recargar: () => Promise<void> } {
   const [datos, setDatos] = useState<T>();
   const [vuelta, setVuelta] = useState(0);
+  const pendientes = useRef<(() => void)[]>([]);
   useEffect(() => {
     let vivo = true;
-    cargar().then((d) => vivo && setDatos(d));
+    const avisar = () => pendientes.current.splice(0).forEach((r) => r());
+    cargar().then(
+      (d) => {
+        if (!vivo) return;
+        setDatos(d);
+        avisar();
+      },
+      () => vivo && avisar(),
+    );
     return () => {
       vivo = false;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [...deps, vuelta]);
-  const recargar = useCallback(() => setVuelta((v) => v + 1), []);
+  const recargar = useCallback(
+    () =>
+      new Promise<void>((r) => {
+        pendientes.current.push(r);
+        setVuelta((v) => v + 1);
+      }),
+    [],
+  );
   return { datos, recargar };
 }
 

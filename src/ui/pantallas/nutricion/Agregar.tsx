@@ -99,10 +99,13 @@ export function Agregar({ fecha, tipo }: { fecha: string; tipo: TipoComida }) {
   const agregar = async (r: { origen: Origen; refId: string; nombre: string; cantidad: number; porcion?: number }) => {
     if (enCurso.current) return;
     enCurso.current = true;
+    let listo = false;
     try {
-      if (await registrar({ fecha, tipo, ...r })) volver();
+      listo = await registrar({ fecha, tipo, ...r });
+      if (listo) volver();
     } finally {
-      enCurso.current = false;
+      // Después de registrar, la pantalla se va: no se libera para que un segundo toque no agregue otra vez.
+      if (!listo) enCurso.current = false;
     }
   };
 

@@ -115,9 +115,10 @@ export function Hoy({ fecha: pedida }: { fecha?: string }) {
     try {
       await fn();
     } finally {
+      // Se libera recién cuando la pantalla ya muestra lo guardado; si no, un segundo toque vería el botón viejo.
+      await recargar();
       enCurso.current = false;
       setOcupado(false);
-      recargar();
     }
   };
 

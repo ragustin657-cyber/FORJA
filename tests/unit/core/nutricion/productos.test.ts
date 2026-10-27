@@ -64,3 +64,17 @@ test('un código con espacios y guiones se limpia', () => {
   expect(limpiarCodigo('779-0070 41171-6')).toBe('7790070411716');
   expect(limpiarCodigo('77900704117')).toBeNull();
 });
+
+test('OFF: textos vacíos cuentan como faltantes, no como 0', () => {
+  const r = (n: Record<string, unknown>) => leerProductoOFF('1', { status: 1, product: { product_name: 'X', nutriments: n } });
+  expect(r({ 'energy-kcal_100g': '', energy_100g: 1500, proteins_100g: 10 })?.kcal).toBe(358.51);
+  expect(r({ 'energy-kcal_100g': 300, proteins_100g: ' ', fat_100g: '', carbohydrates_100g: '' })).toBeNull();
+});
+
+test('OFF: valores imposibles mandan a la carga manual', () => {
+  const r = (n: Record<string, unknown>) => leerProductoOFF('1', { status: 1, product: { product_name: 'X', nutriments: n } });
+  expect(r({ 'energy-kcal_100g': 2000, proteins_100g: 10 })).toBeNull();
+  expect(r({ 'energy-kcal_100g': 300, proteins_100g: 250 })).toBeNull();
+  expect(r({ 'energy-kcal_100g': 300, proteins_100g: 60, fat_100g: 30, carbohydrates_100g: 20 })).toBeNull();
+  expect(r({ 'energy-kcal_100g': 900, proteins_100g: 0, fat_100g: 100 })?.kcal).toBe(900);
+});

@@ -54,6 +54,37 @@ test('un doble toque en "La comí" registra una sola vez', async () => {
   }
 });
 
+test('un segundo toque apenas termina de guardar tampoco duplica', async () => {
+  const app = await abrirApp();
+  const p = app.pagina;
+  try {
+    p.setDefaultTimeout(5000);
+    await abrirHoy(p);
+    const cena = p.getByRole('article', { name: 'Cena' });
+    await cena.getByRole('button', { name: 'La comí' }).waitFor();
+    // Toca, y vuelve a tocar en cuanto el botón se habilita de nuevo.
+    await p.evaluate(
+      () =>
+        new Promise((ok) => {
+          const boton = () => [...document.querySelectorAll('article[aria-label="Cena"] button')].find((b) => b.textContent === 'La comí');
+          boton().click();
+          // En cuanto el botón vuelve a estar habilitado, se toca otra vez.
+          const obs = new MutationObserver(() => {
+            const b = boton();
+            if (b && !b.disabled) { obs.disconnect(); b.click(); ok(); }
+          });
+          obs.observe(document.querySelector('article[aria-label="Cena"]'), { subtree: true, childList: true, attributes: true });
+          setTimeout(() => { obs.disconnect(); ok(); }, 3000);
+        }),
+    );
+    await cena.getByRole('button', { name: 'Registrado ✓' }).waitFor();
+    await p.waitForTimeout(300);
+    assert.equal(await cena.getByRole('listitem').count(), 1);
+  } finally {
+    await app.cerrar();
+  }
+});
+
 test('media porción registra cerca de la mitad, y borrar lo quita del total', async () => {
   const app = await abrirApp();
   const p = app.pagina;

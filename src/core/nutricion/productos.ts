@@ -4,7 +4,8 @@ import type { Producto } from './tipos';
 const dos = (n: number) => Math.round(n * 100) / 100;
 
 function numero(v: unknown): number | null {
-  const n = typeof v === 'number' ? v : typeof v === 'string' ? Number(v.trim().replace(',', '.')) : NaN;
+  // Un texto vacío es un dato faltante (Number('') daría 0).
+  const n = typeof v === 'number' ? v : typeof v === 'string' && v.trim() !== '' ? Number(v.trim().replace(',', '.')) : NaN;
   return Number.isFinite(n) && n >= 0 ? n : null;
 }
 
@@ -24,6 +25,8 @@ export function leerProductoOFF(codigo: string, json: unknown): Producto | null 
   if (kcal === null || macros.every((m) => m === null)) return null;
   const [proteina, grasas, carbos] = macros.map((m) => dos(m ?? 0));
   const salida: Producto = { id: codigo, nombre: texto(product.product_name) || `Producto ${codigo}`, kcal: dos(kcal), proteina, grasas, carbos, origen: 'off' };
+  // Valores imposibles (por ejemplo kJ cargados como kcal): mejor cargar la etiqueta a mano.
+  if (validarEtiqueta(salida).length > 0) return null;
   const marca = texto(product.brands).split(',')[0].trim();
   if (marca) salida.marca = marca;
   const porcion = numero(product.serving_quantity);
