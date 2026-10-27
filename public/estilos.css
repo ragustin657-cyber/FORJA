@@ -124,14 +124,15 @@ img { max-width: 100%; display: block; }
 .stepper { display: flex; align-items: center; gap: 6px; }
 .stepper .boton-icono { width: 44px; height: 48px; border-radius: var(--radio-chico); font-size: 22px; font-weight: 700; }
 .stepper input {
-  width: 72px; min-height: 48px; text-align: center;
+  width: 72px; min-height: 48px; text-align: center; padding: 0 2px;
   background: var(--color-fondo); border: 1px solid var(--color-linea); border-radius: var(--radio-chico);
   font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums;
 }
 
-.stepper-compacto { gap: 4px; }
-.stepper-compacto .boton-icono { width: 34px; font-size: 20px; }
-.stepper-compacto input { width: 52px; font-size: 18px; }
+.stepper-compacto { gap: 4px; width: 100%; }
+.stepper-compacto .boton-icono { width: 30px; flex-shrink: 0; font-size: 20px; }
+/* El campo ocupa todo el espacio libre para que entren pesos como 22,5 o 102,5 */
+.stepper-compacto input { width: auto; flex: 1; min-width: 0; padding: 0; font-size: 17px; }
 
 .chip {
   display: inline-flex; align-items: center; min-height: 34px; padding: 0 14px;

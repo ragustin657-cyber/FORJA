@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { nuevoId } from '../../data/db';
 import { ejerciciosRepo } from '../../data/repos/ejercicios';
 import { rutinasRepo } from '../../data/repos/rutinas';
@@ -70,6 +70,20 @@ export function EditorRutina({ id }: { id: string }) {
   const [eligiendoPara, setEligiendoPara] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [nombres, setNombres] = useState<Record<string, Ejercicio>>({});
+  // Al volver del selector, la pantalla queda donde estabas en vez de saltar arriba.
+  const scrollGuardado = useRef<number | null>(null);
+  useLayoutEffect(() => {
+    if (eligiendoPara) {
+      window.scrollTo(0, 0);
+    } else if (scrollGuardado.current !== null) {
+      window.scrollTo(0, scrollGuardado.current);
+      scrollGuardado.current = null;
+    }
+  }, [eligiendoPara]);
+  const abrirSelector = (diaId: string) => {
+    scrollGuardado.current = window.scrollY;
+    setEligiendoPara(diaId);
+  };
 
   useEffect(() => {
     if (!esNueva) rutinasRepo.porId(id).then((r) => setRutina(r ?? null));
@@ -103,7 +117,6 @@ export function EditorRutina({ id }: { id: string }) {
               ejercicios: [...d.ejercicios, { ejercicioId: e.id, series: 3, repsMin: 8, repsMax: 12, descansoSeg: 90 }],
             }));
             setEligiendoPara(null);
-            window.scrollTo(0, 0);
           }}
         />
       </>
@@ -166,7 +179,7 @@ export function EditorRutina({ id }: { id: string }) {
                 onBorrar={() => cambiarDia(d.id, (x) => ({ ...x, ejercicios: x.ejercicios.filter((_, k) => k !== j) }))}
               />
             ))}
-            <Boton variante="secundario" onClick={() => setEligiendoPara(d.id)}>Agregar ejercicio</Boton>
+            <Boton variante="secundario" onClick={() => abrirSelector(d.id)}>Agregar ejercicio</Boton>
           </section>
         ))}
 

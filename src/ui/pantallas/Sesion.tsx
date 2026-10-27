@@ -141,7 +141,7 @@ export function Sesion() {
                     style={{ justifyContent: 'space-between', gap: 6, opacity: x.completada ? 0.75 : 1 }}
                   >
                     <span className="texto-2 numeros" style={{ width: 18, fontWeight: 700 }}>{x.numero}</span>
-                    <div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
                       <div className="texto-2" style={{ fontSize: 11, marginBottom: 2 }}>kg</div>
                       <Stepper
                         compacto
@@ -151,7 +151,7 @@ export function Sesion() {
                         onCambio={(v) => despachar({ tipo: 'cambiar', ejercicioId: id, numero: x.numero, campo: 'peso', valor: v })}
                       />
                     </div>
-                    <div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
                       <div className="texto-2" style={{ fontSize: 11, marginBottom: 2 }}>reps</div>
                       <Stepper
                         compacto
