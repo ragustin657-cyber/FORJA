@@ -6,7 +6,9 @@ export type Accion =
   | { tipo: 'cambiar'; ejercicioId: string; numero: number; campo: 'peso' | 'reps'; valor: number | null }
   | { tipo: 'completar'; ejercicioId: string; numero: number; sinPeso?: boolean }
   | { tipo: 'descompletar'; ejercicioId: string; numero: number }
-  | { tipo: 'agregar'; ejercicioId: string };
+  | { tipo: 'agregar'; ejercicioId: string }
+  | { tipo: 'reemplazar'; ejercicioId: string; nuevoId: string; peso: number | null }
+  | { tipo: 'recortar'; quitar: string[]; reducir: { ejercicioId: string; pendientes: number }[]; descansoMaxSeg: number | null };
 
 /**
  * Arma una sesión nueva para un día de rutina. Un peso 0 significa "todavía sin elegir".
@@ -59,6 +61,32 @@ export function reducirSesion(s: Sesion, a: Accion): Sesion {
       const series = [...s.series];
       series.splice(indice + 1, 0, nueva);
       return { ...s, series };
+    }
+    case 'reemplazar': {
+      // Las series hechas quedan con el ejercicio original; las pendientes pasan al nuevo, en el mismo lugar.
+      let n = 0;
+      const series = s.series.map((x) =>
+        x.ejercicioId === a.ejercicioId && !x.completada ? { ...x, ejercicioId: a.nuevoId, numero: ++n, peso: a.peso ?? 0 } : x,
+      );
+      const previos = s.cambios ?? [];
+      const encadenado = previos.find((c) => c.a === a.ejercicioId);
+      const cambios = encadenado
+        ? previos.map((c) => (c === encadenado ? { ...c, a: a.nuevoId } : c))
+        : [...previos, { de: a.ejercicioId, a: a.nuevoId }];
+      return { ...s, series, cambios };
+    }
+    case 'recortar': {
+      const pendientesVistas = new Map<string, number>();
+      const series = s.series.filter((x) => {
+        if (x.completada) return true;
+        if (a.quitar.includes(x.ejercicioId)) return false;
+        const limite = a.reducir.find((r) => r.ejercicioId === x.ejercicioId)?.pendientes;
+        if (limite === undefined) return true;
+        const vistas = (pendientesVistas.get(x.ejercicioId) ?? 0) + 1;
+        pendientesVistas.set(x.ejercicioId, vistas);
+        return vistas <= limite;
+      });
+      return a.descansoMaxSeg === null ? { ...s, series } : { ...s, series, descansoMaxSeg: a.descansoMaxSeg };
     }
   }
 }
