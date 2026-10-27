@@ -1,0 +1,2266 @@
+[
+ {
+  "id": "avena-banana",
+  "nombre": "Avena con leche y banana",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "avena",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "leche-descremada",
+    "gramos": 250
+   },
+   {
+    "alimentoId": "banana",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "miel",
+    "gramos": 10
+   }
+  ],
+  "pasos": [
+   "Calentá la leche y sumá la avena.",
+   "Cociná 3 minutos revolviendo.",
+   "Serví con la banana en rodajas y la miel."
+  ]
+ },
+ {
+  "id": "avena-agua-manzana",
+  "nombre": "Avena con manzana y canela",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "avena",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "manzana",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "almendras",
+    "gramos": 10
+   }
+  ],
+  "pasos": [
+   "Cociná la avena con 250 ml de agua 3 minutos.",
+   "Sumá la manzana rallada y canela a gusto.",
+   "Terminá con las almendras picadas."
+  ]
+ },
+ {
+  "id": "tostadas-queso-huevo",
+  "nombre": "Tostadas con queso untable y huevo",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "pan-integral",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "queso-untable",
+    "gramos": 30
+   },
+   {
+    "alimentoId": "huevo",
+    "gramos": 50
+   }
+  ],
+  "pasos": [
+   "Tostá el pan.",
+   "Hacé el huevo a la plancha o revuelto.",
+   "Untá el queso y poné el huevo arriba."
+  ]
+ },
+ {
+  "id": "tostadas-palta-huevo",
+  "nombre": "Tostadas con palta y huevo",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "pan-integral",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "palta",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "huevo",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "limon",
+    "gramos": 5
+   }
+  ],
+  "pasos": [
+   "Tostá el pan.",
+   "Pisá la palta con limón y sal.",
+   "Sumá los huevos a la plancha arriba."
+  ]
+ },
+ {
+  "id": "yogur-granola-frutillas",
+  "nombre": "Yogur con granola y frutillas",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "yogur-descremado",
+    "gramos": 190
+   },
+   {
+    "alimentoId": "granola",
+    "gramos": 30
+   },
+   {
+    "alimentoId": "frutillas",
+    "gramos": 100
+   }
+  ],
+  "pasos": [
+   "Serví el yogur en un bowl.",
+   "Sumá las frutillas cortadas y la granola."
+  ]
+ },
+ {
+  "id": "yogur-griego-frutos",
+  "nombre": "Yogur griego con arándanos y nueces",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "yogur-griego",
+    "gramos": 160
+   },
+   {
+    "alimentoId": "arandanos",
+    "gramos": 80
+   },
+   {
+    "alimentoId": "nueces",
+    "gramos": 15
+   },
+   {
+    "alimentoId": "miel",
+    "gramos": 10
+   }
+  ],
+  "pasos": [
+   "Serví el yogur.",
+   "Sumá los arándanos, las nueces y la miel."
+  ]
+ },
+ {
+  "id": "licuado-banana",
+  "nombre": "Licuado de banana con avena",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "leche-descremada",
+    "gramos": 250
+   },
+   {
+    "alimentoId": "banana",
+    "gramos": 120
+   },
+   {
+    "alimentoId": "avena",
+    "gramos": 20
+   }
+  ],
+  "pasos": [
+   "Licuá todo con hielo.",
+   "Tomalo recién hecho."
+  ]
+ },
+ {
+  "id": "cafe-leche-tostadas-mermelada",
+  "nombre": "Café con leche y tostadas con mermelada",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "leche-descremada",
+    "gramos": 200
+   },
+   {
+    "alimentoId": "pan-frances",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "queso-untable",
+    "gramos": 20
+   },
+   {
+    "alimentoId": "mermelada",
+    "gramos": 20
+   }
+  ],
+  "pasos": [
+   "Prepará el café con la leche.",
+   "Tostá el pan.",
+   "Untá el queso y la mermelada."
+  ]
+ },
+ {
+  "id": "revuelto-jamon-queso",
+  "nombre": "Revuelto de huevos con jamón y queso",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "huevo",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "jamon-cocido",
+    "gramos": 30
+   },
+   {
+    "alimentoId": "queso-maquina",
+    "gramos": 20
+   },
+   {
+    "alimentoId": "pan-integral",
+    "gramos": 25
+   }
+  ],
+  "pasos": [
+   "Batí los huevos.",
+   "Cociná en sartén con el jamón picado.",
+   "Sumá el queso al final y serví con la tostada."
+  ]
+ },
+ {
+  "id": "panqueques-avena",
+  "nombre": "Panqueques de avena y banana",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "avena",
+    "gramos": 40
+   },
+   {
+    "alimentoId": "huevo",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "banana",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "miel",
+    "gramos": 10
+   }
+  ],
+  "pasos": [
+   "Licuá la avena, los huevos y la banana.",
+   "Cociná de a cucharones en sartén caliente.",
+   "Serví con la miel."
+  ]
+ },
+ {
+  "id": "galletas-arroz-queso-tomate",
+  "nombre": "Galletas de arroz con queso y tomate",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "galletas-arroz",
+    "gramos": 27
+   },
+   {
+    "alimentoId": "queso-maquina",
+    "gramos": 30
+   },
+   {
+    "alimentoId": "tomate",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "leche-descremada",
+    "gramos": 200
+   }
+  ],
+  "pasos": [
+   "Armá las galletas con queso y rodajas de tomate.",
+   "Acompañá con café con leche."
+  ]
+ },
+ {
+  "id": "tostado-jamon-queso",
+  "nombre": "Tostado de jamón y queso",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "pan-integral",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "jamon-cocido",
+    "gramos": 30
+   },
+   {
+    "alimentoId": "queso-maquina",
+    "gramos": 25
+   }
+  ],
+  "pasos": [
+   "Armá el sándwich.",
+   "Tostalo en sandwichera o sartén."
+  ]
+ },
+ {
+  "id": "bowl-frutas-ricota",
+  "nombre": "Bowl de ricota con frutas y miel",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "ricota",
+    "gramos": 120
+   },
+   {
+    "alimentoId": "banana",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "frutillas",
+    "gramos": 80
+   },
+   {
+    "alimentoId": "miel",
+    "gramos": 10
+   },
+   {
+    "alimentoId": "chia",
+    "gramos": 5
+   }
+  ],
+  "pasos": [
+   "Serví la ricota en un bowl.",
+   "Sumá las frutas, la chía y la miel."
+  ]
+ },
+ {
+  "id": "copos-leche-banana",
+  "nombre": "Copos de maíz con leche y banana",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "copos-maiz",
+    "gramos": 40
+   },
+   {
+    "alimentoId": "leche-descremada",
+    "gramos": 250
+   },
+   {
+    "alimentoId": "banana",
+    "gramos": 80
+   }
+  ],
+  "pasos": [
+   "Serví los copos con la leche fría.",
+   "Sumá la banana en rodajas."
+  ]
+ },
+ {
+  "id": "huevos-palta-sin-pan",
+  "nombre": "Huevos revueltos con palta y tomate",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "huevo",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "palta",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "tomate",
+    "gramos": 100
+   }
+  ],
+  "pasos": [
+   "Hacé los huevos revueltos.",
+   "Serví con la palta y el tomate en cubos."
+  ]
+ },
+ {
+  "id": "pan-sin-tacc-queso",
+  "nombre": "Tostadas sin TACC con queso y mermelada",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "pan-sin-tacc",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "queso-untable",
+    "gramos": 30
+   },
+   {
+    "alimentoId": "mermelada",
+    "gramos": 20
+   },
+   {
+    "alimentoId": "leche-descremada",
+    "gramos": 200
+   }
+  ],
+  "pasos": [
+   "Tostá el pan.",
+   "Untá el queso y la mermelada.",
+   "Acompañá con café con leche."
+  ]
+ },
+ {
+  "id": "licuado-proteico-cacao",
+  "nombre": "Licuado proteico de cacao y banana",
+  "tipos": [
+   "desayuno",
+   "merienda",
+   "colacion"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "leche-descremada",
+    "gramos": 250
+   },
+   {
+    "alimentoId": "proteina-polvo",
+    "gramos": 30
+   },
+   {
+    "alimentoId": "banana",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "cacao",
+    "gramos": 5
+   }
+  ],
+  "pasos": [
+   "Licuá todo con hielo.",
+   "Tomalo recién hecho o después de entrenar."
+  ]
+ },
+ {
+  "id": "mate-galletitas-queso",
+  "nombre": "Mate con galletitas de agua y queso",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "galletitas-agua",
+    "gramos": 30
+   },
+   {
+    "alimentoId": "queso-untable",
+    "gramos": 30
+   },
+   {
+    "alimentoId": "manzana",
+    "gramos": 150
+   }
+  ],
+  "pasos": [
+   "Prepará el mate.",
+   "Untá las galletitas con queso.",
+   "Sumá una manzana."
+  ]
+ },
+ {
+  "id": "fruta-almendras",
+  "nombre": "Manzana con almendras",
+  "tipos": [
+   "colacion"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "manzana",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "almendras",
+    "gramos": 20
+   }
+  ],
+  "pasos": [
+   "Cortá la manzana.",
+   "Acompañá con las almendras."
+  ]
+ },
+ {
+  "id": "banana-mani",
+  "nombre": "Banana con mantequilla de maní",
+  "tipos": [
+   "colacion"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "banana",
+    "gramos": 120
+   },
+   {
+    "alimentoId": "mantequilla-mani",
+    "gramos": 15
+   }
+  ],
+  "pasos": [
+   "Cortá la banana.",
+   "Untá cada rodaja con la mantequilla de maní."
+  ]
+ },
+ {
+  "id": "yogur-frutillas",
+  "nombre": "Yogur con frutillas",
+  "tipos": [
+   "colacion",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "yogur-descremado",
+    "gramos": 190
+   },
+   {
+    "alimentoId": "frutillas",
+    "gramos": 100
+   }
+  ],
+  "pasos": [
+   "Cortá las frutillas.",
+   "Mezclalas con el yogur."
+  ]
+ },
+ {
+  "id": "mix-frutos-secos",
+  "nombre": "Mix de frutos secos y pasas",
+  "tipos": [
+   "colacion"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "almendras",
+    "gramos": 15
+   },
+   {
+    "alimentoId": "nueces",
+    "gramos": 10
+   },
+   {
+    "alimentoId": "pasas",
+    "gramos": 15
+   }
+  ],
+  "pasos": [
+   "Mezclá los frutos secos con las pasas.",
+   "Llevalo en un frasquito para comer entre comidas."
+  ]
+ },
+ {
+  "id": "galletas-arroz-mani",
+  "nombre": "Galletas de arroz con mantequilla de maní",
+  "tipos": [
+   "colacion"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "galletas-arroz",
+    "gramos": 27
+   },
+   {
+    "alimentoId": "mantequilla-mani",
+    "gramos": 15
+   }
+  ],
+  "pasos": [
+   "Untá las galletas con la mantequilla de maní.",
+   "Si querés, sumá rodajas de banana."
+  ]
+ },
+ {
+  "id": "huevos-duros-mandarina",
+  "nombre": "Huevos duros con mandarina",
+  "tipos": [
+   "colacion"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "huevo",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "mandarina",
+    "gramos": 100
+   }
+  ],
+  "pasos": [
+   "Herví los huevos 10 minutos.",
+   "Pelalos y acompañá con la mandarina."
+  ]
+ },
+ {
+  "id": "barra-yogur",
+  "nombre": "Barra de cereal y yogur",
+  "tipos": [
+   "colacion"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "barra-cereal",
+    "gramos": 25
+   },
+   {
+    "alimentoId": "yogur-descremado",
+    "gramos": 190
+   }
+  ],
+  "pasos": [
+   "Ideal para llevar al gimnasio.",
+   "Mantené el yogur frío."
+  ]
+ },
+ {
+  "id": "queso-nueces-pera",
+  "nombre": "Queso con nueces y pera",
+  "tipos": [
+   "colacion"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "queso-maquina",
+    "gramos": 30
+   },
+   {
+    "alimentoId": "nueces",
+    "gramos": 10
+   },
+   {
+    "alimentoId": "pera",
+    "gramos": 160
+   }
+  ],
+  "pasos": [
+   "Cortá el queso y la pera.",
+   "Acompañá con las nueces."
+  ]
+ },
+ {
+  "id": "naranja-mani",
+  "nombre": "Naranja y maní",
+  "tipos": [
+   "colacion"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "naranja",
+    "gramos": 180
+   },
+   {
+    "alimentoId": "mani",
+    "gramos": 20
+   }
+  ],
+  "pasos": [
+   "Pelá la naranja.",
+   "Acompañá con el maní."
+  ]
+ },
+ {
+  "id": "pollo-arroz-ensalada",
+  "nombre": "Pollo a la plancha con arroz y ensalada",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "pechuga",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "arroz",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "lechuga",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "tomate",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "aceite-oliva",
+    "gramos": 10
+   }
+  ],
+  "pasos": [
+   "Cociná el arroz.",
+   "Hacé la pechuga a la plancha con sal y limón.",
+   "Serví con ensalada de lechuga y tomate con el aceite."
+  ]
+ },
+ {
+  "id": "milanesa-pure",
+  "nombre": "Milanesa al horno con puré de papa",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "nalga",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "huevo",
+    "gramos": 25
+   },
+   {
+    "alimentoId": "pan-rallado",
+    "gramos": 30
+   },
+   {
+    "alimentoId": "papa",
+    "gramos": 250
+   },
+   {
+    "alimentoId": "leche-descremada",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "aceite-girasol",
+    "gramos": 5
+   }
+  ],
+  "pasos": [
+   "Pasá la carne por huevo y pan rallado.",
+   "Horneá 20 minutos a 200 °C, dándola vuelta a la mitad.",
+   "Herví las papas y pisalas con la leche."
+  ]
+ },
+ {
+  "id": "milanesa-pollo-ensalada",
+  "nombre": "Milanesa de pollo al horno con ensalada",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "pechuga",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "huevo",
+    "gramos": 25
+   },
+   {
+    "alimentoId": "pan-rallado",
+    "gramos": 30
+   },
+   {
+    "alimentoId": "lechuga",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "tomate",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "zanahoria",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "aceite-oliva",
+    "gramos": 10
+   }
+  ],
+  "pasos": [
+   "Pasá la pechuga por huevo y pan rallado.",
+   "Horneá 20 minutos a 200 °C.",
+   "Serví con ensalada mixta."
+  ]
+ },
+ {
+  "id": "fideos-bolognesa",
+  "nombre": "Fideos con salsa bolognesa",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "fideos",
+    "gramos": 90
+   },
+   {
+    "alimentoId": "carne-picada",
+    "gramos": 120
+   },
+   {
+    "alimentoId": "pure-tomate",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "cebolla",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "queso-rallado",
+    "gramos": 10
+   }
+  ],
+  "pasos": [
+   "Rehogá la cebolla y dorá la carne picada.",
+   "Sumá el puré de tomate y cociná 15 minutos.",
+   "Herví los fideos y serví con la salsa y el queso."
+  ]
+ },
+ {
+  "id": "guiso-lentejas",
+  "nombre": "Guiso de lentejas",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "lentejas",
+    "gramos": 70
+   },
+   {
+    "alimentoId": "carne-picada",
+    "gramos": 80
+   },
+   {
+    "alimentoId": "zanahoria",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "cebolla",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "papa",
+    "gramos": 120
+   },
+   {
+    "alimentoId": "pure-tomate",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "aceite-oliva",
+    "gramos": 5
+   }
+  ],
+  "pasos": [
+   "Rehogá la cebolla y la zanahoria; dorá la carne.",
+   "Sumá las lentejas, la papa, el puré y agua.",
+   "Cociná 35 minutos hasta que espese."
+  ]
+ },
+ {
+  "id": "tarta-verdura",
+  "nombre": "Tarta de acelga y ricota",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "tapa-tarta",
+    "gramos": 70
+   },
+   {
+    "alimentoId": "acelga",
+    "gramos": 200
+   },
+   {
+    "alimentoId": "ricota",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "huevo",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "cebolla",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "queso-rallado",
+    "gramos": 10
+   }
+  ],
+  "pasos": [
+   "Rehogá la cebolla con la acelga picada.",
+   "Mezclá con la ricota, el huevo y el queso.",
+   "Rellená la tapa y horneá 30 minutos."
+  ]
+ },
+ {
+  "id": "merluza-papas",
+  "nombre": "Merluza al horno con papas",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "merluza",
+    "gramos": 200
+   },
+   {
+    "alimentoId": "papa",
+    "gramos": 250
+   },
+   {
+    "alimentoId": "aceite-oliva",
+    "gramos": 10
+   },
+   {
+    "alimentoId": "limon",
+    "gramos": 20
+   }
+  ],
+  "pasos": [
+   "Cortá las papas en rodajas y horneá 20 minutos.",
+   "Sumá la merluza con limón y sal.",
+   "Horneá 15 minutos más."
+  ]
+ },
+ {
+  "id": "salmon-quinoa",
+  "nombre": "Salmón con quinoa y brócoli",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "salmon",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "quinoa",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "brocoli",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "limon",
+    "gramos": 20
+   }
+  ],
+  "pasos": [
+   "Lavá y cociná la quinoa 15 minutos.",
+   "Hacé el salmón a la plancha.",
+   "Herví el brócoli 5 minutos y serví todo junto."
+  ]
+ },
+ {
+  "id": "hamburguesa-casera",
+  "nombre": "Hamburguesa casera con ensalada",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "carne-picada",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "pan-hamburguesa",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "lechuga",
+    "gramos": 30
+   },
+   {
+    "alimentoId": "tomate",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "queso-maquina",
+    "gramos": 20
+   }
+  ],
+  "pasos": [
+   "Formá la hamburguesa con sal y pimienta.",
+   "Cocinala a la plancha y poné el queso al final.",
+   "Armá con el pan, la lechuga y el tomate."
+  ]
+ },
+ {
+  "id": "wok-pollo-verduras",
+  "nombre": "Wok de pollo con verduras y arroz",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "pechuga",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "arroz",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "morron",
+    "gramos": 80
+   },
+   {
+    "alimentoId": "zanahoria",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "zapallito",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "cebolla",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "aceite-girasol",
+    "gramos": 10
+   }
+  ],
+  "pasos": [
+   "Cociná el arroz.",
+   "Saltá el pollo en tiras a fuego fuerte.",
+   "Sumá las verduras en tiras 5 minutos y serví con el arroz."
+  ]
+ },
+ {
+  "id": "bife-calabaza",
+  "nombre": "Bife de cuadril con calabaza al horno",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "cuadril",
+    "gramos": 180
+   },
+   {
+    "alimentoId": "zapallo",
+    "gramos": 300
+   },
+   {
+    "alimentoId": "aceite-oliva",
+    "gramos": 10
+   }
+  ],
+  "pasos": [
+   "Cortá la calabaza en cubos y horneá 30 minutos.",
+   "Hacé el bife a la plancha a tu punto.",
+   "Serví juntos."
+  ]
+ },
+ {
+  "id": "pollo-batatas",
+  "nombre": "Pollo al horno con batatas",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "muslo",
+    "gramos": 180
+   },
+   {
+    "alimentoId": "batata",
+    "gramos": 250
+   },
+   {
+    "alimentoId": "cebolla",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "aceite-oliva",
+    "gramos": 10
+   }
+  ],
+  "pasos": [
+   "Poné el pollo y las batatas en cubos en una fuente.",
+   "Sumá la cebolla, el aceite y condimentos.",
+   "Horneá 40 minutos a 200 °C."
+  ]
+ },
+ {
+  "id": "ensalada-atun",
+  "nombre": "Ensalada completa de atún",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "atun",
+    "gramos": 120
+   },
+   {
+    "alimentoId": "papa",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "huevo",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "tomate",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "lechuga",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "choclo-lata",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "aceite-oliva",
+    "gramos": 10
+   }
+  ],
+  "pasos": [
+   "Herví la papa y el huevo.",
+   "Mezclá con el atún, el tomate, la lechuga y el choclo.",
+   "Condimentá con el aceite y limón."
+  ]
+ },
+ {
+  "id": "empanadas-carne",
+  "nombre": "Empanadas de carne al horno",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "tapa-empanada",
+    "gramos": 90
+   },
+   {
+    "alimentoId": "carne-picada",
+    "gramos": 120
+   },
+   {
+    "alimentoId": "cebolla",
+    "gramos": 80
+   },
+   {
+    "alimentoId": "huevo",
+    "gramos": 25
+   },
+   {
+    "alimentoId": "morron",
+    "gramos": 30
+   }
+  ],
+  "pasos": [
+   "Rehogá la cebolla y el morrón y dorá la carne.",
+   "Sumá el huevo duro picado y armá las empanadas.",
+   "Horneá 20 minutos a 200 °C."
+  ]
+ },
+ {
+  "id": "pastel-papa",
+  "nombre": "Pastel de papa",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "carne-picada",
+    "gramos": 130
+   },
+   {
+    "alimentoId": "papa",
+    "gramos": 300
+   },
+   {
+    "alimentoId": "cebolla",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "leche-descremada",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "queso-rallado",
+    "gramos": 10
+   }
+  ],
+  "pasos": [
+   "Herví las papas y hacé un puré con la leche.",
+   "Dorá la carne con la cebolla.",
+   "Armá en fuente carne y puré, espolvoreá queso y gratiná."
+  ]
+ },
+ {
+  "id": "cerdo-mostaza-arroz",
+  "nombre": "Solomillo de cerdo con arroz y ensalada",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "solomillo-cerdo",
+    "gramos": 170
+   },
+   {
+    "alimentoId": "arroz",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "lechuga",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "tomate",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "aceite-oliva",
+    "gramos": 10
+   }
+  ],
+  "pasos": [
+   "Dorá el solomillo entero y terminalo en horno 15 minutos.",
+   "Cociná el arroz.",
+   "Serví en medallones con la ensalada."
+  ]
+ },
+ {
+  "id": "wrap-pollo",
+  "nombre": "Wrap de pollo y verduras",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "tortilla-trigo",
+    "gramos": 80
+   },
+   {
+    "alimentoId": "pechuga",
+    "gramos": 120
+   },
+   {
+    "alimentoId": "lechuga",
+    "gramos": 30
+   },
+   {
+    "alimentoId": "tomate",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "queso-untable",
+    "gramos": 20
+   }
+  ],
+  "pasos": [
+   "Cociná el pollo en tiras.",
+   "Untá las tortillas con queso.",
+   "Rellená con el pollo y las verduras y enrollá."
+  ]
+ },
+ {
+  "id": "polenta-salsa-carne",
+  "nombre": "Polenta con salsa y carne",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "polenta",
+    "gramos": 70
+   },
+   {
+    "alimentoId": "carne-picada",
+    "gramos": 110
+   },
+   {
+    "alimentoId": "pure-tomate",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "cebolla",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "queso-rallado",
+    "gramos": 10
+   }
+  ],
+  "pasos": [
+   "Prepará la salsa con la cebolla, la carne y el puré.",
+   "Cociná la polenta en agua hirviendo 5 minutos.",
+   "Serví con la salsa y el queso."
+  ]
+ },
+ {
+  "id": "tortilla-papa",
+  "nombre": "Tortilla de papa y ensalada",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "papa",
+    "gramos": 250
+   },
+   {
+    "alimentoId": "huevo",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "cebolla",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "aceite-oliva",
+    "gramos": 10
+   },
+   {
+    "alimentoId": "lechuga",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "tomate",
+    "gramos": 100
+   }
+  ],
+  "pasos": [
+   "Cociná las papas en cubos con la cebolla.",
+   "Mezclá con los huevos batidos y cuajá de los dos lados.",
+   "Serví con ensalada."
+  ]
+ },
+ {
+  "id": "garbanzos-guiso",
+  "nombre": "Guiso de garbanzos con verduras",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "garbanzos",
+    "gramos": 220
+   },
+   {
+    "alimentoId": "zapallo",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "cebolla",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "morron",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "pure-tomate",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "aceite-oliva",
+    "gramos": 10
+   }
+  ],
+  "pasos": [
+   "Rehogá la cebolla y el morrón.",
+   "Sumá el zapallo, los garbanzos, el puré y agua.",
+   "Cociná 20 minutos."
+  ]
+ },
+ {
+  "id": "ensalada-pollo-quinoa",
+  "nombre": "Ensalada de pollo y quinoa",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "pechuga",
+    "gramos": 130
+   },
+   {
+    "alimentoId": "quinoa",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "tomate",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "pepino",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "palta",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "limon",
+    "gramos": 20
+   }
+  ],
+  "pasos": [
+   "Cociná la quinoa y dejala enfriar.",
+   "Cortá el pollo a la plancha y las verduras.",
+   "Mezclá todo con limón y sal."
+  ]
+ },
+ {
+  "id": "fideos-pollo-crema",
+  "nombre": "Fideos integrales con pollo y espinaca",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "fideos-integrales",
+    "gramos": 80
+   },
+   {
+    "alimentoId": "pechuga",
+    "gramos": 120
+   },
+   {
+    "alimentoId": "espinaca",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "queso-untable",
+    "gramos": 30
+   },
+   {
+    "alimentoId": "ajo",
+    "gramos": 5
+   }
+  ],
+  "pasos": [
+   "Herví los fideos.",
+   "Saltá el pollo con ajo y la espinaca.",
+   "Mezclá con el queso untable y los fideos."
+  ]
+ },
+ {
+  "id": "bife-ensalada-papa",
+  "nombre": "Bife de nalga con ensalada de papa y huevo",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "nalga",
+    "gramos": 180
+   },
+   {
+    "alimentoId": "papa",
+    "gramos": 200
+   },
+   {
+    "alimentoId": "huevo",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "mayonesa-light",
+    "gramos": 15
+   }
+  ],
+  "pasos": [
+   "Herví la papa y el huevo y armá la ensalada con la mayonesa.",
+   "Hacé el bife a la plancha."
+  ]
+ },
+ {
+  "id": "zapallitos-rellenos",
+  "nombre": "Zapallitos rellenos de carne",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "zapallito",
+    "gramos": 300
+   },
+   {
+    "alimentoId": "carne-picada",
+    "gramos": 120
+   },
+   {
+    "alimentoId": "cebolla",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "queso-rallado",
+    "gramos": 15
+   },
+   {
+    "alimentoId": "arroz",
+    "gramos": 30
+   }
+  ],
+  "pasos": [
+   "Ahuecá los zapallitos y herví 5 minutos.",
+   "Mezclá la pulpa con la carne dorada, la cebolla y el arroz cocido.",
+   "Rellená, poné el queso y horneá 20 minutos."
+  ]
+ },
+ {
+  "id": "berenjenas-milanesa",
+  "nombre": "Milanesas de berenjena con huevo",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "berenjena",
+    "gramos": 250
+   },
+   {
+    "alimentoId": "huevo",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "pan-rallado",
+    "gramos": 30
+   }
+  ],
+  "pasos": [
+   "Cortá la berenjena en rodajas, pasala por huevo y pan rallado.",
+   "Horneá 20 minutos a 200 °C.",
+   "Serví con un huevo a la plancha."
+  ]
+ },
+ {
+  "id": "arroz-pollo",
+  "nombre": "Arroz con pollo",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "muslo",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "arroz",
+    "gramos": 70
+   },
+   {
+    "alimentoId": "morron",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "cebolla",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "arvejas",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "pure-tomate",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "aceite-girasol",
+    "gramos": 5
+   }
+  ],
+  "pasos": [
+   "Dorá el pollo en trozos.",
+   "Sumá la cebolla, el morrón y el arroz.",
+   "Agregá el puré, agua y las arvejas y cociná 20 minutos."
+  ]
+ },
+ {
+  "id": "pizza-casera",
+  "nombre": "Pizza casera de muzzarella y tomate",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "harina",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "muzzarella",
+    "gramos": 80
+   },
+   {
+    "alimentoId": "pure-tomate",
+    "gramos": 80
+   },
+   {
+    "alimentoId": "tomate",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "aceite-oliva",
+    "gramos": 5
+   }
+  ],
+  "pasos": [
+   "Prepará la masa con harina, agua, levadura y sal.",
+   "Estirá, cubrí con el puré y horneá 10 minutos.",
+   "Sumá la muzzarella y el tomate y horneá 8 minutos más."
+  ]
+ },
+ {
+  "id": "merluza-pure-calabaza",
+  "nombre": "Merluza a la plancha con puré de calabaza",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "merluza",
+    "gramos": 200
+   },
+   {
+    "alimentoId": "zapallo",
+    "gramos": 300
+   },
+   {
+    "alimentoId": "manteca",
+    "gramos": 5
+   }
+  ],
+  "pasos": [
+   "Herví la calabaza y hacé un puré con la manteca.",
+   "Hacé la merluza a la plancha con limón."
+  ]
+ },
+ {
+  "id": "salpicon-pollo",
+  "nombre": "Salpicón de pollo",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "pechuga",
+    "gramos": 140
+   },
+   {
+    "alimentoId": "papa",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "zanahoria",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "choclo-lata",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "arvejas",
+    "gramos": 40
+   },
+   {
+    "alimentoId": "mayonesa-light",
+    "gramos": 15
+   }
+  ],
+  "pasos": [
+   "Herví la papa y la zanahoria en cubos.",
+   "Mezclá con el pollo desmenuzado, el choclo y las arvejas.",
+   "Sumá la mayonesa."
+  ]
+ },
+ {
+  "id": "bondiola-pure",
+  "nombre": "Bondiola al horno con puré mixto",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "bondiola",
+    "gramos": 160
+   },
+   {
+    "alimentoId": "papa",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "zapallo",
+    "gramos": 150
+   }
+  ],
+  "pasos": [
+   "Horneá la bondiola 60 minutos tapada y 15 destapada.",
+   "Herví la papa y la calabaza y hacé un puré."
+  ]
+ },
+ {
+  "id": "lomo-verduras",
+  "nombre": "Lomo con verduras grilladas",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "lomo",
+    "gramos": 170
+   },
+   {
+    "alimentoId": "zapallito",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "berenjena",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "morron",
+    "gramos": 80
+   },
+   {
+    "alimentoId": "aceite-oliva",
+    "gramos": 10
+   },
+   {
+    "alimentoId": "papa",
+    "gramos": 150
+   }
+  ],
+  "pasos": [
+   "Grillá las verduras en rodajas con el aceite.",
+   "Herví la papa.",
+   "Hacé el lomo a la plancha y serví todo junto."
+  ]
+ },
+ {
+  "id": "ensalada-lentejas",
+  "nombre": "Ensalada tibia de lentejas",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "lentejas",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "tomate",
+    "gramos": 120
+   },
+   {
+    "alimentoId": "cebolla",
+    "gramos": 40
+   },
+   {
+    "alimentoId": "huevo",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "aceite-oliva",
+    "gramos": 10
+   }
+  ],
+  "pasos": [
+   "Herví las lentejas 20 minutos.",
+   "Mezclá con el tomate, la cebolla y el huevo duro.",
+   "Condimentá con el aceite y limón."
+  ]
+ },
+ {
+  "id": "tacos-carne",
+  "nombre": "Tacos de carne con porotos",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "tortilla-trigo",
+    "gramos": 80
+   },
+   {
+    "alimentoId": "carne-picada",
+    "gramos": 110
+   },
+   {
+    "alimentoId": "porotos",
+    "gramos": 80
+   },
+   {
+    "alimentoId": "tomate",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "lechuga",
+    "gramos": 30
+   },
+   {
+    "alimentoId": "cebolla",
+    "gramos": 40
+   }
+  ],
+  "pasos": [
+   "Dorá la carne con la cebolla.",
+   "Sumá los porotos y calentá.",
+   "Armá los tacos con la lechuga y el tomate."
+  ]
+ },
+ {
+  "id": "quinoa-verduras-huevo",
+  "nombre": "Quinoa salteada con verduras y huevo",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "quinoa",
+    "gramos": 70
+   },
+   {
+    "alimentoId": "zapallito",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "zanahoria",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "cebolla",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "huevo",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "aceite-oliva",
+    "gramos": 5
+   }
+  ],
+  "pasos": [
+   "Cociná la quinoa.",
+   "Saltá las verduras y sumá la quinoa.",
+   "Serví con los huevos a la plancha."
+  ]
+ },
+ {
+  "id": "bowl-arroz-atun",
+  "nombre": "Bowl de arroz integral, atún y palta",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "arroz-integral",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "atun",
+    "gramos": 120
+   },
+   {
+    "alimentoId": "palta",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "pepino",
+    "gramos": 80
+   },
+   {
+    "alimentoId": "zanahoria",
+    "gramos": 50
+   }
+  ],
+  "pasos": [
+   "Cociná el arroz integral.",
+   "Armá el bowl con el atún, la palta y las verduras en tiras."
+  ]
+ },
+ {
+  "id": "pollo-limon-ensalada",
+  "nombre": "Pollo al limón con ensalada de rúcula",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "pechuga",
+    "gramos": 170
+   },
+   {
+    "alimentoId": "rucula",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "tomate",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "queso-rallado",
+    "gramos": 10
+   },
+   {
+    "alimentoId": "papa",
+    "gramos": 200
+   },
+   {
+    "alimentoId": "aceite-oliva",
+    "gramos": 10
+   }
+  ],
+  "pasos": [
+   "Marina el pollo con limón y ajo.",
+   "Hacelo a la plancha y herví la papa.",
+   "Serví con rúcula, tomate y el queso."
+  ]
+ },
+ {
+  "id": "champinones-arroz",
+  "nombre": "Arroz con champiñones y pollo",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "arroz",
+    "gramos": 70
+   },
+   {
+    "alimentoId": "champinones",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "pechuga",
+    "gramos": 120
+   },
+   {
+    "alimentoId": "cebolla",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "queso-rallado",
+    "gramos": 10
+   },
+   {
+    "alimentoId": "aceite-oliva",
+    "gramos": 5
+   }
+  ],
+  "pasos": [
+   "Saltá la cebolla y los champiñones.",
+   "Sumá el pollo en cubos y el arroz cocido.",
+   "Terminá con el queso."
+  ]
+ },
+ {
+  "id": "sopa-verduras-pollo",
+  "nombre": "Sopa de verduras con pollo",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "pechuga",
+    "gramos": 130
+   },
+   {
+    "alimentoId": "zapallo",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "zanahoria",
+    "gramos": 80
+   },
+   {
+    "alimentoId": "papa",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "cebolla",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "fideos",
+    "gramos": 20
+   }
+  ],
+  "pasos": [
+   "Herví las verduras en cubos 20 minutos.",
+   "Sumá el pollo en cubos y los fideos.",
+   "Cociná 10 minutos más."
+  ]
+ },
+ {
+  "id": "canelones-verdura",
+  "nombre": "Canelones de verdura y ricota",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "tapa-empanada",
+    "gramos": 90
+   },
+   {
+    "alimentoId": "acelga",
+    "gramos": 200
+   },
+   {
+    "alimentoId": "ricota",
+    "gramos": 120
+   },
+   {
+    "alimentoId": "pure-tomate",
+    "gramos": 120
+   },
+   {
+    "alimentoId": "queso-rallado",
+    "gramos": 10
+   }
+  ],
+  "pasos": [
+   "Rehogá la acelga y mezclala con la ricota.",
+   "Rellená las tapas, enrollalas y poné en una fuente con la salsa.",
+   "Gratiná con el queso 15 minutos."
+  ]
+ },
+ {
+  "id": "pollo-curry-arroz",
+  "nombre": "Pollo al curry con arroz",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "pechuga",
+    "gramos": 150
+   },
+   {
+    "alimentoId": "arroz",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "cebolla",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "leche-descremada",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "zanahoria",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "aceite-girasol",
+    "gramos": 5
+   }
+  ],
+  "pasos": [
+   "Rehogá la cebolla y la zanahoria.",
+   "Sumá el pollo en cubos, curry y la leche; cociná 15 minutos.",
+   "Serví con el arroz."
+  ]
+ },
+ {
+  "id": "ensalada-caprese-crudo",
+  "nombre": "Ensalada caprese con jamón crudo y pan",
+  "tipos": [
+   "almuerzo",
+   "cena"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "tomate",
+    "gramos": 200
+   },
+   {
+    "alimentoId": "muzzarella",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "jamon-crudo",
+    "gramos": 40
+   },
+   {
+    "alimentoId": "rucula",
+    "gramos": 30
+   },
+   {
+    "alimentoId": "pan-frances",
+    "gramos": 40
+   },
+   {
+    "alimentoId": "aceite-oliva",
+    "gramos": 10
+   }
+  ],
+  "pasos": [
+   "Cortá el tomate y la muzzarella en rodajas.",
+   "Armá con la rúcula y el jamón crudo y condimentá.",
+   "Acompañá con el pan."
+  ]
+ },
+ {
+  "id": "sandwich-lactal-pollo",
+  "nombre": "Sándwich de pollo, tomate y lechuga",
+  "tipos": [
+   "almuerzo",
+   "cena",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "pan-lactal",
+    "gramos": 75
+   },
+   {
+    "alimentoId": "pechuga",
+    "gramos": 100
+   },
+   {
+    "alimentoId": "tomate",
+    "gramos": 60
+   },
+   {
+    "alimentoId": "lechuga",
+    "gramos": 20
+   },
+   {
+    "alimentoId": "mayonesa-light",
+    "gramos": 10
+   }
+  ],
+  "pasos": [
+   "Cociná y desmenuzá el pollo.",
+   "Armá el sándwich con el tomate, la lechuga y la mayonesa."
+  ]
+ },
+ {
+  "id": "tostadas-port-salut-tomate",
+  "nombre": "Tostadas con port salut y tomate",
+  "tipos": [
+   "desayuno",
+   "merienda"
+  ],
+  "ingredientes": [
+   {
+    "alimentoId": "pan-integral",
+    "gramos": 50
+   },
+   {
+    "alimentoId": "port-salut",
+    "gramos": 40
+   },
+   {
+    "alimentoId": "tomate",
+    "gramos": 80
+   },
+   {
+    "alimentoId": "leche-descremada",
+    "gramos": 200
+   }
+  ],
+  "pasos": [
+   "Tostá el pan con el queso hasta que se derrita.",
+   "Sumá el tomate en rodajas y acompañá con café con leche."
+  ]
+ }
+]

@@ -1,0 +1,1314 @@
+[
+ {
+  "id": "leche-descremada",
+  "nombre": "Leche descremada",
+  "kcal": 35,
+  "proteina": 3.4,
+  "grasas": 0.1,
+  "carbos": 5,
+  "categoria": "lacteos",
+  "grupos": [
+   "lacteos"
+  ],
+  "unidad": {
+   "nombre": "taza",
+   "plural": "tazas",
+   "gramos": 250
+  }
+ },
+ {
+  "id": "leche-entera",
+  "nombre": "Leche entera",
+  "kcal": 61,
+  "proteina": 3.2,
+  "grasas": 3.3,
+  "carbos": 4.8,
+  "categoria": "lacteos",
+  "grupos": [
+   "lacteos"
+  ],
+  "unidad": {
+   "nombre": "taza",
+   "plural": "tazas",
+   "gramos": 250
+  }
+ },
+ {
+  "id": "yogur-descremado",
+  "nombre": "Yogur natural descremado",
+  "kcal": 45,
+  "proteina": 4.5,
+  "grasas": 0.2,
+  "carbos": 6,
+  "categoria": "lacteos",
+  "grupos": [
+   "lacteos"
+  ],
+  "unidad": {
+   "nombre": "pote",
+   "plural": "potes",
+   "gramos": 190
+  }
+ },
+ {
+  "id": "yogur-griego",
+  "nombre": "Yogur griego natural",
+  "kcal": 97,
+  "proteina": 9,
+  "grasas": 5,
+  "carbos": 4,
+  "categoria": "lacteos",
+  "grupos": [
+   "lacteos"
+  ],
+  "unidad": {
+   "nombre": "pote",
+   "plural": "potes",
+   "gramos": 160
+  }
+ },
+ {
+  "id": "queso-cremoso",
+  "nombre": "Queso cremoso",
+  "kcal": 300,
+  "proteina": 20,
+  "grasas": 24,
+  "carbos": 1,
+  "categoria": "lacteos",
+  "grupos": [
+   "lacteos"
+  ]
+ },
+ {
+  "id": "queso-untable",
+  "nombre": "Queso untable light",
+  "kcal": 146,
+  "proteina": 10,
+  "grasas": 10,
+  "carbos": 4,
+  "categoria": "lacteos",
+  "grupos": [
+   "lacteos"
+  ]
+ },
+ {
+  "id": "queso-rallado",
+  "nombre": "Queso rallado",
+  "kcal": 400,
+  "proteina": 33,
+  "grasas": 29,
+  "carbos": 2,
+  "categoria": "lacteos",
+  "grupos": [
+   "lacteos"
+  ]
+ },
+ {
+  "id": "ricota",
+  "nombre": "Ricota descremada",
+  "kcal": 120,
+  "proteina": 11,
+  "grasas": 7,
+  "carbos": 3,
+  "categoria": "lacteos",
+  "grupos": [
+   "lacteos"
+  ]
+ },
+ {
+  "id": "queso-maquina",
+  "nombre": "Queso de máquina",
+  "kcal": 330,
+  "proteina": 24,
+  "grasas": 26,
+  "carbos": 1,
+  "categoria": "lacteos",
+  "grupos": [
+   "lacteos"
+  ]
+ },
+ {
+  "id": "muzzarella",
+  "nombre": "Muzzarella",
+  "kcal": 280,
+  "proteina": 22,
+  "grasas": 20,
+  "carbos": 3,
+  "categoria": "lacteos",
+  "grupos": [
+   "lacteos"
+  ]
+ },
+ {
+  "id": "port-salut",
+  "nombre": "Queso port salut light",
+  "kcal": 290,
+  "proteina": 22,
+  "grasas": 22,
+  "carbos": 1,
+  "categoria": "lacteos",
+  "grupos": [
+   "lacteos"
+  ]
+ },
+ {
+  "id": "manteca",
+  "nombre": "Manteca",
+  "kcal": 717,
+  "proteina": 0.9,
+  "grasas": 81,
+  "carbos": 0.1,
+  "categoria": "lacteos",
+  "grupos": [
+   "lacteos"
+  ]
+ },
+ {
+  "id": "huevo",
+  "nombre": "Huevo",
+  "kcal": 143,
+  "proteina": 12.6,
+  "grasas": 9.5,
+  "carbos": 0.7,
+  "categoria": "lacteos",
+  "grupos": [
+   "huevo"
+  ],
+  "unidad": {
+   "nombre": "huevo",
+   "plural": "huevos",
+   "gramos": 50
+  }
+ },
+ {
+  "id": "clara",
+  "nombre": "Clara de huevo",
+  "kcal": 52,
+  "proteina": 11,
+  "grasas": 0.2,
+  "carbos": 0.7,
+  "categoria": "lacteos",
+  "grupos": [
+   "huevo"
+  ],
+  "unidad": {
+   "nombre": "clara",
+   "plural": "claras",
+   "gramos": 33
+  }
+ },
+ {
+  "id": "pechuga",
+  "nombre": "Pechuga de pollo",
+  "kcal": 120,
+  "proteina": 23,
+  "grasas": 2.6,
+  "carbos": 0,
+  "categoria": "carniceria",
+  "grupos": [
+   "pollo"
+  ]
+ },
+ {
+  "id": "muslo",
+  "nombre": "Muslo de pollo sin piel",
+  "kcal": 150,
+  "proteina": 19,
+  "grasas": 8,
+  "carbos": 0,
+  "categoria": "carniceria",
+  "grupos": [
+   "pollo"
+  ]
+ },
+ {
+  "id": "carne-picada",
+  "nombre": "Carne picada magra",
+  "kcal": 200,
+  "proteina": 20,
+  "grasas": 13,
+  "carbos": 0,
+  "categoria": "carniceria",
+  "grupos": [
+   "vacuna"
+  ]
+ },
+ {
+  "id": "nalga",
+  "nombre": "Nalga",
+  "kcal": 145,
+  "proteina": 22,
+  "grasas": 6,
+  "carbos": 0,
+  "categoria": "carniceria",
+  "grupos": [
+   "vacuna"
+  ]
+ },
+ {
+  "id": "bola-lomo",
+  "nombre": "Bola de lomo",
+  "kcal": 140,
+  "proteina": 21,
+  "grasas": 6,
+  "carbos": 0,
+  "categoria": "carniceria",
+  "grupos": [
+   "vacuna"
+  ]
+ },
+ {
+  "id": "lomo",
+  "nombre": "Lomo",
+  "kcal": 160,
+  "proteina": 22,
+  "grasas": 8,
+  "carbos": 0,
+  "categoria": "carniceria",
+  "grupos": [
+   "vacuna"
+  ]
+ },
+ {
+  "id": "cuadril",
+  "nombre": "Cuadril",
+  "kcal": 165,
+  "proteina": 21,
+  "grasas": 9,
+  "carbos": 0,
+  "categoria": "carniceria",
+  "grupos": [
+   "vacuna"
+  ]
+ },
+ {
+  "id": "solomillo-cerdo",
+  "nombre": "Solomillo de cerdo",
+  "kcal": 140,
+  "proteina": 21,
+  "grasas": 6,
+  "carbos": 0,
+  "categoria": "carniceria",
+  "grupos": [
+   "cerdo"
+  ]
+ },
+ {
+  "id": "bondiola",
+  "nombre": "Bondiola de cerdo",
+  "kcal": 216,
+  "proteina": 18,
+  "grasas": 16,
+  "carbos": 0,
+  "categoria": "carniceria",
+  "grupos": [
+   "cerdo"
+  ]
+ },
+ {
+  "id": "jamon-crudo",
+  "nombre": "Jamón crudo",
+  "kcal": 246,
+  "proteina": 25,
+  "grasas": 16,
+  "carbos": 0.5,
+  "categoria": "carniceria",
+  "grupos": [
+   "cerdo"
+  ]
+ },
+ {
+  "id": "jamon-cocido",
+  "nombre": "Jamón cocido",
+  "kcal": 119,
+  "proteina": 17,
+  "grasas": 5,
+  "carbos": 1.5,
+  "categoria": "carniceria",
+  "grupos": [
+   "cerdo"
+  ]
+ },
+ {
+  "id": "merluza",
+  "nombre": "Filet de merluza",
+  "kcal": 73,
+  "proteina": 16,
+  "grasas": 1,
+  "carbos": 0,
+  "categoria": "carniceria",
+  "grupos": [
+   "pescado"
+  ]
+ },
+ {
+  "id": "salmon",
+  "nombre": "Salmón rosado",
+  "kcal": 197,
+  "proteina": 20,
+  "grasas": 13,
+  "carbos": 0,
+  "categoria": "carniceria",
+  "grupos": [
+   "pescado"
+  ]
+ },
+ {
+  "id": "atun",
+  "nombre": "Atún al natural",
+  "kcal": 109,
+  "proteina": 25,
+  "grasas": 1,
+  "carbos": 0,
+  "categoria": "almacen",
+  "grupos": [
+   "pescado"
+  ],
+  "unidad": {
+   "nombre": "lata",
+   "plural": "latas",
+   "gramos": 120
+  }
+ },
+ {
+  "id": "lentejas",
+  "nombre": "Lentejas secas",
+  "kcal": 345,
+  "proteina": 24,
+  "grasas": 1,
+  "carbos": 60,
+  "categoria": "almacen",
+  "grupos": []
+ },
+ {
+  "id": "garbanzos",
+  "nombre": "Garbanzos cocidos",
+  "kcal": 167,
+  "proteina": 9,
+  "grasas": 2.6,
+  "carbos": 27,
+  "categoria": "almacen",
+  "grupos": []
+ },
+ {
+  "id": "porotos",
+  "nombre": "Porotos negros cocidos",
+  "kcal": 132,
+  "proteina": 9,
+  "grasas": 0.5,
+  "carbos": 23,
+  "categoria": "almacen",
+  "grupos": []
+ },
+ {
+  "id": "arroz",
+  "nombre": "Arroz blanco",
+  "kcal": 353,
+  "proteina": 7,
+  "grasas": 0.6,
+  "carbos": 80,
+  "categoria": "almacen",
+  "grupos": []
+ },
+ {
+  "id": "arroz-integral",
+  "nombre": "Arroz integral",
+  "kcal": 358,
+  "proteina": 7.5,
+  "grasas": 2.7,
+  "carbos": 76,
+  "categoria": "almacen",
+  "grupos": []
+ },
+ {
+  "id": "fideos",
+  "nombre": "Fideos secos",
+  "kcal": 353,
+  "proteina": 12,
+  "grasas": 1.5,
+  "carbos": 73,
+  "categoria": "almacen",
+  "grupos": [
+   "gluten"
+  ]
+ },
+ {
+  "id": "fideos-integrales",
+  "nombre": "Fideos integrales secos",
+  "kcal": 345,
+  "proteina": 14,
+  "grasas": 2.5,
+  "carbos": 66,
+  "categoria": "almacen",
+  "grupos": [
+   "gluten"
+  ]
+ },
+ {
+  "id": "avena",
+  "nombre": "Avena arrollada",
+  "kcal": 379,
+  "proteina": 13,
+  "grasas": 7,
+  "carbos": 66,
+  "categoria": "almacen",
+  "grupos": [
+   "gluten"
+  ]
+ },
+ {
+  "id": "harina",
+  "nombre": "Harina 0000",
+  "kcal": 345,
+  "proteina": 10,
+  "grasas": 1,
+  "carbos": 74,
+  "categoria": "almacen",
+  "grupos": [
+   "gluten"
+  ]
+ },
+ {
+  "id": "polenta",
+  "nombre": "Polenta",
+  "kcal": 357,
+  "proteina": 8,
+  "grasas": 1.5,
+  "carbos": 78,
+  "categoria": "almacen",
+  "grupos": []
+ },
+ {
+  "id": "quinoa",
+  "nombre": "Quinoa",
+  "kcal": 366,
+  "proteina": 14,
+  "grasas": 6,
+  "carbos": 64,
+  "categoria": "almacen",
+  "grupos": []
+ },
+ {
+  "id": "granola",
+  "nombre": "Granola",
+  "kcal": 435,
+  "proteina": 10,
+  "grasas": 15,
+  "carbos": 65,
+  "categoria": "almacen",
+  "grupos": [
+   "gluten"
+  ]
+ },
+ {
+  "id": "copos-maiz",
+  "nombre": "Copos de maíz sin azúcar",
+  "kcal": 377,
+  "proteina": 7,
+  "grasas": 1,
+  "carbos": 85,
+  "categoria": "almacen",
+  "grupos": []
+ },
+ {
+  "id": "galletas-arroz",
+  "nombre": "Galletas de arroz",
+  "kcal": 379,
+  "proteina": 8,
+  "grasas": 3,
+  "carbos": 80,
+  "categoria": "almacen",
+  "grupos": [],
+  "unidad": {
+   "nombre": "galleta",
+   "plural": "galletas",
+   "gramos": 9
+  }
+ },
+ {
+  "id": "galletitas-agua",
+  "nombre": "Galletitas de agua",
+  "kcal": 420,
+  "proteina": 10,
+  "grasas": 12,
+  "carbos": 68,
+  "categoria": "almacen",
+  "grupos": [
+   "gluten"
+  ],
+  "unidad": {
+   "nombre": "galletita",
+   "plural": "galletitas",
+   "gramos": 6
+  }
+ },
+ {
+  "id": "pan-rallado",
+  "nombre": "Pan rallado",
+  "kcal": 381,
+  "proteina": 12,
+  "grasas": 5,
+  "carbos": 72,
+  "categoria": "almacen",
+  "grupos": [
+   "gluten"
+  ]
+ },
+ {
+  "id": "tapa-tarta",
+  "nombre": "Tapa de tarta",
+  "kcal": 302,
+  "proteina": 6,
+  "grasas": 10,
+  "carbos": 47,
+  "categoria": "almacen",
+  "grupos": [
+   "gluten"
+  ]
+ },
+ {
+  "id": "tapa-empanada",
+  "nombre": "Tapas de empanada",
+  "kcal": 291,
+  "proteina": 7,
+  "grasas": 7,
+  "carbos": 50,
+  "categoria": "almacen",
+  "grupos": [
+   "gluten"
+  ],
+  "unidad": {
+   "nombre": "tapa",
+   "plural": "tapas",
+   "gramos": 30
+  }
+ },
+ {
+  "id": "tortilla-trigo",
+  "nombre": "Tortilla de trigo",
+  "kcal": 295,
+  "proteina": 8,
+  "grasas": 7,
+  "carbos": 50,
+  "categoria": "almacen",
+  "grupos": [
+   "gluten"
+  ],
+  "unidad": {
+   "nombre": "tortilla",
+   "plural": "tortillas",
+   "gramos": 40
+  }
+ },
+ {
+  "id": "aceite-oliva",
+  "nombre": "Aceite de oliva",
+  "kcal": 884,
+  "proteina": 0,
+  "grasas": 100,
+  "carbos": 0,
+  "categoria": "almacen",
+  "grupos": []
+ },
+ {
+  "id": "aceite-girasol",
+  "nombre": "Aceite de girasol",
+  "kcal": 884,
+  "proteina": 0,
+  "grasas": 100,
+  "carbos": 0,
+  "categoria": "almacen",
+  "grupos": []
+ },
+ {
+  "id": "mantequilla-mani",
+  "nombre": "Mantequilla de maní",
+  "kcal": 600,
+  "proteina": 25,
+  "grasas": 50,
+  "carbos": 20,
+  "categoria": "almacen",
+  "grupos": []
+ },
+ {
+  "id": "almendras",
+  "nombre": "Almendras",
+  "kcal": 600,
+  "proteina": 21,
+  "grasas": 50,
+  "carbos": 22,
+  "categoria": "almacen",
+  "grupos": []
+ },
+ {
+  "id": "nueces",
+  "nombre": "Nueces",
+  "kcal": 660,
+  "proteina": 15,
+  "grasas": 65,
+  "carbos": 14,
+  "categoria": "almacen",
+  "grupos": []
+ },
+ {
+  "id": "mani",
+  "nombre": "Maní tostado sin sal",
+  "kcal": 590,
+  "proteina": 26,
+  "grasas": 49,
+  "carbos": 16,
+  "categoria": "almacen",
+  "grupos": []
+ },
+ {
+  "id": "chia",
+  "nombre": "Semillas de chía",
+  "kcal": 500,
+  "proteina": 17,
+  "grasas": 31,
+  "carbos": 42,
+  "categoria": "almacen",
+  "grupos": []
+ },
+ {
+  "id": "pasas",
+  "nombre": "Pasas de uva",
+  "kcal": 300,
+  "proteina": 3,
+  "grasas": 0.5,
+  "carbos": 72,
+  "categoria": "almacen",
+  "grupos": []
+ },
+ {
+  "id": "miel",
+  "nombre": "Miel",
+  "kcal": 304,
+  "proteina": 0.3,
+  "grasas": 0,
+  "carbos": 82,
+  "categoria": "almacen",
+  "grupos": []
+ },
+ {
+  "id": "dulce-leche",
+  "nombre": "Dulce de leche",
+  "kcal": 311,
+  "proteina": 7,
+  "grasas": 7,
+  "carbos": 55,
+  "categoria": "almacen",
+  "grupos": [
+   "lacteos"
+  ]
+ },
+ {
+  "id": "mermelada",
+  "nombre": "Mermelada light",
+  "kcal": 149,
+  "proteina": 0.3,
+  "grasas": 0.1,
+  "carbos": 37,
+  "categoria": "almacen",
+  "grupos": []
+ },
+ {
+  "id": "pure-tomate",
+  "nombre": "Puré de tomate",
+  "kcal": 36,
+  "proteina": 1.6,
+  "grasas": 0.2,
+  "carbos": 7,
+  "categoria": "almacen",
+  "grupos": [],
+  "unidad": {
+   "nombre": "caja",
+   "plural": "cajas",
+   "gramos": 520
+  }
+ },
+ {
+  "id": "choclo-lata",
+  "nombre": "Choclo en granos",
+  "kcal": 96,
+  "proteina": 3.3,
+  "grasas": 1.4,
+  "carbos": 19,
+  "categoria": "almacen",
+  "grupos": [],
+  "unidad": {
+   "nombre": "lata",
+   "plural": "latas",
+   "gramos": 300
+  }
+ },
+ {
+  "id": "arvejas",
+  "nombre": "Arvejas",
+  "kcal": 83,
+  "proteina": 5.4,
+  "grasas": 0.4,
+  "carbos": 14.5,
+  "categoria": "almacen",
+  "grupos": [],
+  "unidad": {
+   "nombre": "lata",
+   "plural": "latas",
+   "gramos": 300
+  }
+ },
+ {
+  "id": "mayonesa-light",
+  "nombre": "Mayonesa light",
+  "kcal": 262,
+  "proteina": 1,
+  "grasas": 26,
+  "carbos": 6,
+  "categoria": "almacen",
+  "grupos": [
+   "huevo"
+  ]
+ },
+ {
+  "id": "barra-cereal",
+  "nombre": "Barra de cereal",
+  "kcal": 402,
+  "proteina": 6,
+  "grasas": 10,
+  "carbos": 72,
+  "categoria": "almacen",
+  "grupos": [
+   "gluten"
+  ],
+  "unidad": {
+   "nombre": "barra",
+   "plural": "barras",
+   "gramos": 25
+  }
+ },
+ {
+  "id": "proteina-polvo",
+  "nombre": "Proteína en polvo",
+  "kcal": 389,
+  "proteina": 78,
+  "grasas": 5,
+  "carbos": 8,
+  "categoria": "otros",
+  "grupos": [
+   "lacteos"
+  ],
+  "unidad": {
+   "nombre": "medida",
+   "plural": "medidas",
+   "gramos": 30
+  }
+ },
+ {
+  "id": "cacao",
+  "nombre": "Cacao amargo",
+  "kcal": 380,
+  "proteina": 20,
+  "grasas": 14,
+  "carbos": 45,
+  "categoria": "almacen",
+  "grupos": []
+ },
+ {
+  "id": "pan-frances",
+  "nombre": "Pan francés",
+  "kcal": 277,
+  "proteina": 9,
+  "grasas": 1,
+  "carbos": 58,
+  "categoria": "panaderia",
+  "grupos": [
+   "gluten"
+  ],
+  "unidad": {
+   "nombre": "mignon",
+   "plural": "mignones",
+   "gramos": 40
+  }
+ },
+ {
+  "id": "pan-integral",
+  "nombre": "Pan integral de molde",
+  "kcal": 248,
+  "proteina": 10,
+  "grasas": 4,
+  "carbos": 43,
+  "categoria": "panaderia",
+  "grupos": [
+   "gluten"
+  ],
+  "unidad": {
+   "nombre": "rebanada",
+   "plural": "rebanadas",
+   "gramos": 25
+  }
+ },
+ {
+  "id": "pan-hamburguesa",
+  "nombre": "Pan de hamburguesa",
+  "kcal": 272,
+  "proteina": 9,
+  "grasas": 4,
+  "carbos": 50,
+  "categoria": "panaderia",
+  "grupos": [
+   "gluten"
+  ],
+  "unidad": {
+   "nombre": "pan",
+   "plural": "panes",
+   "gramos": 60
+  }
+ },
+ {
+  "id": "pan-lactal",
+  "nombre": "Pan lactal blanco",
+  "kcal": 263,
+  "proteina": 8,
+  "grasas": 3.5,
+  "carbos": 50,
+  "categoria": "panaderia",
+  "grupos": [
+   "gluten"
+  ],
+  "unidad": {
+   "nombre": "rebanada",
+   "plural": "rebanadas",
+   "gramos": 25
+  }
+ },
+ {
+  "id": "pan-sin-tacc",
+  "nombre": "Pan sin TACC",
+  "kcal": 260,
+  "proteina": 3,
+  "grasas": 6,
+  "carbos": 48,
+  "categoria": "panaderia",
+  "grupos": [],
+  "unidad": {
+   "nombre": "rebanada",
+   "plural": "rebanadas",
+   "gramos": 30
+  }
+ },
+ {
+  "id": "tomate",
+  "nombre": "Tomate",
+  "kcal": 20,
+  "proteina": 0.9,
+  "grasas": 0.2,
+  "carbos": 3.9,
+  "categoria": "verduleria",
+  "grupos": [],
+  "unidad": {
+   "nombre": "tomate",
+   "plural": "tomates",
+   "gramos": 120
+  }
+ },
+ {
+  "id": "lechuga",
+  "nombre": "Lechuga",
+  "kcal": 15,
+  "proteina": 1.4,
+  "grasas": 0.2,
+  "carbos": 2.9,
+  "categoria": "verduleria",
+  "grupos": []
+ },
+ {
+  "id": "rucula",
+  "nombre": "Rúcula",
+  "kcal": 30,
+  "proteina": 2.6,
+  "grasas": 0.7,
+  "carbos": 3.7,
+  "categoria": "verduleria",
+  "grupos": []
+ },
+ {
+  "id": "zanahoria",
+  "nombre": "Zanahoria",
+  "kcal": 41,
+  "proteina": 0.9,
+  "grasas": 0.2,
+  "carbos": 9.6,
+  "categoria": "verduleria",
+  "grupos": [],
+  "unidad": {
+   "nombre": "zanahoria",
+   "plural": "zanahorias",
+   "gramos": 100
+  }
+ },
+ {
+  "id": "cebolla",
+  "nombre": "Cebolla",
+  "kcal": 40,
+  "proteina": 1.1,
+  "grasas": 0.1,
+  "carbos": 9.3,
+  "categoria": "verduleria",
+  "grupos": [],
+  "unidad": {
+   "nombre": "cebolla",
+   "plural": "cebollas",
+   "gramos": 150
+  }
+ },
+ {
+  "id": "morron",
+  "nombre": "Morrón",
+  "kcal": 30,
+  "proteina": 1,
+  "grasas": 0.3,
+  "carbos": 6,
+  "categoria": "verduleria",
+  "grupos": [],
+  "unidad": {
+   "nombre": "morrón",
+   "plural": "morrones",
+   "gramos": 150
+  }
+ },
+ {
+  "id": "zapallo",
+  "nombre": "Zapallo",
+  "kcal": 30,
+  "proteina": 1,
+  "grasas": 0.1,
+  "carbos": 6.5,
+  "categoria": "verduleria",
+  "grupos": []
+ },
+ {
+  "id": "zapallito",
+  "nombre": "Zapallito",
+  "kcal": 17,
+  "proteina": 1.2,
+  "grasas": 0.3,
+  "carbos": 3.1,
+  "categoria": "verduleria",
+  "grupos": [],
+  "unidad": {
+   "nombre": "zapallito",
+   "plural": "zapallitos",
+   "gramos": 150
+  }
+ },
+ {
+  "id": "papa",
+  "nombre": "Papa",
+  "kcal": 77,
+  "proteina": 2,
+  "grasas": 0.1,
+  "carbos": 17,
+  "categoria": "verduleria",
+  "grupos": [],
+  "unidad": {
+   "nombre": "papa",
+   "plural": "papas",
+   "gramos": 170
+  }
+ },
+ {
+  "id": "batata",
+  "nombre": "Batata",
+  "kcal": 86,
+  "proteina": 1.6,
+  "grasas": 0.1,
+  "carbos": 20,
+  "categoria": "verduleria",
+  "grupos": [],
+  "unidad": {
+   "nombre": "batata",
+   "plural": "batatas",
+   "gramos": 200
+  }
+ },
+ {
+  "id": "brocoli",
+  "nombre": "Brócoli",
+  "kcal": 40,
+  "proteina": 2.8,
+  "grasas": 0.4,
+  "carbos": 7,
+  "categoria": "verduleria",
+  "grupos": []
+ },
+ {
+  "id": "espinaca",
+  "nombre": "Espinaca",
+  "kcal": 28,
+  "proteina": 2.9,
+  "grasas": 0.4,
+  "carbos": 3.6,
+  "categoria": "verduleria",
+  "grupos": []
+ },
+ {
+  "id": "acelga",
+  "nombre": "Acelga",
+  "kcal": 19,
+  "proteina": 1.8,
+  "grasas": 0.2,
+  "carbos": 3.7,
+  "categoria": "verduleria",
+  "grupos": []
+ },
+ {
+  "id": "champinones",
+  "nombre": "Champiñones",
+  "kcal": 26,
+  "proteina": 3.1,
+  "grasas": 0.3,
+  "carbos": 3.3,
+  "categoria": "verduleria",
+  "grupos": []
+ },
+ {
+  "id": "berenjena",
+  "nombre": "Berenjena",
+  "kcal": 28,
+  "proteina": 1,
+  "grasas": 0.2,
+  "carbos": 6,
+  "categoria": "verduleria",
+  "grupos": [],
+  "unidad": {
+   "nombre": "berenjena",
+   "plural": "berenjenas",
+   "gramos": 250
+  }
+ },
+ {
+  "id": "pepino",
+  "nombre": "Pepino",
+  "kcal": 15,
+  "proteina": 0.7,
+  "grasas": 0.1,
+  "carbos": 3.6,
+  "categoria": "verduleria",
+  "grupos": [],
+  "unidad": {
+   "nombre": "pepino",
+   "plural": "pepinos",
+   "gramos": 200
+  }
+ },
+ {
+  "id": "repollo",
+  "nombre": "Repollo",
+  "kcal": 27,
+  "proteina": 1.3,
+  "grasas": 0.1,
+  "carbos": 5.8,
+  "categoria": "verduleria",
+  "grupos": []
+ },
+ {
+  "id": "remolacha",
+  "nombre": "Remolacha",
+  "kcal": 43,
+  "proteina": 1.6,
+  "grasas": 0.2,
+  "carbos": 9.6,
+  "categoria": "verduleria",
+  "grupos": [],
+  "unidad": {
+   "nombre": "remolacha",
+   "plural": "remolachas",
+   "gramos": 150
+  }
+ },
+ {
+  "id": "ajo",
+  "nombre": "Ajo",
+  "kcal": 149,
+  "proteina": 6.4,
+  "grasas": 0.5,
+  "carbos": 33,
+  "categoria": "verduleria",
+  "grupos": [],
+  "unidad": {
+   "nombre": "diente",
+   "plural": "dientes",
+   "gramos": 5
+  }
+ },
+ {
+  "id": "palta",
+  "nombre": "Palta",
+  "kcal": 165,
+  "proteina": 2,
+  "grasas": 15,
+  "carbos": 9,
+  "categoria": "verduleria",
+  "grupos": [],
+  "unidad": {
+   "nombre": "palta",
+   "plural": "paltas",
+   "gramos": 200
+  }
+ },
+ {
+  "id": "limon",
+  "nombre": "Limón",
+  "kcal": 38,
+  "proteina": 1.1,
+  "grasas": 0.3,
+  "carbos": 9,
+  "categoria": "verduleria",
+  "grupos": [],
+  "unidad": {
+   "nombre": "limón",
+   "plural": "limones",
+   "gramos": 100
+  }
+ },
+ {
+  "id": "banana",
+  "nombre": "Banana",
+  "kcal": 89,
+  "proteina": 1.1,
+  "grasas": 0.3,
+  "carbos": 23,
+  "categoria": "verduleria",
+  "grupos": [],
+  "unidad": {
+   "nombre": "banana",
+   "plural": "bananas",
+   "gramos": 120
+  }
+ },
+ {
+  "id": "manzana",
+  "nombre": "Manzana",
+  "kcal": 52,
+  "proteina": 0.3,
+  "grasas": 0.2,
+  "carbos": 14,
+  "categoria": "verduleria",
+  "grupos": [],
+  "unidad": {
+   "nombre": "manzana",
+   "plural": "manzanas",
+   "gramos": 150
+  }
+ },
+ {
+  "id": "naranja",
+  "nombre": "Naranja",
+  "kcal": 47,
+  "proteina": 0.9,
+  "grasas": 0.1,
+  "carbos": 12,
+  "categoria": "verduleria",
+  "grupos": [],
+  "unidad": {
+   "nombre": "naranja",
+   "plural": "naranjas",
+   "gramos": 180
+  }
+ },
+ {
+  "id": "mandarina",
+  "nombre": "Mandarina",
+  "kcal": 53,
+  "proteina": 0.8,
+  "grasas": 0.3,
+  "carbos": 13,
+  "categoria": "verduleria",
+  "grupos": [],
+  "unidad": {
+   "nombre": "mandarina",
+   "plural": "mandarinas",
+   "gramos": 100
+  }
+ },
+ {
+  "id": "pera",
+  "nombre": "Pera",
+  "kcal": 57,
+  "proteina": 0.4,
+  "grasas": 0.1,
+  "carbos": 15,
+  "categoria": "verduleria",
+  "grupos": [],
+  "unidad": {
+   "nombre": "pera",
+   "plural": "peras",
+   "gramos": 160
+  }
+ },
+ {
+  "id": "frutillas",
+  "nombre": "Frutillas",
+  "kcal": 32,
+  "proteina": 0.7,
+  "grasas": 0.3,
+  "carbos": 7.7,
+  "categoria": "verduleria",
+  "grupos": []
+ },
+ {
+  "id": "durazno",
+  "nombre": "Durazno",
+  "kcal": 42,
+  "proteina": 0.9,
+  "grasas": 0.3,
+  "carbos": 10,
+  "categoria": "verduleria",
+  "grupos": [],
+  "unidad": {
+   "nombre": "durazno",
+   "plural": "duraznos",
+   "gramos": 150
+  }
+ },
+ {
+  "id": "kiwi",
+  "nombre": "Kiwi",
+  "kcal": 61,
+  "proteina": 1.1,
+  "grasas": 0.5,
+  "carbos": 15,
+  "categoria": "verduleria",
+  "grupos": [],
+  "unidad": {
+   "nombre": "kiwi",
+   "plural": "kiwis",
+   "gramos": 80
+  }
+ },
+ {
+  "id": "arandanos",
+  "nombre": "Arándanos",
+  "kcal": 57,
+  "proteina": 0.7,
+  "grasas": 0.3,
+  "carbos": 14.5,
+  "categoria": "verduleria",
+  "grupos": []
+ },
+ {
+  "id": "choclo",
+  "nombre": "Choclo fresco",
+  "kcal": 96,
+  "proteina": 3.3,
+  "grasas": 1.4,
+  "carbos": 19,
+  "categoria": "verduleria",
+  "grupos": [],
+  "unidad": {
+   "nombre": "choclo",
+   "plural": "choclos",
+   "gramos": 200
+  }
+ }
+]
