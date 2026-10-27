@@ -57,6 +57,10 @@ export interface Sesion {
   series: SerieRegistrada[];
   /** Sesión de una semana de descarga de un plan: no cuenta para sugerir el próximo peso. */
   descarga?: boolean;
+  /** Ejercicios cambiados en esta sesión ("está ocupada"): de cuál a cuál. */
+  cambios?: { de: string; a: string }[];
+  /** Descanso máximo de esta sesión, si se recortó por tiempo. */
+  descansoMaxSeg?: number;
 }
 
 export interface Ajustes {

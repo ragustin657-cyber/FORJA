@@ -1,6 +1,10 @@
 import { duracion } from '../../core/formato';
 import { calcularRecords, descripcionRecord, detectarRecords } from '../../core/records';
+import { useState } from 'react';
 import { ejerciciosRepo } from '../../data/repos/ejercicios';
+import { rutinasRepo } from '../../data/repos/rutinas';
+import type { Sesion } from '../../data/tipos';
+import { Boton } from '../componentes/Boton';
 import { sesionesRepo } from '../../data/repos/sesiones';
 import { Encabezado } from '../componentes/Encabezado';
 import { Tarjeta } from '../componentes/Tarjeta';
@@ -18,13 +22,56 @@ async function cargar(id: string) {
       records.push(descripcionRecord(nombre, r));
     }
   }
-  return { sesion, records };
+  const nombres: Record<string, string> = {};
+  for (const c of sesion.cambios ?? []) {
+    for (const id of [c.de, c.a]) nombres[id] = (await ejerciciosRepo.porId(id))?.nombre ?? 'Ejercicio';
+  }
+  return { sesion, records, nombres };
+}
+
+/** Pasa los cambios de la sesión ("está ocupada") a la rutina, conservando series, repeticiones y descanso. */
+async function dejarEnRutina(sesion: Sesion) {
+  const rutina = await rutinasRepo.porId(sesion.rutinaId);
+  if (!rutina) return;
+  const dias = rutina.dias.map((d) =>
+    d.id !== sesion.diaId
+      ? d
+      : { ...d, ejercicios: d.ejercicios.map((e) => ({ ...e, ejercicioId: sesion.cambios?.find((c) => c.de === e.ejercicioId)?.a ?? e.ejercicioId })) },
+  );
+  await rutinasRepo.guardar({ ...rutina, dias });
+}
+
+function CambiosDeHoy({ sesion, nombres }: { sesion: Sesion; nombres: Record<string, string> }) {
+  const [listo, setListo] = useState(false);
+  return (
+    <section aria-label="Cambios de hoy" className="tarjeta pila">
+      {sesion.cambios!.map((c) => (
+        <p key={c.de} style={{ margin: 0 }}>{`Cambiaste ${nombres[c.de]} por ${nombres[c.a]}.`}</p>
+      ))}
+      {listo ? (
+        <p className="texto-2" role="status" style={{ margin: 0 }}>Listo, tu rutina quedó actualizada.</p>
+      ) : (
+        <>
+          <p className="texto-2" style={{ margin: 0 }}>¿Lo dejamos así en tu rutina para la próxima?</p>
+          <Boton
+            variante="secundario"
+            onClick={async () => {
+              await dejarEnRutina(sesion);
+              setListo(true);
+            }}
+          >
+            Dejarlo en la rutina
+          </Boton>
+        </>
+      )}
+    </section>
+  );
 }
 
 export function ResumenSesion({ id }: { id: string }) {
   const { datos } = useCarga(() => cargar(id), [id]);
   if (!datos) return <Encabezado titulo="Resumen" />;
-  const { sesion, records } = datos;
+  const { sesion, records, nombres } = datos;
   const hechas = sesion.series.filter((x) => x.completada);
   const volumen = hechas.reduce((t, x) => t + x.peso * x.reps, 0);
 
@@ -46,6 +93,7 @@ export function ResumenSesion({ id }: { id: string }) {
             ))}
           </Tarjeta>
         )}
+        {sesion.cambios && sesion.cambios.length > 0 && <CambiosDeHoy sesion={sesion} nombres={nombres} />}
         <Enlace a="/" className="boton boton-primario">Volver al inicio</Enlace>
       </div>
     </>

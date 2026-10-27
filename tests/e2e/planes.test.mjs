@@ -1,23 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { abrirApp } from './ayuda.mjs';
-
-/** Toca la opción visible (la etiqueta), como una persona; el radio está oculto. */
-const elegir = async (p, grupo, nombre) => {
-  const radio = p.getByRole('radiogroup', { name: grupo }).getByRole('radio', { name: new RegExp(`^${nombre}`) });
-  await p.getByRole('radiogroup', { name: grupo }).locator('label').filter({ has: p.getByRole('radio', { name: new RegExp(`^${nombre}`) }) }).click();
-  assert.equal(await radio.isChecked(), true);
-};
-
-export async function crearPlan(p, { objetivo = 'Ganar músculo', dias = '4', equipo = 'Gimnasio completo', inicio = 'Este lunes' } = {}) {
-  await p.goto(p.url().split('#')[0] + '#/entrenar');
-  await p.getByRole('link', { name: 'Armar un plan' }).click();
-  await elegir(p, 'Objetivo', objetivo);
-  await elegir(p, 'Días por semana', dias);
-  await elegir(p, 'Equipo', equipo);
-  await elegir(p, 'Inicio', inicio);
-  await p.getByRole('button', { name: 'Crear plan' }).click();
-}
+import { abrirApp, crearPlan, elegir } from './ayuda.mjs';
 
 test('armar un plan crea su rutina', async () => {
   const app = await abrirApp();
